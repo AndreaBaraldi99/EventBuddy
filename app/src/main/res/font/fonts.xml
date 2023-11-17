@@ -8,4 +8,10 @@
         android:fontStyle="italic"
         android:fontWeight="400"
         android:font="@font/waterfall_regular" />
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/robotoSlab_semiBold" />
+
 </font-family>
+
