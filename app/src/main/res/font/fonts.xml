@@ -11,7 +11,7 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/robotoSlab_semiBold" />
+        android:font="@font/robotoslab_semibold" />
 
 </font-family>
 
