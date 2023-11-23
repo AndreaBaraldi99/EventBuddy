@@ -21,7 +21,7 @@ public class LocalUser {
         this.username = username;
         this.fullName = fullName;
     }
-    public long getId() {
+    public long getUserId() {
         return userId;
     }
     @NonNull

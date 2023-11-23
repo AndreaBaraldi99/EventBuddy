@@ -34,7 +34,7 @@ public class LocalEvent {
         this.description = description;
     }
 
-    public long getId() {
+    public long getEventId() {
         return eventId;
     }
 

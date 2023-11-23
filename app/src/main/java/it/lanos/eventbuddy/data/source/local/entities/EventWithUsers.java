@@ -16,6 +16,14 @@ public class EventWithUsers {
     )
     private List<LocalUser> users;
 
+    public LocalEvent getEvent() {
+        return event;
+    }
+
+    public List<LocalUser> getUsers() {
+        return users;
+    }
+
     public void setEvent(LocalEvent event) {
         this.event = event;
     }

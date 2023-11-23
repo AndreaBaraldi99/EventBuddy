@@ -16,6 +16,14 @@ public class UserWithEvents {
     )
     private List<LocalEvent> events;
 
+    LocalUser getUser() {
+        return user;
+    }
+
+    public List<LocalEvent> getEvents() {
+        return events;
+    }
+
     public void setUser(LocalUser user) {
         this.user = user;
     }
@@ -23,6 +31,7 @@ public class UserWithEvents {
     public void setEvents(List<LocalEvent> events) {
         this.events = events;
     }
+
 }
 
 
