@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.local.entities;
+package it.lanos.eventbuddy.data.source.entities;
 
 import androidx.room.Embedded;
 import androidx.room.Junction;
@@ -8,27 +8,27 @@ import java.util.List;
 
 public class EventWithUsers {
     @Embedded
-    private LocalEvent event;
+    private Event event;
     @Relation(
             parentColumn = "eventId",
             entityColumn = "userId",
             associateBy = @Junction(UserEventCrossRef.class)
     )
-    private List<LocalUser> users;
+    private List<User> users;
 
-    public LocalEvent getEvent() {
+    public Event getEvent() {
         return event;
     }
 
-    public List<LocalUser> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setEvent(LocalEvent event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
-    public void setUsers(List<LocalUser> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 }

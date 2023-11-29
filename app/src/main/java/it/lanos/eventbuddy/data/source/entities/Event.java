@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.local.entities;
+package it.lanos.eventbuddy.data.source.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,12 +6,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
-@Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = LocalUser.class,
+@Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "userId",
         childColumns = "manager"))
-public class LocalEvent {
+public class Event {
     @PrimaryKey
     final long eventId;
     @ColumnInfo(name = "manager", index = true)
@@ -19,13 +17,13 @@ public class LocalEvent {
     @ColumnInfo(name = "name")
     final String name;
     @ColumnInfo(name = "date")
-    final Date date;
+    final String date;
     @ColumnInfo(name = "location")
     final String location;
     @ColumnInfo(name = "description")
     final String description;
 
-    public LocalEvent(long eventId, long manager, String name, Date date, String location, String description) {
+    public Event(long eventId, long manager, String name, String date, String location, String description) {
         this.eventId = eventId;
         this.manager = manager;
         this.name = name;
@@ -48,7 +46,7 @@ public class LocalEvent {
     }
 
     @NonNull
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

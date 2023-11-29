@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.local.entities;
+package it.lanos.eventbuddy.data.source.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

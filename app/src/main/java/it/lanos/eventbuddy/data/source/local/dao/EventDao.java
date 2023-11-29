@@ -7,9 +7,9 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.local.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.local.entities.LocalEvent;
-import it.lanos.eventbuddy.data.source.local.entities.UserEventCrossRef;
+import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.entities.Event;
+import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
 
 @Dao
 public interface EventDao {
@@ -17,7 +17,7 @@ public interface EventDao {
     @Query("SELECT * FROM Event")
     List<EventWithUsers> getEventsWithUsers();
     @Insert
-    long insertEvent(LocalEvent event);
+    long insertEvent(Event event);
     @Insert
     void insertEventWithUsers(UserEventCrossRef userEventCrossRef);
 }

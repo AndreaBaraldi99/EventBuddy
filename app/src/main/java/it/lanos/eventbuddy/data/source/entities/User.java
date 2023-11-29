@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.local.entities;
+package it.lanos.eventbuddy.data.source.entities;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "User")
-public class LocalUser {
+public class User {
     @PrimaryKey
     final long userId;
     @ColumnInfo(name = "username")
@@ -16,7 +16,7 @@ public class LocalUser {
     @NonNull
     private String fullName;
 
-    public LocalUser(long userId, @NonNull String username, @NonNull String fullName) {
+    public User(long userId, @NonNull String username, @NonNull String fullName) {
         this.userId = userId;
         this.username = username;
         this.fullName = fullName;

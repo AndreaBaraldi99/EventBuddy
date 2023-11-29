@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
@@ -12,28 +11,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Date;
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.local.AppDatabase;
+import it.lanos.eventbuddy.data.source.entities.Event;
+import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
-import it.lanos.eventbuddy.data.source.local.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.local.entities.LocalEvent;
-import it.lanos.eventbuddy.data.source.local.entities.LocalUser;
-import it.lanos.eventbuddy.data.source.local.entities.UserEventCrossRef;
-import it.lanos.eventbuddy.data.source.local.entities.UserWithEvents;
+import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
+import it.lanos.eventbuddy.data.source.entities.UserWithEvents;
 
 @RunWith(AndroidJUnit4.class)
 public class EntitiesReadWriteTest {
     private UserDao userDao;
     private EventDao eventDao;
-    private AppDatabase db;
+    private EventsRoomDatabase db;
 
     @Before
     public void createDb() {
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
+        db = Room.inMemoryDatabaseBuilder(context, EventsRoomDatabase.class).build();
         userDao = db.userDao();
         eventDao = db.eventDao();
     }
@@ -45,10 +43,10 @@ public class EntitiesReadWriteTest {
 
     @Test
     public void writeUserAndReadInList() {
-        LocalEvent event = new LocalEvent(1, 11, "Test name", new Date(2023, 12, 12), "Via Milano 23", "Test description");
+        Event event = new Event(1, 11, "Test name", "30/11/2023 20:30", "Via Milano 23", "Test description");
 
-        LocalUser user = new LocalUser(11, "TestUsername", "Test Full Name");
-        LocalUser user2 = new LocalUser(12, "TestUsername2", "Test Full Name2");
+        User user = new User(11, "TestUsername", "Test Full Name");
+        User user2 = new User(12, "TestUsername2", "Test Full Name2");
 
         long userId1 = userDao.insertUser(user);
         long userId = userDao.insertUser(user2);
