@@ -19,12 +19,11 @@
         tools:layout="@layout/fragment_event">
     </androidx.fragment.app.FragmentContainerView>
 
-    <!--TODO: labels in bottomNavigationBar not showing -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="409dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:itemIconSize="36dp"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
