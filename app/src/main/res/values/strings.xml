@@ -2,7 +2,17 @@
     <string name="app_name">EventBuddy</string>
 
     <!-- Strings used for WelcomeActivity -->
-    <string name="welcome_text"> Welcome to</string>
+    <string name="welcome_text">Welcome to</string>
     <string name="login_text">Login</string>
     <string name="signup_text">Sign up</string>
+
+    <!--Strings used for BottomNavigationBar -->
+    <string name="bottom_bar_event_title">Events</string>
+    <string name="bottom_bar_active_title">Active</string>
+    <string name="bottom_bar_friends_title">Friends</string>
+    <string name="bottom_bar_settings_title">Settings</string>
+
+    <!-- Strings used for EventFragment -->
+    <string name="event_fragment_title">Upcoming Events</string>
+    <string name="event_fragment_button">On submit</string>
 </resources>
