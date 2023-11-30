@@ -14,5 +14,24 @@
 
     <!-- Strings used for EventFragment -->
     <string name="event_fragment_title">Upcoming Events</string>
-    <string name="event_fragment_button">On submit</string>
+    <string name="event_fragment_button">Click to open CreateEventActivity</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+
+    <!-- Strings used for CreateEventActivity -->
+    <string name="create_event_title">Create Event</string>
+    <string name="create_event_name_hint">Event name</string>
+    <string name="event_name_input"></string>
+    <string name="create_event_date_hint">Date</string>
+    <string name="event_date_input"></string>
+    <string name="create_event_time_hint">Time</string>
+    <string name="event_time_input"></string>
+    <string name="create_event_location_hint">Location</string>
+    <string name="event_location_input"></string>
+    <string name="create_event_add_description_text_view">Add description</string>
+    <string name="add_description_button">Button add description</string>
+    <string name="add_guests_button">Button add guests</string>
+    <string name="create_event_add_guests_text_view">Add guests</string>
+    <string name="create_event_button_add_text">Add </string>
+
+
 </resources>
