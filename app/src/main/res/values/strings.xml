@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EventBuddy</string>
+    <string name="successful_registration">Registration was successful</string>
+    <string name="weak_password">Weak password</string>
+    <string name="malformed_email">Email is malformed</string>
+    <string name="already_existing_email">Email already exists</string>
+    <string name="registration_failed">Registration failed</string>
 </resources>
