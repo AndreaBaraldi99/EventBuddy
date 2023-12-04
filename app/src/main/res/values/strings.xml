@@ -5,4 +5,11 @@
     <string name="malformed_email">Email is malformed</string>
     <string name="already_existing_email">Email already exists</string>
     <string name="registration_failed">Registration failed</string>
+    <string name="successful_login">Successful login</string>
+    <string name="user_doesnt_exists">User doesn\'t exists</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="login_failed">Login failed</string>
+    <string name="account_deleted">Account deleted</string>
+    <string name="delete_account_failed">Failed to delete the account</string>
+    <string name="user_not_authenticated">User not authenticated</string>
 </resources>

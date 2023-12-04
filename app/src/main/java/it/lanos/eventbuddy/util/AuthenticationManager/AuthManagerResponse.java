@@ -5,7 +5,6 @@ import com.google.firebase.auth.AuthResult;
 
 public class AuthManagerResponse {
     private Task<AuthResult> authResultTask;
-    private Task<Void> voidResultTask;
     private Exception exception;
     private boolean successful;
     private String response;
@@ -15,18 +14,21 @@ public class AuthManagerResponse {
         this.successful = successful;
         this.response = response;
     }
+
     public AuthManagerResponse(Exception exception, boolean successful, String response) {
         this.exception = exception;
         this.successful = successful;
         this.response = response;
     }
 
-    public Task<AuthResult> getAuthResultTask() {
-        return authResultTask;
+    //Soluzione temporanea
+    public AuthManagerResponse(boolean successful, String response) {
+        this.successful = successful;
+        this.response = response;
     }
 
-    public Task<Void> getVoidResultTask() {
-        return voidResultTask;
+    public Task<AuthResult> getAuthResultTask() {
+        return authResultTask;
     }
 
     public Exception getException() {
