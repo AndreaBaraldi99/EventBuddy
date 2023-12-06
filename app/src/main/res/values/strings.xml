@@ -12,4 +12,8 @@
     <string name="account_deleted">Account deleted</string>
     <string name="delete_account_failed">Failed to delete the account</string>
     <string name="user_not_authenticated">User not authenticated</string>
+    <string name="security_threshold">Last sign-in time does not meet the security threshold</string>
+    <string name="update_password_failed">Failed to update the password</string>
+    <string name="password_successfully_updated">Password successfully updated</string>
+    <string name="malformed_credential">Malformed credentials</string>
 </resources>
