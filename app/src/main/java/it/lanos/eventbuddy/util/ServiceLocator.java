@@ -2,6 +2,10 @@ package it.lanos.eventbuddy.util;
 
 import android.app.Application;
 
+import it.lanos.eventbuddy.data.EventWithUsersRepository;
+import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.source.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 
 public class ServiceLocator {
@@ -19,6 +23,12 @@ public class ServiceLocator {
     }
     public EventsRoomDatabase getDatabase(Application application) {
         return EventsRoomDatabase.getDatabase(application);
+    }
+    public IEventsRepository getEventsRepository(Application application) {
+        BaseEventsLocalDataSource eventsLocalDataSource;
+        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application));
+
+        return new EventWithUsersRepository(eventsLocalDataSource);
     }
 
 }

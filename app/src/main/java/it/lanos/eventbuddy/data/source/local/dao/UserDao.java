@@ -19,6 +19,8 @@ public interface UserDao {
     @Insert
     long insertUser(User user);
     @Insert
+    List<Long> insertUsers(List<User> users);
+    @Insert
     void insertUserWithEvents(UserEventCrossRef userEventCrossRef);
 
 }

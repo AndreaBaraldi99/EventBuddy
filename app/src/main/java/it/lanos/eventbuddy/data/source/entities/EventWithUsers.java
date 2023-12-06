@@ -16,6 +16,11 @@ public class EventWithUsers {
     )
     private List<User> users;
 
+    public EventWithUsers(Event event, List<User> users) {
+        this.event = event;
+        this.users = users;
+    }
+
     public Event getEvent() {
         return event;
     }
