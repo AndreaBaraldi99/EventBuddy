@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39958117842",
+    "project_id": "eventbuddy-e5fe9",
+    "storage_bucket": "eventbuddy-e5fe9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39958117842:android:c3c336aa442854904c9c0b",
+        "android_client_info": {
+          "package_name": "it.lanos.eventbuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGXJYDihMva905MgCWHvXujjCV0Dn5A-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
