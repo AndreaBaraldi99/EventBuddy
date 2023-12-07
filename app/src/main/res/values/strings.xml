@@ -16,4 +16,6 @@
     <string name="update_password_failed">Failed to update the password</string>
     <string name="password_successfully_updated">Password successfully updated</string>
     <string name="malformed_credential">Malformed credentials</string>
+    <string name="null_user">User is null</string>
+    <string name="null_email">Email is null</string>
 </resources>
