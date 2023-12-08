@@ -4,11 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.Result;
-import it.lanos.eventbuddy.data.source.entities.UserWithEvents;
 
 
 public class EventWithUsersRepository implements IEventsRepository, EventsCallback{

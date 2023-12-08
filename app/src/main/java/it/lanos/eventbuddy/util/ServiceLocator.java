@@ -3,9 +3,10 @@ package it.lanos.eventbuddy.util;
 import android.app.Application;
 
 import it.lanos.eventbuddy.data.EventWithUsersRepository;
+import it.lanos.eventbuddy.data.IAuthRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.source.BaseEventsLocalDataSource;
-import it.lanos.eventbuddy.data.source.EventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 
 public class ServiceLocator {
@@ -30,5 +31,7 @@ public class ServiceLocator {
 
         return new EventWithUsersRepository(eventsLocalDataSource);
     }
-
+    public IAuthRepository getAuthRepository() {
+        return null;
+    }
 }

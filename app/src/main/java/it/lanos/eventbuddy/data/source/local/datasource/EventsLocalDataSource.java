@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source;
+package it.lanos.eventbuddy.data.source.local.datasource;
 
 import java.util.List;
 
@@ -7,8 +7,9 @@ import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 
-public class EventsLocalDataSource extends BaseEventsLocalDataSource{
+public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     private final EventDao eventDao;
     private final UserDao userDao;
     //private final SharedPreferencesUtil sharedPreferencesUtil;

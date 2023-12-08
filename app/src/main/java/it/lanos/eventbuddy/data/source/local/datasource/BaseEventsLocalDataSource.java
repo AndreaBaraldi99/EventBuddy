@@ -1,7 +1,8 @@
-package it.lanos.eventbuddy.data.source;
+package it.lanos.eventbuddy.data.source.local.datasource;
 
 import java.util.List;
 
+import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 
