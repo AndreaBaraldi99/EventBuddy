@@ -1,5 +1,7 @@
 package it.lanos.eventbuddy.data;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.data.source.firebase.auth.AuthCallback;
@@ -12,13 +14,28 @@ public class AuthRepository implements IAuthRepository, AuthCallback {
         this.authDataSource.setAuthCallback(this);
     }
     @Override
-    public void signIn(String email, String password) {
+    public void signIn(@NonNull String email, @NonNull String password) {
         authDataSource.signIn(email, password);
     }
 
     @Override
-    public void register(String email, String password) {
+    public void register(@NonNull String email, @NonNull String password) {
+        authDataSource.register(email, password);
+    }
 
+    @Override
+    public void deleteUser() {
+        authDataSource.deleteUser();
+    }
+
+    @Override
+    public void signOut() {
+        authDataSource.signOut();
+    }
+
+    @Override
+    public void changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
+        authDataSource.changePassword(oldPassword, newPassword);
     }
 
     @Override
@@ -27,17 +44,37 @@ public class AuthRepository implements IAuthRepository, AuthCallback {
     }
 
     @Override
-    public void onLoginFailure(Exception e) {
+    public String onLoginFailure(Exception e) {
+       return e.getMessage();
+    }
+
+    @Override
+    public void onRegisterSuccess(FirebaseUser user) {
 
     }
 
     @Override
-    public void onRegisterSuccess() {
+    public String onRegisterFailure(Exception e) {
+        return e.getMessage();
+    }
+
+    @Override
+    public void onDeleteSuccess() {
 
     }
 
     @Override
-    public void onRegisterFailure(Exception e) {
+    public String onDeleteFailure(Exception e) {
+        return e.getMessage();
+    }
 
+    @Override
+    public void onChangePasswordSuccess() {
+
+    }
+
+    @Override
+    public String onChangePasswordFailure(Exception e) {
+        return e.getMessage();
     }
 }
