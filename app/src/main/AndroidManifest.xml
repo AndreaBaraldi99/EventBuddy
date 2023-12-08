@@ -13,14 +13,31 @@
         android:theme="@style/Theme.EventBuddy"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".UI.CreateEventActivity"
+            android:exported="false"
+            android:label="@string/title_activity_create_event"
+            android:theme="@style/Theme.EventBuddy">
+
+        </activity>
+        <activity
+            android:name=".UI.WelcomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.EventBuddy" />
+
+        <activity
+            android:name=".UI.BottomNavigationBarActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".UI.EventDetailActivity"
+            android:exported="true"
+            android:theme="@style/Theme.EventBuddy" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

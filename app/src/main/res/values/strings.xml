@@ -1,5 +1,36 @@
 <resources>
     <string name="app_name">EventBuddy</string>
+
+    <!-- Strings used for WelcomeActivity -->
+    <string name="welcome_text">Welcome to</string>
+    <string name="login_text">Login</string>
+    <string name="signup_text">Sign up</string>
+
+    <!--Strings used for BottomNavigationBar -->
+    <string name="bottom_bar_event_title">Events</string>
+    <string name="bottom_bar_active_title">Active</string>
+    <string name="bottom_bar_friends_title">Friends</string>
+    <string name="bottom_bar_settings_title">Settings</string>
+
+    <!-- Strings used for EventFragment -->
+    <string name="event_fragment_title">Upcoming Events</string>
+    <string name="event_fragment_button">Click to open CreateEventActivity</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+
+    <!-- Strings used for CreateEventActivity -->
+    <string name="create_event_title">Create Event</string>
+    <string name="create_event_name_hint">Event name</string>
+    <string name="create_event_date_hint">Date</string>
+    <string name="create_event_time_hint">Time</string>
+    <string name="create_event_location_hint">Location</string>
+    <string name="create_event_add_description_text_view">Add description</string>
+    <string name="add_description_button">Button add description</string>
+    <string name="add_guests_button">Button add guests</string>
+    <string name="create_event_add_guests_text_view">Add guests</string>
+    <string name="create_event_button_add_text">Add </string>
+    <string name="event_detail_join">Join</string>
+    <string name="event_detail_do_not_join">Don\'t join</string>
+    <string name="event_detail_manager">Manager</string>
     <string name="successful_registration">Registration was successful</string>
     <string name="weak_password">Weak password</string>
     <string name="malformed_email">Email is malformed</string>
@@ -18,4 +49,6 @@
     <string name="malformed_credential">Malformed credentials</string>
     <string name="null_user">User is null</string>
     <string name="null_email">Email is null</string>
+
+
 </resources>
