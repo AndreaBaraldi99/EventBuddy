@@ -32,6 +32,7 @@ public class EntitiesReadWriteTest{
         eventsRepository = ServiceLocator.getInstance().getEventsRepository(ApplicationProvider.getApplicationContext());
     }
 
+    //TODO: aggiungere nei campi dell'evento l'orario dell'evento
     @Test
     public void writeTest(){
         List<User> users = new ArrayList<>();

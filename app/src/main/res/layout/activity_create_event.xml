@@ -65,8 +65,7 @@
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/outline_calendar_month_24"
             android:hint="@string/create_event_date_hint"
-            android:inputType="datetime"
-            android:text="@string/event_date_input" />
+            android:inputType="datetime" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -112,7 +111,7 @@
             android:drawableEnd="@drawable/outline_location_on_24"
             android:hint="@string/create_event_location_hint"
             android:inputType="text"
-            android:text="@string/event_location_input" />
+            android:text="" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -177,7 +176,7 @@
         app:layout_constraintTop_toBottomOf="@+id/DescriptionIconButton" />
 
     <Button
-        android:id="@+id/CreateEventButton"
+        android:id="@+id/createEventButton"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="100dp"
         android:layout_height="62dp"
