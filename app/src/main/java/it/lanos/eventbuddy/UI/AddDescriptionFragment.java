@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import it.lanos.eventbuddy.R;
 
 public class AddDescriptionFragment extends DialogFragment {

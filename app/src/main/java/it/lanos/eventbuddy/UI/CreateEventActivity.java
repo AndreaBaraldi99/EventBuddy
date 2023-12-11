@@ -5,6 +5,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -14,6 +15,8 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.source.entities.Event;
+import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
@@ -29,15 +32,18 @@ public class CreateEventActivity extends AppCompatActivity implements AddDescrip
     // Fragment.onAttach() callback, which it uses to call the following
     // methods defined by the NoticeDialogFragment.NoticeDialogListener
     // interface.
+
+
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         //dialog.dismiss();
-        //TODO: mandare i dati della textview
+
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         //dialog.dismiss();
+        //TODO: gestire il salvataggio della descrizione
     }
 
     public void openAddDescriptionDialog() {
@@ -68,6 +74,20 @@ public class CreateEventActivity extends AppCompatActivity implements AddDescrip
         locationTextInputLayout = findViewById(R.id.LocationTextInputLayout);
 
         addDescrButton.setOnClickListener(v -> openAddDescriptionDialog());
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String event_name = eventNameTextInputLayout.getEditText().getText().toString();
+                String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
+                String location = locationTextInputLayout.getEditText().getText().toString();
+                String description = "";
+                List<User> partecipanti = new ArrayList<User>();
+                Event evento = new Event(0, 0, event_name, date_time, location, description);
+                EventWithUsers eventoFinale = new EventWithUsers(evento, partecipanti);
+                eventViewModel.addEvent(eventoFinale);
+
+            }
+        });
 
     }
 
