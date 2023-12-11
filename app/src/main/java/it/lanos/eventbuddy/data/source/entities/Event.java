@@ -10,10 +10,10 @@ import androidx.room.PrimaryKey;
         parentColumns = "userId",
         childColumns = "manager"))
 public class Event {
-    @PrimaryKey
-    final long eventId;
+    @PrimaryKey(autoGenerate = true)
+    private long eventId = 0;
     @ColumnInfo(name = "manager", index = true)
-    final long manager;
+    private String manager = "";
     @ColumnInfo(name = "name")
     final String name;
     @ColumnInfo(name = "date")
@@ -23,20 +23,23 @@ public class Event {
     @ColumnInfo(name = "description")
     final String description;
 
-    public Event(long eventId, long manager, String name, String date, String location, String description) {
-        this.eventId = eventId;
-        this.manager = manager;
+    public Event(String name, String date, String location, String description) {
         this.name = name;
         this.date = date;
         this.location = location;
         this.description = description;
     }
-
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
+    }
     public long getEventId() {
         return eventId;
     }
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
 
-    public long getManager() {
+    public String getManager() {
         return manager;
     }
 

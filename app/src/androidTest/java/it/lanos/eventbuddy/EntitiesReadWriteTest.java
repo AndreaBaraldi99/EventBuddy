@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
 import androidx.lifecycle.testing.TestLifecycleOwner;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Single;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
@@ -30,6 +33,12 @@ public class EntitiesReadWriteTest{
     @Before
     public void initialize(){
         eventsRepository = ServiceLocator.getInstance().getEventsRepository(ApplicationProvider.getApplicationContext());
+        /*Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            Integer currentInt = prefsIn.get(INTEGER_KEY);
+            mutablePreferences.set(INTEGER_KEY, currentInt != null ? currentInt + 1 : 1);
+            return Single.just(mutablePreferences);
+        });*/
     }
 
     @Test
@@ -38,7 +47,7 @@ public class EntitiesReadWriteTest{
         users.add(new User(1, "Mario", "Rossi"));
         users.add(new User(2, "Luigi", "Verdi"));
         users.add(new User(3, "Giovanni", "Bianchi"));
-        Event event = new Event(1, 1, "Evento 1", "2020-01-01", "Via Milano 12", "Luogo evento 1");
+        Event event = new Event("Evento 1", "2020-01-01", "Via Milano 12", "Luogo evento 1");
         EventWithUsers eventWithUsers = new EventWithUsers(event, users);
         eventsRepository.insertEvent(eventWithUsers);
     }
