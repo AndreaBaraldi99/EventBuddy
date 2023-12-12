@@ -13,21 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import it.lanos.eventbuddy.R;
 
 public class AddDescriptionFragment extends DialogFragment {
 
+    TextInputEditText textInputLayout;
     public AddDescriptionFragment() {
         // Required empty public constructor
     }
 
-    public static AddDescriptionFragment newInstance() {return new AddDescriptionFragment();}
+    public static AddDescriptionFragment newInstance() {
+        return new AddDescriptionFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        textInputLayout = getActivity().findViewById(R.id.AddDescriptionTextInputText);
     }
 
     @Override
@@ -48,17 +53,9 @@ public class AddDescriptionFragment extends DialogFragment {
         // Pass null as the parent view because it's going in the dialog layout.
         builder.setView(inflater.inflate(R.layout.fragment_add_description, null))
                 // Add action buttons
-                .setPositiveButton(R.string.add_description_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        listener.onDialogPositiveClick(AddDescriptionFragment.this);
-                    }
-                })
-                .setNegativeButton(R.string.add_description_confirm, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        listener.onDialogNegativeClick(AddDescriptionFragment.this);
-                    }
-                });
+                .setPositiveButton(R.string.add_description_cancel, (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogConfirmClick(textInputLayout.getText().toString()))
+                .setNegativeButton(R.string.add_description_confirm,
+                        (dialog, id) -> {});
         return builder.create();
     }
 

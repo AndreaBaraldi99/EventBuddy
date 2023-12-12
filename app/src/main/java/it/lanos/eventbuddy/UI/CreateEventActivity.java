@@ -20,7 +20,7 @@ import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
-public class CreateEventActivity extends AppCompatActivity implements AddDescriptionFragment.NoticeDialogListener {
+public class CreateEventActivity extends AppCompatActivity{
 
     private EventViewModel eventViewModel;
     private TextInputLayout eventNameTextInputLayout;
@@ -34,16 +34,8 @@ public class CreateEventActivity extends AppCompatActivity implements AddDescrip
     // interface.
 
 
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        //dialog.dismiss();
+    public void onDialogConfirmClick(String text){
 
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        //dialog.dismiss();
-        //TODO: gestire il salvataggio della descrizione
     }
 
     public void openAddDescriptionDialog() {
