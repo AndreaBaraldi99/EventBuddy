@@ -20,7 +20,7 @@ import it.lanos.eventbuddy.R;
 
 public class AddDescriptionFragment extends DialogFragment {
 
-    TextInputEditText textInputLayout;
+    TextInputLayout textInputLayout;
     public AddDescriptionFragment() {
         // Required empty public constructor
     }
@@ -32,13 +32,14 @@ public class AddDescriptionFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        textInputLayout = getActivity().findViewById(R.id.AddDescriptionTextInputText);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_add_description, container, false);
+        textInputLayout = view.findViewById(R.id.AddDescriptionTextInputLayout);
         return inflater.inflate(R.layout.fragment_add_description, container, false);
     }
 
@@ -53,36 +54,13 @@ public class AddDescriptionFragment extends DialogFragment {
         // Pass null as the parent view because it's going in the dialog layout.
         builder.setView(inflater.inflate(R.layout.fragment_add_description, null))
                 // Add action buttons
-                .setPositiveButton(R.string.add_description_cancel, (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogConfirmClick(textInputLayout.getText().toString()))
-                .setNegativeButton(R.string.add_description_confirm,
-                        (dialog, id) -> {});
+                .setPositiveButton(R.string.add_description_confirm,
+                        (dialog, id) -> {String prova = textInputLayout.getEditText().getText().toString();
+                    ((CreateEventActivity) getActivity()).onDialogConfirmClick(textInputLayout.getEditText().getText().toString(), this);})
+                .setNegativeButton(R.string.add_description_cancel,
+                        (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
+
         return builder.create();
     }
 
-    // The activity that creates an instance of this dialog fragment must
-    // implement this interface to receive event callbacks. Each method passes
-    // the DialogFragment in case the host needs to query it.
-    public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
-    }
-
-    // Use this instance of the interface to deliver action events.
-    NoticeDialogListener listener;
-
-    // Override the Fragment.onAttach() method to instantiate the
-    // NoticeDialogListener.
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        // Verify that the host activity implements the callback interface.
-        try {
-            // Instantiate the NoticeDialogListener so you can send events to
-            // the host.
-            listener = (NoticeDialogListener) context;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface. Throw exception.
-            throw new ClassCastException("must implement NoticeDialogListener");
-        }
-    }
 }

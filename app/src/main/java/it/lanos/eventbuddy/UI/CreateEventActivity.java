@@ -5,6 +5,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,14 +29,23 @@ public class CreateEventActivity extends AppCompatActivity{
     private TextInputLayout timeTextInputLayout;
     private TextInputLayout locationTextInputLayout;
 
+    private String description;
+    private final String TAG = CreateEventActivity.class.getSimpleName();
+
+
     // The dialog fragment receives a reference to this Activity through the
     // Fragment.onAttach() callback, which it uses to call the following
     // methods defined by the NoticeDialogFragment.NoticeDialogListener
     // interface.
 
 
-    public void onDialogConfirmClick(String text){
+    public void onDialogConfirmClick(String text, AddDescriptionFragment fragment){
+       this.description = text;
+       fragment.dismiss();
+    }
 
+    public void onDialogCancelClick(AddDescriptionFragment fragment){
+        fragment.dismiss();
     }
 
     public void openAddDescriptionDialog() {
@@ -72,11 +82,14 @@ public class CreateEventActivity extends AppCompatActivity{
                 String event_name = eventNameTextInputLayout.getEditText().getText().toString();
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();
-                String description = "";
-                List<User> partecipanti = new ArrayList<User>();
-                Event evento = new Event(0, 0, event_name, date_time, location, description);
-                EventWithUsers eventoFinale = new EventWithUsers(evento, partecipanti);
-                eventViewModel.addEvent(eventoFinale);
+                //Log.d(TAG, description);
+                Log.d(TAG, event_name);
+                //List<User> partecipanti = new ArrayList<User>();
+                //String description = "";
+                //Event evento = new Event(0, 0, event_name, date_time, location, description);
+
+                //EventWithUsers eventoFinale = new EventWithUsers(evento, partecipanti);
+                //eventViewModel.addEvent(eventoFinale);
 
             }
         });
