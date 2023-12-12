@@ -6,16 +6,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class EventsCloudResponse {
-    private String id;
+    private String uid;
     private String date;
     private String description;
-    private Map<String, Map<String, Object>> invited;
+    private Map<String, Boolean> invited;
     private String location;
     private String manager;
     private String name;
     public EventsCloudResponse() {}
-    public EventsCloudResponse(String id, String date, String description, Map<String, Map<String, Object>> invited, String location, String manager, String name) {
-        this.id = id;
+    public EventsCloudResponse(String id, String date, String description, Map<String, Boolean> invited, String location, String manager, String name) {
+        this.uid = id;
         this.date = date;
         this.description = description;
         this.invited = invited;
@@ -24,8 +24,8 @@ public class EventsCloudResponse {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getUid() {
+        return uid;
     }
 
     public String getDate() {
@@ -36,7 +36,7 @@ public class EventsCloudResponse {
         return description;
     }
 
-    public Map<String, Map<String, Object>> getInvited() {
+    public Map<String, Boolean> getInvited() {
         return invited;
     }
 

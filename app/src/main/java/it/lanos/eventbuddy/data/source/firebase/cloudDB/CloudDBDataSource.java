@@ -6,9 +6,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
+import it.lanos.eventbuddy.data.source.entities.User;
 
 public class CloudDBDataSource extends BaseCloudDBDataSource{
     private final CollectionReference usersRef;
@@ -19,21 +22,21 @@ public class CloudDBDataSource extends BaseCloudDBDataSource{
     }
     @Override
     public void getEvents(String uid) {
-        eventsRef.whereArrayContains("invited", uid).get()
+        eventsRef.orderBy("invited." + uid).get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<EventsWithUsersFromCloudResponse> eventsWithUsers = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         EventsCloudResponse responseEvent = document.toObject(EventsCloudResponse.class);
-                        List<UsersCloudResponse> users = new ArrayList<>();
-                        for (Map<String,Object> invited : responseEvent.getInvited().values()) {
-                            DocumentReference reference = (DocumentReference) invited.get("ref");
-                            reference.get().addOnSuccessListener(documentSnapshot -> {
-                                UsersCloudResponse responseUser = documentSnapshot.toObject(UsersCloudResponse.class);
-                                responseUser.setIsInvited((boolean) invited.get("isInvited"));
-                                users.add(responseUser);
+                        Map<User, Boolean> invited = new HashMap<>();
+                        for (Map.Entry<String, Boolean> entry : responseEvent.getInvited().entrySet()) {
+                            usersRef.whereEqualTo("uid", entry.getValue()).get().addOnSuccessListener(queryDocumentSnapshots1 -> {
+                                for (QueryDocumentSnapshot document1 : queryDocumentSnapshots1) {
+                                    User user = document1.toObject(User.class);
+                                    invited.put(user, entry.getValue());
+                                }
                             });
                         }
-                        eventsWithUsers.add(new EventsWithUsersFromCloudResponse(responseEvent, users));
+                        eventsWithUsers.add(new EventsWithUsersFromCloudResponse(responseEvent, invited));
                     }
                     eventsCallback.onSuccessFromRemote(eventsWithUsers);
                 })

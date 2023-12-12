@@ -62,7 +62,7 @@ public class Event {
         return description;
     }
     public static Event fromCloudResponse(EventsCloudResponse cloudResponse){
-        return new Event(cloudResponse.getId(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
+        return new Event(cloudResponse.getUid(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
     }
 }
 

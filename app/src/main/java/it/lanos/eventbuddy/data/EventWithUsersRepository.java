@@ -65,15 +65,7 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
 
     @Override
     public void onSuccessFromRemote(List<EventsWithUsersFromCloudResponse> eventsCloudResponse) {
-        for(EventsWithUsersFromCloudResponse event : eventsCloudResponse) {
-            List<User> users = new ArrayList<>();
-            for(UsersCloudResponse user : event.getUsers()) {
-                users.add(User.fromCloudResponse(user));
-            }
-            EventWithUsers eventWithUsers = new EventWithUsers(Event.fromCloudResponse(event.getEvent()), users);
-            //TODO: inserire il valore booleano partecipa/non partecipa
-            eventsLocalDataSource.insertEvent(eventWithUsers);
-        }
+
 
     }
 
