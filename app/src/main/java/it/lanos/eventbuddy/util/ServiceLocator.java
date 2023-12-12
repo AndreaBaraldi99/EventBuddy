@@ -1,9 +1,8 @@
 package it.lanos.eventbuddy.util;
 
 import android.app.Application;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.rxjava3.RxDataStore;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.lanos.eventbuddy.data.EventWithUsersRepository;
@@ -32,23 +31,20 @@ public class ServiceLocator {
         return EventsRoomDatabase.getDatabase(application);
     }
 
-    public RxDataStore<Preferences> getDataStore(Application application) {
-        return DatastoreBuilder.getDataStore(application);
-    }
-
     public IEventsRepository getEventsRepository(Application application) {
         BaseEventsLocalDataSource eventsLocalDataSource;
-        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application));
-        RxDataStore<Preferences> dataStore = getDataStore(application);
+        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder());
         BaseCloudDBDataSource cloudDBDataSource = new CloudDBDataSource(FirebaseFirestore.getInstance());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        return new EventWithUsersRepository(eventsLocalDataSource, cloudDBDataSource, dataStore);
+        return new EventWithUsersRepository(eventsLocalDataSource, cloudDBDataSource, user);
+    }
+
+    public DatastoreBuilder getDatastoreBuilder() {
+        return new DatastoreBuilder();
     }
     public IAuthRepository getAuthRepository() {
         return null;
     }
 
-    public FirebaseFirestore getFirestore() {
-        return FirebaseFirestore.getInstance();
-    }
 }

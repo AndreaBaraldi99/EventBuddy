@@ -1,6 +1,5 @@
 package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
-import java.util.List;
 import java.util.Map;
 
 import it.lanos.eventbuddy.data.source.entities.User;

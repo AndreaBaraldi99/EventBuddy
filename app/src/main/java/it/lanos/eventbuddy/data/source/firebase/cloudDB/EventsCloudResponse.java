@@ -1,9 +1,10 @@
 package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
-import com.google.firebase.firestore.DocumentReference;
-
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
+import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.entities.User;
 
 public class EventsCloudResponse {
     private String uid;
@@ -50,5 +51,13 @@ public class EventsCloudResponse {
 
     public String getName() {
         return name;
+    }
+
+    public static EventsCloudResponse fromEventsWithUsers(EventWithUsers event) {
+        Map<String, Boolean> invited = new HashMap<>();
+        for (User user : event.getUsers()) {
+            invited.put(user.getUserId(), false);
+        }
+        return new EventsCloudResponse(event.getEvent().getEventId(), event.getEvent().getDate(), event.getEvent().getDescription(), invited, event.getEvent().getLocation(), event.getEvent().getManager(), event.getEvent().getName());
     }
 }

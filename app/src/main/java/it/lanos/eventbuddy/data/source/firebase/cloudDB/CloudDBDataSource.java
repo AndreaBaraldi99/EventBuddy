@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -9,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import it.lanos.eventbuddy.data.source.entities.User;
 
@@ -41,5 +39,15 @@ public class CloudDBDataSource extends BaseCloudDBDataSource{
                     eventsCallback.onSuccessFromRemote(eventsWithUsers);
                 })
                 .addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+    }
+
+    @Override
+    public void addUser(User user) {
+        usersRef.add(user).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+    }
+
+    @Override
+    public void addEvent(EventsCloudResponse event) {
+        eventsRef.add(event).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
 }

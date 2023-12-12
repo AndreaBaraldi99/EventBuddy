@@ -1,29 +1,35 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
-import java.util.List;
+import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.entities.User;
 import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.util.DatastoreBuilder;
 
 public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     private final EventDao eventDao;
     private final UserDao userDao;
+    private final DatastoreBuilder datastoreBuilder;
     //private final SharedPreferencesUtil sharedPreferencesUtil;
 
-    public EventsLocalDataSource(EventsRoomDatabase newsRoomDatabase) {
+    public EventsLocalDataSource(EventsRoomDatabase newsRoomDatabase, DatastoreBuilder datastoreBuilder){
         this.eventDao = newsRoomDatabase.eventDao();
         this.userDao = newsRoomDatabase.userDao();
-        //this.sharedPreferencesUtil = sharedPreferencesUtil;
+        this.datastoreBuilder = datastoreBuilder;
     }
     @Override
     public void getEvents() {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
-        });
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers()));
     }
     @Override
     public void insertEvent(EventWithUsers eventWithUsers){
@@ -33,50 +39,26 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
             for (Long userId : insertedEventsIds) {
                 eventDao.insertEventWithUsers(new UserEventCrossRef(userId, insertedEventId, false));
             }
+            datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
         });
     }
 
-
-    /*@Override
-    public void insertNews(List<News> newsList) {
-        NewsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            // Reads the news from the database
-            List<News> allNews = newsDao.getAll();
-
-            if (newsList != null) {
-
-                // Checks if the news just downloaded has already been downloaded earlier
-                // in order to preserve the news status (marked as favorite or not)
-                for (News news : allNews) {
-                    // This check works because News and NewsSource classes have their own
-                    // implementation of equals(Object) and hashCode() methods
-                    if (newsList.contains(news)) {
-                        // The primary key and the favorite status is contained only in the News objects
-                        // retrieved from the database, and not in the News objects downloaded from the
-                        // Web Service. If the same news was already downloaded earlier, the following
-                        // line of code replaces the News object in newsList with the corresponding
-                        // line of code replaces the News object in newsList with the corresponding
-                        // News object saved in the database, so that it has the primary key and the
-                        // favorite status.
-                        newsList.set(newsList.indexOf(news), news);
-                    }
-                }
-
-                // Writes the news in the database and gets the associated primary keys
-                List<Long> insertedNewsIds = newsDao.insertNewsList(newsList);
-                for (int i = 0; i < newsList.size(); i++) {
-                    // Adds the primary key to the corresponding object News just downloaded so that
-                    // if the user marks the news as favorite (and vice-versa), we can use its id
-                    // to know which news in the database must be marked as favorite/not favorite
-                    newsList.get(i).setId(insertedNewsIds.get(i));
-                }
-
-                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
-                        LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
-
-                newsCallback.onSuccessFromLocal(newsList);
+    @Override
+    public void insertEvent(Event event, Map<User, Boolean> users){
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<UserEventCrossRef> userEventCrossRefs = new ArrayList<>();
+            for (Map.Entry<User, Boolean> entry : users.entrySet()) {
+                long insertedUserId = userDao.insertUser(entry.getKey());
+                userEventCrossRefs.add(new UserEventCrossRef(insertedUserId, 0, entry.getValue()));
             }
+            long insertedEventId = eventDao.insertEvent(event);
+            for (UserEventCrossRef userEventCrossRef : userEventCrossRefs) {
+                userEventCrossRef.setEventId(insertedEventId);
+                eventDao.insertEventWithUsers(userEventCrossRef);
+            }
+            datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+            eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
         });
-    }*/
+    }
 }

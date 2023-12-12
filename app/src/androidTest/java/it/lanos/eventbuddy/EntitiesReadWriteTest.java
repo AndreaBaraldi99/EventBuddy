@@ -52,7 +52,7 @@ public class EntitiesReadWriteTest{
     @Test
     public void readTest(){
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> eventsRepository.fetchEvents().observe(new TestLifecycleOwner(), result -> {
+        handler.post(() -> eventsRepository.fetchEvents(0).observe(new TestLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 List<EventWithUsers> events = ((Result.Success) result).getData();
                 assert(events.size() == 1);

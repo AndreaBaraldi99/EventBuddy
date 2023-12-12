@@ -6,7 +6,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.util.UUID;
+
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
+
 
 @Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "userId",
@@ -26,8 +29,34 @@ public class Event {
     @ColumnInfo(name = "description")
     final String description;
 
+    /**
+     * Constructor to create an event with a given id (typically from the cloud db)
+     *
+     * @param eventId       id of the event
+     * @param name          name of the event
+     * @param date          date of the event
+     * @param location      location of the event
+     * @param description   description of the event
+     */
+
     public Event(@NonNull String eventId, String name, String date, String location, String description) {
         this.eventId = eventId;
+        this.name = name;
+        this.date = date;
+        this.location = location;
+        this.description = description;
+    }
+
+    /**
+     * Constructor to create an event with a random id (typically created from local user)
+     *
+     * @param name          name of the event
+     * @param date          date of the event
+     * @param location      location of the event
+     * @param description   description of the event
+     */
+    public Event(String name, String date, String location, String description){
+        this.eventId = UUID.randomUUID().toString();
         this.name = name;
         this.date = date;
         this.location = location;
@@ -61,6 +90,13 @@ public class Event {
     public String getDescription() {
         return description;
     }
+
+    /**
+     * Static method to create an event from a cloud response
+     *
+     * @param cloudResponse     cloud response to create the event from
+     * @return                  the event created from the cloud response
+     */
     public static Event fromCloudResponse(EventsCloudResponse cloudResponse){
         return new Event(cloudResponse.getUid(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
     }
