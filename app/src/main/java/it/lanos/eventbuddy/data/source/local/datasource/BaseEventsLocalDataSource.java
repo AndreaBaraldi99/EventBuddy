@@ -9,7 +9,7 @@ import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 public abstract class BaseEventsLocalDataSource {
     protected EventsCallback eventsCallback;
 
-    public void setNewsCallback(EventsCallback eventsCallback) {
+    public void setEventsCallback(EventsCallback eventsCallback) {
         this.eventsCallback = eventsCallback;
     }
 

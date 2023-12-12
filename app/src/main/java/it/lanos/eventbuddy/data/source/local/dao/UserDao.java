@@ -2,6 +2,7 @@ package it.lanos.eventbuddy.data.source.local.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
@@ -16,7 +17,7 @@ public interface UserDao {
     @Transaction
     @Query("SELECT * FROM User")
     List<UserWithEvents> getUsersWithEvents();
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertUser(User user);
     @Insert
     List<Long> insertUsers(List<User> users);

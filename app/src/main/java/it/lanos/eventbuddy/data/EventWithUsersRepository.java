@@ -8,10 +8,17 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava3.RxDataStore;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import it.lanos.eventbuddy.data.source.entities.Event;
+import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloudResponse;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.UsersCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
@@ -25,16 +32,19 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
     private final BaseEventsLocalDataSource eventsLocalDataSource;
     private final RxDataStore<Preferences> dataStore;
     private String userId;
+    private final BaseCloudDBDataSource cloudDBDataSource;
 
-    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, RxDataStore<Preferences> dataStore) {
+    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseCloudDBDataSource cloudDBDataSource, RxDataStore<Preferences> dataStore) {
 
         allEventsMutableLiveData = new MutableLiveData<>();
         this.dataStore = dataStore;
         //favoriteNewsMutableLiveData = new MutableLiveData<>();
         //this.newsRemoteDataSource = newsRemoteDataSource;
         this.eventsLocalDataSource = eventsLocalDataSource;
+        this.cloudDBDataSource = cloudDBDataSource;
         //this.newsRemoteDataSource.setNewsCallback(this);
-        this.eventsLocalDataSource.setNewsCallback(this);
+        this.eventsLocalDataSource.setEventsCallback(this);
+        this.cloudDBDataSource.setEventsCallback(this);
         setUserId();
     }
 
@@ -54,8 +64,27 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
     }
 
     @Override
-    public void onSuccessFromLocal(List<EventWithUsers> newsList) {
-        Result.Success result = new Result.Success(newsList);
+    public void onSuccessFromRemote(List<EventsWithUsersFromCloudResponse> eventsCloudResponse) {
+        for(EventsWithUsersFromCloudResponse event : eventsCloudResponse) {
+            List<User> users = new ArrayList<>();
+            for(UsersCloudResponse user : event.getUsers()) {
+                users.add(User.fromCloudResponse(user));
+            }
+            EventWithUsers eventWithUsers = new EventWithUsers(Event.fromCloudResponse(event.getEvent()), users);
+            //TODO: inserire il valore booleano partecipa/non partecipa
+            eventsLocalDataSource.insertEvent(eventWithUsers);
+        }
+
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+
+    }
+
+    @Override
+    public void onSuccessFromLocal(List<EventWithUsers> eventList) {
+        Result.Success result = new Result.Success(eventList);
         allEventsMutableLiveData.postValue(result);
     }
 

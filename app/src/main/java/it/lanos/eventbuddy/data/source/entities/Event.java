@@ -6,12 +6,15 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
+
 @Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "userId",
         childColumns = "manager"))
 public class Event {
-    @PrimaryKey(autoGenerate = true)
-    private long eventId = 0;
+    @PrimaryKey
+    @NonNull
+    final String eventId;
     @ColumnInfo(name = "manager", index = true)
     private String manager = "";
     @ColumnInfo(name = "name")
@@ -23,26 +26,23 @@ public class Event {
     @ColumnInfo(name = "description")
     final String description;
 
-    public Event(String name, String date, String location, String description) {
+    public Event(@NonNull String eventId, String name, String date, String location, String description) {
+        this.eventId = eventId;
         this.name = name;
         this.date = date;
         this.location = location;
         this.description = description;
     }
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-    public long getEventId() {
+    @NonNull
+    public String getEventId() {
         return eventId;
     }
     public void setManager(String manager) {
         this.manager = manager;
     }
-
     public String getManager() {
         return manager;
     }
-
     @NonNull
     public String getName() {
         return name;
@@ -61,7 +61,9 @@ public class Event {
     public String getDescription() {
         return description;
     }
-
+    public static Event fromCloudResponse(EventsCloudResponse cloudResponse){
+        return new Event(cloudResponse.getId(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
+    }
 }
 
 

@@ -6,14 +6,13 @@ import androidx.room.Entity;
 
 @Entity(primaryKeys = {"userId", "eventId"})
 public class UserEventCrossRef {
-
     private long userId;
     @ColumnInfo(index = true)
     private long eventId;
     @NonNull
     private Boolean joined;
 
-    public UserEventCrossRef(long userId, long eventId,@NonNull Boolean joined) {
+    public UserEventCrossRef(long userId, long eventId, @NonNull Boolean joined) {
         this.userId = userId;
         this.eventId = eventId;
         this.joined = joined;
