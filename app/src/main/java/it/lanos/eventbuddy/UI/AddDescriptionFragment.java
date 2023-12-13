@@ -53,7 +53,9 @@ public class AddDescriptionFragment extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_description, null);
         textInputLayout = view.findViewById(R.id.AddDescriptionTextInputLayout);
-
+        String description = ((CreateEventActivity) getActivity()).getDescription();
+        if(description!=null)
+            textInputLayout.getEditText().setText(description);
         // Inflate and set the layout for the dialog.
         // Pass null as the parent view because it's going in the dialog layout.
         builder.setView(view)

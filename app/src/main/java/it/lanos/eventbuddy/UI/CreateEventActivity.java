@@ -53,6 +53,14 @@ public class CreateEventActivity extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "add description");
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
