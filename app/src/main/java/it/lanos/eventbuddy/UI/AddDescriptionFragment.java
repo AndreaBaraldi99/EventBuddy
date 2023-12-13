@@ -34,14 +34,16 @@ public class AddDescriptionFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
+    //Dato che l'inflate si fa in onCreateDialog non serve fare l'override di questo metodo
+    //Si gestisce tutto sotto
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_description, container, false);
         textInputLayout = view.findViewById(R.id.AddDescriptionTextInputLayout);
         return inflater.inflate(R.layout.fragment_add_description, container, false);
-    }
+    }*/
 
     @NonNull
     @Override
@@ -49,14 +51,15 @@ public class AddDescriptionFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater.
         LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_add_description, null);
+        textInputLayout = view.findViewById(R.id.AddDescriptionTextInputLayout);
 
         // Inflate and set the layout for the dialog.
         // Pass null as the parent view because it's going in the dialog layout.
-        builder.setView(inflater.inflate(R.layout.fragment_add_description, null))
+        builder.setView(view)
                 // Add action buttons
                 .setPositiveButton(R.string.add_description_confirm,
-                        (dialog, id) -> {String prova = textInputLayout.getEditText().getText().toString();
-                    ((CreateEventActivity) getActivity()).onDialogConfirmClick(textInputLayout.getEditText().getText().toString(), this);})
+                        (dialog, id) -> {((CreateEventActivity) getActivity()).onDialogConfirmClick(textInputLayout.getEditText().getText().toString(), this);})
                 .setNegativeButton(R.string.add_description_cancel,
                         (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
 

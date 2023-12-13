@@ -82,7 +82,7 @@ public class CreateEventActivity extends AppCompatActivity{
                 String event_name = eventNameTextInputLayout.getEditText().getText().toString();
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();
-                //Log.d(TAG, description);
+                Log.d(TAG, description);
                 Log.d(TAG, event_name);
                 //List<User> partecipanti = new ArrayList<User>();
                 //String description = "";
