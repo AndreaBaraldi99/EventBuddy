@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.entities.Result;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventFragment extends Fragment {
@@ -80,7 +82,6 @@ public class EventFragment extends Fragment {
             return WindowInsetsCompat.CONSUMED;
         });
 
-
         RecyclerView recyclerViewEvent = view.findViewById(R.id.recyclerViewEventList);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
@@ -89,5 +90,19 @@ public class EventFragment extends Fragment {
         eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventList,
                 requireActivity().getApplication());
 
+        recyclerViewEvent.setLayoutManager(layoutManager);
+        recyclerViewEvent.setAdapter(eventRecyclerViewAdapter);
+
+        //TODO: non so come aggiungere gli eventi alla lista, il cast tra // non funziona
+        try{
+            int initialSize = this.eventList.size();
+            this.eventList.clear();
+            //this.eventList.addAll((Collection<? extends EventWithUsers>) eventViewModel.getEvents());
+            eventRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+            eventViewModel.getEvents();
+        }
+        catch(Error e){
+            //TODO: aggiungere errore
+        }
     }
 }
