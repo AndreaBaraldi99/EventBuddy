@@ -59,6 +59,9 @@
 
     <!-- Strings used for AddDescriptionFragment -->
     <string name="add_description_confirm">confirm </string>
-    <string name="add_description_cancel">cancel </string>
+    <string name="add_description_cancel">cancel</string>
     <string name="add_description_hint">Type description here</string>
+
+    <!-- Strings used for EventFragment -->
+    <string name ="item_date"> </string>
 </resources>
