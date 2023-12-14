@@ -7,7 +7,7 @@ public abstract class BaseAuthDataSource {
     public void setAuthCallback(AuthCallback authCallback) {
         this.authCallback = authCallback;
     }
-    public abstract void register(@NonNull String email, @NonNull String password);
+    public abstract void register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password);
     public abstract void signIn(@NonNull String email, @NonNull String password);
     public abstract void signOut();
     public abstract void deleteUser();

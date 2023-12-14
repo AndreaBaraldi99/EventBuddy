@@ -19,8 +19,8 @@ public class AuthRepository implements IAuthRepository, AuthCallback {
     }
 
     @Override
-    public void register(@NonNull String email, @NonNull String password) {
-        authDataSource.register(email, password);
+    public void register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password) {
+        authDataSource.register(fullName, userName, email, password);
     }
 
     @Override

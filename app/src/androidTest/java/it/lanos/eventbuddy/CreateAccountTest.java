@@ -13,9 +13,5 @@ public class CreateAccountTest {
     AuthRepository authRepository;
     AuthDataSource authDataSource;
 
-    @Before
-    public void initialize() {
-        authDataSource = new AuthDataSource();
-        authRepository = new AuthRepository(authDataSource);
-    }
+
 }
