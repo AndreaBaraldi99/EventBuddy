@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/eventFragment">
-
     <fragment
         android:id="@+id/eventFragment"
         android:name="it.lanos.eventbuddy.UI.EventFragment"
         android:label="fragment_event"
-        tools:layout="@layout/fragment_event" />
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_createEventActivity2"
+            app:destination="@id/createEventActivity2" />
+    </fragment>
+    <activity
+        android:id="@+id/createEventActivity2"
+        android:name="it.lanos.eventbuddy.UI.CreateEventActivity"
+        android:label="CreateEventActivity" />
 </navigation>

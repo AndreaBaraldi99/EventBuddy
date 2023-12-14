@@ -21,8 +21,6 @@ public class EventViewModel extends ViewModel {
         iEventsRepository.insertEvent(event);
     }
 
-    /*TODO: mi vengono restiuiti tutti gli eventi ma io li voglio di un det. utente fetchEvents(User user)
-    *  affinchè riesca a visualizzarli nel modo corretto */
     public void fetchEvents() {
         eventListLiveData = iEventsRepository.fetchEvents();
     }

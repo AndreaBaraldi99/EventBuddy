@@ -7,12 +7,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,6 +69,14 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
+        FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
             Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             // Apply the insets as a margin to the view. This solution sets only the
@@ -93,16 +105,14 @@ public class EventFragment extends Fragment {
         recyclerViewEvent.setLayoutManager(layoutManager);
         recyclerViewEvent.setAdapter(eventRecyclerViewAdapter);
 
-        //TODO: non so come aggiungere gli eventi alla lista, il cast tra // non funziona
-        try{
-            int initialSize = this.eventList.size();
-            this.eventList.clear();
-            //this.eventList.addAll((Collection<? extends EventWithUsers>) eventViewModel.getEvents());
-            eventRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
-            eventViewModel.getEvents();
-        }
-        catch(Error e){
-            //TODO: aggiungere errore
-        }
+        eventViewModel.getEvents().observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                int initialSize = this.eventList.size();
+                this.eventList.clear();
+                this.eventList.addAll(((Result.Success) result).getData());
+                eventRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+                //TODO: gestire eccezione
+        }});
     }
 }
+

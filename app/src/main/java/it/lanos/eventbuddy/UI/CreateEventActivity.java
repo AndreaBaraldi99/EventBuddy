@@ -90,14 +90,12 @@ public class CreateEventActivity extends AppCompatActivity{
                 String event_name = eventNameTextInputLayout.getEditText().getText().toString();
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();
-                Log.d(TAG, description);
-                Log.d(TAG, event_name);
-                //List<User> partecipanti = new ArrayList<User>();
-                //String description = "";
-                //Event evento = new Event(0, 0, event_name, date_time, location, description);
+                List<User> guests = new ArrayList<User>();
+                guests.add((new User(134, "lu", "lucrezia")));
+                Event event = new Event(0, 0, event_name, date_time, location, description);
 
-                //EventWithUsers eventoFinale = new EventWithUsers(evento, partecipanti);
-                //eventViewModel.addEvent(eventoFinale);
+                EventWithUsers finalEvent = new EventWithUsers(event, guests);
+                eventViewModel.addEvent(finalEvent);
 
             }
         });
