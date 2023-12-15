@@ -100,12 +100,26 @@ public class EventFragment extends Fragment {
                         LinearLayoutManager.VERTICAL, false);
 
         eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventList,
-                requireActivity().getApplication());
+                requireActivity().getApplication(),
+                new EventRecyclerViewAdapter.OnItemClickListener(){
+                    @Override
+                    public void onEventItemClick(EventWithUsers event){
+                        EventFragmentDirections.GoToEventDetail action =
+                                EventFragmentDirections.goToEventDetail();
+                        action.setEventClick(event);
+
+                        Navigation.findNavController(view).navigate(action);
+
+
+                    }
+                }
+        );
 
         recyclerViewEvent.setLayoutManager(layoutManager);
         recyclerViewEvent.setAdapter(eventRecyclerViewAdapter);
+        String lastUpdate = "0";
 
-        eventViewModel.getEvents().observe(getViewLifecycleOwner(), result -> {
+        eventViewModel.getEvents(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 int initialSize = this.eventList.size();
                 this.eventList.clear();

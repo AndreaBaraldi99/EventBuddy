@@ -12,9 +12,22 @@
         <action
             android:id="@+id/action_eventFragment_to_createEventActivity2"
             app:destination="@id/createEventActivity2" />
+        <action
+            android:id="@+id/goToEventDetail"
+            app:destination="@id/eventDetailActivity" />
     </fragment>
     <activity
         android:id="@+id/createEventActivity2"
         android:name="it.lanos.eventbuddy.UI.CreateEventActivity"
         android:label="CreateEventActivity" />
+    <activity
+        android:id="@+id/eventDetailActivity"
+        android:name="it.lanos.eventbuddy.UI.EventDetailActivity"
+        android:label="EventDetailActivity" >
+        <argument
+            android:name="eventClick"
+            app:argType="it.lanos.eventbuddy.data.source.entities.EventWithUsers"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </activity>
 </navigation>

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,13 +27,22 @@ public class EventRecyclerViewAdapter extends
      * Interface to associate a click listener with
      * a RecyclerView item.
      */
+    public interface OnItemClickListener {
+        void onEventItemClick(EventWithUsers event);
+    }
 
     private final List<EventWithUsers> eventList;
     private final Application application;
+    private final OnItemClickListener onItemClickListener;
 
-    public EventRecyclerViewAdapter(List<EventWithUsers> eventList, Application application) {
+
+
+
+
+    public EventRecyclerViewAdapter(List<EventWithUsers> eventList, Application application, OnItemClickListener onItemClickListener) {
         this.eventList = eventList;
         this.application = application;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -60,7 +70,7 @@ public class EventRecyclerViewAdapter extends
     /**
      * Custom ViewHolder to bind data to the RecyclerView items.
      */
-    public class NewViewHolder extends RecyclerView.ViewHolder{
+    public class NewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView textViewName;
         private final TextView textViewTime;
@@ -73,6 +83,7 @@ public class EventRecyclerViewAdapter extends
             textViewTime = itemView.findViewById(R.id.ItemTimeTextView);
             textViewLocation=itemView.findViewById(R.id.ItemLocationTextView);
             dateButton = itemView.findViewById(R.id.ItemDateButton);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(EventWithUsers event) {
@@ -83,5 +94,9 @@ public class EventRecyclerViewAdapter extends
         }
 
 
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onEventItemClick(eventList.get(getAdapterPosition()));
         }
+    }
     }

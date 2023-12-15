@@ -21,13 +21,13 @@ public class EventViewModel extends ViewModel {
         iEventsRepository.insertEvent(event);
     }
 
-    public void fetchEvents() {
-        eventListLiveData = iEventsRepository.fetchEvents();
+    public void fetchEvents(long lastUpdate) {
+        eventListLiveData = iEventsRepository.fetchEvents(lastUpdate);
     }
 
-    public MutableLiveData<Result> getEvents() {
+    public MutableLiveData<Result> getEvents(long lastUpdate) {
         if (eventListLiveData == null) {
-            fetchEvents();
+            fetchEvents(lastUpdate);
         }
         return eventListLiveData;
     }
