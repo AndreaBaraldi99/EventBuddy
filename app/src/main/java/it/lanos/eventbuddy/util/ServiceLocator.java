@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import it.lanos.eventbuddy.data.EventWithUsersRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.CloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
@@ -34,7 +35,8 @@ public class ServiceLocator {
     public IEventsRepository getEventsRepository(Application application) {
         BaseEventsLocalDataSource eventsLocalDataSource;
         eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder());
-        BaseCloudDBDataSource cloudDBDataSource = new CloudDBDataSource(FirebaseFirestore.getInstance());
+        CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
+        BaseCloudDBDataSource cloudDBDataSource = new CloudDBDataSource(cloudDBService);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         return new EventWithUsersRepository(eventsLocalDataSource, cloudDBDataSource, user);

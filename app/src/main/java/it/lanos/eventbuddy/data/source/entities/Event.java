@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
@@ -55,6 +56,7 @@ public class Event {
      * @param location      location of the event
      * @param description   description of the event
      */
+    @Ignore
     public Event(String name, String date, String location, String description){
         this.eventId = UUID.randomUUID().toString();
         this.name = name;

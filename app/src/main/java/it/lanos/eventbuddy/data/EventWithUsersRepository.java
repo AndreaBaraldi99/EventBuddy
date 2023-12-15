@@ -77,4 +77,8 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
         event.getEvent().setManager(user.getUid());
         cloudDBDataSource.addEvent(EventsCloudResponse.fromEventsWithUsers(event));
     }
+    @Override
+    public void joinEvent(String eventId) {
+        cloudDBDataSource.joinEvent(eventId, user.getUid());
+    }
 }

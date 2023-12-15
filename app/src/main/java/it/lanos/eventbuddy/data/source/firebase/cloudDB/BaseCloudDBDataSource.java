@@ -11,6 +11,6 @@ public abstract class BaseCloudDBDataSource {
     public abstract void getEvents(String uid);
     public abstract void addUser(User user);
     public abstract void addEvent(EventsCloudResponse event);
-    //public abstract void addEvent(Event)
+    public abstract void joinEvent(String eventId, String uid);
 
 }
