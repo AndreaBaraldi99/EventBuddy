@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
         List<User> users = new ArrayList<>();
 
-        Button addButton = findViewById(R.id.createEventButton);
+        ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
         Button addDescrButton = findViewById(R.id.DescriptionIconButton);
 
         eventNameTextInputLayout = findViewById(R.id.EventNameTextInputLayout);

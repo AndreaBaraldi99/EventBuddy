@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/create_event_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -15,6 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/create_event_top_app_bar_menu"
+        app:navigationIcon="@drawable/twotone_arrow_back_24"
         app:title="@string/create_event_title"
         app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
@@ -41,6 +43,7 @@
             android:id="@+id/EventInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_light_background"
             android:hint="@string/create_event_name_hint"
             android:text="@string/event_name_input" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +66,8 @@
             android:id="@+id/DateInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/outline_calendar_month_24"
+            android:backgroundTint="@color/md_theme_light_background"
+            android:drawableEnd="@drawable/outline_calendar_today_24"
             android:hint="@string/create_event_date_hint"
             android:inputType="datetime" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -85,6 +89,7 @@
             android:id="@+id/TimeInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_light_background"
             android:drawableEnd="@drawable/outline_access_time_24"
             android:hint="@string/create_event_time_hint"
             android:inputType="datetime|time"
@@ -108,6 +113,7 @@
             android:id="@+id/LocationInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/md_theme_light_background"
             android:drawableEnd="@drawable/outline_location_on_24"
             android:hint="@string/create_event_location_hint"
             android:inputType="text"
@@ -143,7 +149,7 @@
         android:backgroundTint="@color/md_theme_dark_inverseOnSurface"
         android:contentDescription="@string/add_description_button"
         android:textColorLink="?attr/colorOnSurfaceVariant"
-        app:icon="@drawable/baseline_draw_24"
+        app:icon="@drawable/baseline_edit_24"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/AddDescriptionTextView"
@@ -175,24 +181,20 @@
         app:layout_constraintStart_toEndOf="@+id/AddGuestsTextView"
         app:layout_constraintTop_toBottomOf="@+id/DescriptionIconButton" />
 
-    <Button
-        android:id="@+id/createEventButton"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="100dp"
-        android:layout_height="62dp"
-        android:layout_marginBottom="192dp"
-        android:backgroundTint="@color/md_theme_dark_onTertiaryContainer"
-        android:elevation="8dp"
-        android:shadowColor="@color/md_theme_light_shadow"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab"
+        android:layout_width="111dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="216dp"
+        android:contentDescription=""
         android:text="@string/create_event_button_add_text"
-        android:textColor="@color/md_theme_light_onTertiaryContainer"
+        app:backgroundTint="@color/md_theme_light_tertiaryContainer"
         app:icon="@drawable/baseline_check_24"
-        app:iconGravity="start"
-        app:iconTint="@color/md_theme_light_onTertiaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.66"
-        app:layout_constraintStart_toStartOf="@+id/guideline6" />
+        app:layout_constraintHorizontal_bias="0.914"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
