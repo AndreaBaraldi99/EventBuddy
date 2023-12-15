@@ -92,8 +92,8 @@ public class CreateEventActivity extends AppCompatActivity{
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();
                 List<User> guests = new ArrayList<User>();
-                guests.add((new User(134, "lu", "lucrezia")));
-                Event event = new Event(0, 0, event_name, date_time, location, description);
+                guests.add((new User("134", "lu", "lucrezia")));
+                Event event = new Event(event_name, date_time, location, description);
 
                 EventWithUsers finalEvent = new EventWithUsers(event, guests);
                 eventViewModel.addEvent(finalEvent);

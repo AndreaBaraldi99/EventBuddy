@@ -19,7 +19,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     public UserRepository(UserDataSource authDataSource) {
         this.authDataSource = authDataSource;
         this.authDataSource.setAuthCallback(this);
-        this.cloudDBDataSource = new CloudDBDataSource(FirebaseFirestore.getInstance());
+        //this.cloudDBDataSource = new CloudDBDataSource(FirebaseFirestore.getInstance());
         userMutableLiveData = new MutableLiveData<>();
     }
     @Override

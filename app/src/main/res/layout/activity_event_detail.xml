@@ -11,45 +11,16 @@
         android:layout_height="wrap_content"
         android:background="@drawable/sfondo">
 
-       <androidx.appcompat.widget.Toolbar
-           android:id="@+id/toolbar"
+           <com.google.android.material.appbar.MaterialToolbar
+           android:id="@+id/detail_event_top_appbar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginTop="52dp"
            android:minHeight="?attr/actionBarSize"
-           android:theme="?attr/actionBarTheme"
            app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <ImageButton
-           android:id="@+id/imageButton2"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="16dp"
-           android:layout_marginTop="72dp"
-           android:background="@drawable/twotone_arrow_back_24"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <ImageButton
-           android:id="@+id/imageButton3"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="72dp"
-           android:layout_marginEnd="64dp"
-           android:background="@drawable/outline_calendar_month_24"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <ImageButton
-           android:id="@+id/imageButton4"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="72dp"
-           android:layout_marginEnd="16dp"
-           android:background="@drawable/outline_more_vert_24"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
+           app:layout_constraintTop_toTopOf="parent"
+           app:menu="@menu/event_detail_top_app_bar_menu"
+           app:navigationIcon="@drawable/twotone_arrow_back_24" />
 
        <TextView
            android:id="@+id/event_date"
