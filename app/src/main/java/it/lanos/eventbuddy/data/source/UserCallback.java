@@ -1,12 +1,13 @@
-package it.lanos.eventbuddy.data.source.firebase.auth;
+package it.lanos.eventbuddy.data.source;
 
 import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.data.source.entities.User;
 
 public interface UserCallback {
-    void onRegisterSuccess(User user);
-    void onLoginSuccess(FirebaseUser user);
+    void onSuccessFromFirebase(User user);
+    void onSuccessFromOnlineDB(User user);
+    void onSuccessFromLocalDB(User user);
     void onDeleteSuccess();
     void onChangePasswordSuccess();
     void onFailureFromRemote(Exception e);

@@ -12,7 +12,7 @@ import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.Result;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
@@ -23,9 +23,9 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
     private final FirebaseUser user;
-    private final BaseCloudDBDataSource cloudDBDataSource;
+    private final BaseEventsCloudDBDataSource cloudDBDataSource;
 
-    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
+    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
 
         allEventsMutableLiveData = new MutableLiveData<>();
         this.eventsLocalDataSource = eventsLocalDataSource;

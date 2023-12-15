@@ -10,9 +10,9 @@ import java.util.Map;
 import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.source.entities.User;
 
-public class CloudDBDataSource extends BaseCloudDBDataSource{
-    CloudDBService service;
-    public CloudDBDataSource(CloudDBService service) {
+public class EventsEventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
+    private final CloudDBService service;
+    public EventsEventsCloudDBDataSource(CloudDBService service) {
         this.service = service;
     }
     @Override
@@ -35,11 +35,6 @@ public class CloudDBDataSource extends BaseCloudDBDataSource{
                     eventsCallback.onSuccessFromRemote(eventsWithUsers);
                 })
                 .addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
-    }
-
-    @Override
-    public void addUser(User user) {
-        service.addUser(user).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
 
     @Override

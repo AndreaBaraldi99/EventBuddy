@@ -8,18 +8,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.lanos.eventbuddy.data.source.entities.Result;
 import it.lanos.eventbuddy.data.source.entities.User;
-import it.lanos.eventbuddy.data.source.firebase.auth.UserCallback;
+import it.lanos.eventbuddy.data.source.UserCallback;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.CloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsEventsCloudDBDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback {
     private UserDataSource authDataSource;
-    private CloudDBDataSource cloudDBDataSource;
+    private EventsEventsCloudDBDataSource eventsCloudDBDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
     public UserRepository(UserDataSource authDataSource) {
         this.authDataSource = authDataSource;
         this.authDataSource.setAuthCallback(this);
-        this.cloudDBDataSource = new CloudDBDataSource(FirebaseFirestore.getInstance());
+        this.eventsCloudDBDataSource = new EventsEventsCloudDBDataSource(FirebaseFirestore.getInstance());
         userMutableLiveData = new MutableLiveData<>();
     }
     @Override
@@ -50,7 +50,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     // TODO: 15/12/2023  add user in Local
     @Override
     public void onRegisterSuccess(User user) {
-        cloudDBDataSource.addUser(user);
+        eventsCloudDBDataSource.addUser(user);
     }
 
     @Override
