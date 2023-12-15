@@ -5,14 +5,15 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.source.entities.User;
 
 public class UserDataSource extends BaseUserDataSource {
     private static final String TAG = UserDataSource.class.getSimpleName();
-    private FirebaseAuth mAuth;
+    private AuthService authService;
 
-    public UserDataSource() {
-        this.mAuth = FirebaseAuth.getInstance();
+    public UserDataSource(AuthService authService) {
+        this.authService = authService;
     }
 
     /***
@@ -22,11 +23,11 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+        authService.register(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
-                        authCallback.onRegisterSuccess(new User(currentUser.getUid(), userName, fullName));
+                        String currentUserId = authService.getCurrentUser().getUid();
+                        authCallback.onSuccessFromFirebase(new User(currentUserId, userName, fullName));
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
                     }
@@ -41,10 +42,10 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void signIn(@NonNull String email, @NonNull String password) {
-        mAuth.signInWithEmailAndPassword(email, password)
+        authService.signIn(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        authCallback.onLoginSuccess(mAuth.getCurrentUser());
+                        authCallback.onSuccessFromOnlineDB(null);
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
                     }
@@ -54,18 +55,17 @@ public class UserDataSource extends BaseUserDataSource {
     /***
      * Log the user out
      */
+    // TODO: 15/12/2023 quando l'utente slogga cancellare lo user e tutti gli eventi in locale
     @Override
     public void signOut() {
-        mAuth.signOut();
+        authService.signOut();
     }
 
     /***
      * Delete the user account
      */
     public void deleteUser() {
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        user.delete()
+        authService.deleteUser()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         authCallback.onDeleteSuccess();
@@ -78,9 +78,11 @@ public class UserDataSource extends BaseUserDataSource {
     /***
      * Change the user password
      */
+
+    // TODO: 15/12/2023
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword){
-        FirebaseUser user = mAuth.getCurrentUser();
+       /* FirebaseUser user = mAuth.getCurrentUser();
 
         user.updatePassword(newPassword)
                 .addOnCompleteListener(task -> {
@@ -89,6 +91,10 @@ public class UserDataSource extends BaseUserDataSource {
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
                     }
-                });
+                }); */
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return authService.getCurrentUser();
     }
 }

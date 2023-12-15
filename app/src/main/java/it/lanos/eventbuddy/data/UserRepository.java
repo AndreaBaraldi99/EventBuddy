@@ -3,23 +3,23 @@ package it.lanos.eventbuddy.data;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
+import it.lanos.eventbuddy.data.source.UserCallback;
 import it.lanos.eventbuddy.data.source.entities.Result;
 import it.lanos.eventbuddy.data.source.entities.User;
-import it.lanos.eventbuddy.data.source.UserCallback;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsEventsCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback {
     private UserDataSource authDataSource;
-    private EventsEventsCloudDBDataSource eventsCloudDBDataSource;
+    private UserCloudDBDataSource userCloudDBDataSource;
+    private UserLocalDataSource userLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
-    public UserRepository(UserDataSource authDataSource) {
+    public UserRepository(UserDataSource authDataSource, UserCloudDBDataSource userCloudDBDataSource, UserLocalDataSource userLocalDataSource) {
         this.authDataSource = authDataSource;
         this.authDataSource.setAuthCallback(this);
-        this.eventsCloudDBDataSource = new EventsEventsCloudDBDataSource(FirebaseFirestore.getInstance());
+        this.userCloudDBDataSource = userCloudDBDataSource;
+        this.userLocalDataSource = userLocalDataSource;
         userMutableLiveData = new MutableLiveData<>();
     }
     @Override
@@ -47,14 +47,23 @@ public class UserRepository implements IUserRepository, UserCallback {
         authDataSource.changePassword(oldPassword, newPassword);
     }
 
-    // TODO: 15/12/2023  add user in Local
+    // TODO: 15/12/2023  controllare quando va a buon fine e slavare in locale
     @Override
-    public void onRegisterSuccess(User user) {
-        eventsCloudDBDataSource.addUser(user);
+    public void onSuccessFromFirebase(User user) {
+        if(user == null) {
+            userCloudDBDataSource.getUser(authDataSource.getCurrentUser().getUid());
+        } else {
+            userCloudDBDataSource.addUser(user);
+        }
     }
 
     @Override
-    public void onLoginSuccess(FirebaseUser user) {
+    public void onSuccessFromOnlineDB(User user) {
+        userLocalDataSource.addUser(user);
+    }
+
+    @Override
+    public void onSuccessFromLocalDB(User user) {
 
     }
 
