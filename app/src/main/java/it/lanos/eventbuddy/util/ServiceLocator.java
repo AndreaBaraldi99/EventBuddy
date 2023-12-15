@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.lanos.eventbuddy.data.EventWithUsersRepository;
-import it.lanos.eventbuddy.data.IAuthRepository;
+import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.CloudDBDataSource;
@@ -43,7 +43,7 @@ public class ServiceLocator {
     public DatastoreBuilder getDatastoreBuilder() {
         return new DatastoreBuilder();
     }
-    public IAuthRepository getAuthRepository() {
+    public IUserRepository getAuthRepository() {
         return null;
     }
 
