@@ -2,6 +2,8 @@ package it.lanos.eventbuddy.data.source.firebase.auth;
 
 import androidx.annotation.NonNull;
 
+import it.lanos.eventbuddy.data.source.UserCallback;
+
 public abstract class BaseUserDataSource {
     protected UserCallback authCallback;
     public void setAuthCallback(UserCallback authCallback) {
