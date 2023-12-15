@@ -39,13 +39,4 @@ public abstract class EventsRoomDatabase extends RoomDatabase {
 
         return INSTANCE;
     }
-
-    public static void nukeTables() {
-        databaseWriteExecutor.execute(() -> {
-            if(INSTANCE != null)
-                INSTANCE.clearAllTables();
-        });
-    }
-
-
 }
