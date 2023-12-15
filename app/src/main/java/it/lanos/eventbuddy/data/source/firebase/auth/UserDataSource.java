@@ -2,9 +2,12 @@ package it.lanos.eventbuddy.data.source.firebase.auth;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import it.lanos.eventbuddy.data.UserRepository;
 import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.source.entities.User;
 
@@ -55,10 +58,10 @@ public class UserDataSource extends BaseUserDataSource {
     /***
      * Log the user out
      */
-    // TODO: 15/12/2023 quando l'utente slogga cancellare lo user e tutti gli eventi in locale
     @Override
     public void signOut() {
         authService.signOut();
+        UserRepository.onSignOutSuccess();
     }
 
     /***
@@ -79,19 +82,22 @@ public class UserDataSource extends BaseUserDataSource {
      * Change the user password
      */
 
-    // TODO: 15/12/2023
+
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword){
-       /* FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser currentUser = authService.getCurrentUser();
 
-        user.updatePassword(newPassword)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        authCallback.onChangePasswordSuccess();
-                    } else {
-                        authCallback.onFailureFromRemote(task.getException());
-                    }
-                }); */
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(currentUser.getEmail(), oldPassword);
+
+        currentUser.reauthenticate(credential).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                authService.changePassword(newPassword);
+                authCallback.onChangePasswordSuccess();
+            } else {
+                authCallback.onFailureFromRemote(task.getException());
+            }
+        });
     }
 
     public FirebaseUser getCurrentUser() {
