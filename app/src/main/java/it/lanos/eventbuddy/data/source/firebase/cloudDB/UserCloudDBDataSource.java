@@ -21,6 +21,7 @@ public class UserCloudDBDataSource extends BaseUserCloudDBDataSource {
         }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 
+    @Override
     public void getUser(String uid){
         service.getUser(uid).addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {

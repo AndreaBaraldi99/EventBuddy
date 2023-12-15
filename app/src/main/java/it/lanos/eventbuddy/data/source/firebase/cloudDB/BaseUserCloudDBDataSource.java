@@ -9,6 +9,6 @@ public abstract class BaseUserCloudDBDataSource {
     public void setUserCallback(UserCallback userCallback) {
         this.userCallback = userCallback;
     }
-
     public abstract void addUser(User user);
+    public abstract void getUser(String uid);
 }
