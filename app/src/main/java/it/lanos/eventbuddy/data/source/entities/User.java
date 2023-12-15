@@ -5,10 +5,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.UsersCloudResponse;
+
 @Entity(tableName = "User")
 public class User {
     @PrimaryKey
-    final long userId;
+    @NonNull
+    final String userId;
     @ColumnInfo(name = "username")
     @NonNull
     private String username;
@@ -16,12 +19,13 @@ public class User {
     @NonNull
     private String fullName;
 
-    public User(long userId, @NonNull String username, @NonNull String fullName) {
+    public User(@NonNull String userId, @NonNull String username, @NonNull String fullName) {
         this.userId = userId;
         this.username = username;
         this.fullName = fullName;
     }
-    public long getUserId() {
+    @NonNull
+    public String getUserId() {
         return userId;
     }
     @NonNull
@@ -37,5 +41,8 @@ public class User {
     }
     public void setFullName(@NonNull String fullName) {
         this.fullName = fullName;
+    }
+    public static User fromCloudResponse(UsersCloudResponse usersCloudResponse) {
+        return new User(usersCloudResponse.getUid(), usersCloudResponse.getUsername(), usersCloudResponse.getFullname());
     }
 }

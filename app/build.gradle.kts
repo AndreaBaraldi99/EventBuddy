@@ -57,9 +57,13 @@ android {
 dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-testing:2.6.2")
+    implementation("com.google.firebase:firebase-firestore:24.10.0")
     val roomVersion = "2.6.1"
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation ("androidx.room:room-rxjava3:$roomVersion")
+
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.datastore:datastore-preferences-rxjava3:1.0.0")
 
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

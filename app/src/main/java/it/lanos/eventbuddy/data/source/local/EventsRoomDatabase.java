@@ -12,7 +12,6 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.lanos.eventbuddy.data.EventWithUsersRepository;
 import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;

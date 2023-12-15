@@ -1,49 +1,68 @@
 package it.lanos.eventbuddy.data;
 
+import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
+
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.EventsCallback;
+import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.Result;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloudResponse;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 
 
 public class EventWithUsersRepository implements IEventsRepository, EventsCallback{
     private static final String TAG = EventWithUsersRepository.class.getSimpleName();
     private final MutableLiveData<Result> allEventsMutableLiveData;
-    //private final MutableLiveData<Result> favoriteNewsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
+    private final FirebaseUser user;
+    private final BaseCloudDBDataSource cloudDBDataSource;
 
-    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource) {
+    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
 
         allEventsMutableLiveData = new MutableLiveData<>();
-        //favoriteNewsMutableLiveData = new MutableLiveData<>();
-        //this.newsRemoteDataSource = newsRemoteDataSource;
         this.eventsLocalDataSource = eventsLocalDataSource;
-        //this.newsRemoteDataSource.setNewsCallback(this);
-        this.eventsLocalDataSource.setNewsCallback(this);
+        this.cloudDBDataSource = cloudDBDataSource;
+        this.eventsLocalDataSource.setEventsCallback(this);
+        this.cloudDBDataSource.setEventsCallback(this);
+        this.user = user;
     }
 
     @Override
-    public MutableLiveData<Result> fetchEvents() {
-        //long currentTime = System.currentTimeMillis();
+    public MutableLiveData<Result> fetchEvents(long lastUpdate) {
+        long currentTime = System.currentTimeMillis();
 
-        // It gets the news from the Web Service if the last download
-        // of the news has been performed more than FRESH_TIMEOUT value ago
-       /* if (currentTime - lastUpdate > FRESH_TIMEOUT) {
-            newsRemoteDataSource.getNews(country);
+        if (currentTime - lastUpdate > FRESH_TIMEOUT) {
+            cloudDBDataSource.getEvents(user.getUid());
         } else {
-            newsLocalDataSource.getNews();
-        }*/
-        eventsLocalDataSource.getEvents();
+            eventsLocalDataSource.getEvents();
+        }
         return allEventsMutableLiveData;
     }
 
     @Override
-    public void onSuccessFromLocal(List<EventWithUsers> newsList) {
-        Result.Success result = new Result.Success(newsList);
+    public void onSuccessFromRemote(List<EventsWithUsersFromCloudResponse> eventsCloudResponse) {
+        for(EventsWithUsersFromCloudResponse event : eventsCloudResponse){
+            eventsLocalDataSource.insertEvent(Event.fromCloudResponse(event.getEvent()), event.getUsers());
+        }
+    }
+
+    @Override
+    public void onFailureFromRemote(Exception exception) {
+        Result.Error resultError = new Result.Error(exception.getMessage());
+        allEventsMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public void onSuccessFromLocal(List<EventWithUsers> eventList) {
+        Result.Success result = new Result.Success(eventList);
         allEventsMutableLiveData.postValue(result);
     }
 
@@ -51,11 +70,15 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
     public void onFailureFromLocal(Exception exception) {
         Result.Error resultError = new Result.Error(exception.getMessage());
         allEventsMutableLiveData.postValue(resultError);
-        //favoriteNewsMutableLiveData.postValue(resultError);
     }
 
     @Override
     public void insertEvent(EventWithUsers event) {
-        eventsLocalDataSource.insertEvent(event);
+        event.getEvent().setManager(user.getUid());
+        cloudDBDataSource.addEvent(EventsCloudResponse.fromEventsWithUsers(event));
+    }
+    @Override
+    public void joinEvent(String eventId) {
+        cloudDBDataSource.joinEvent(eventId, user.getUid());
     }
 }

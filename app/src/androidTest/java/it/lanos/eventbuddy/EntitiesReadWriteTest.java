@@ -30,16 +30,22 @@ public class EntitiesReadWriteTest{
     @Before
     public void initialize(){
         eventsRepository = ServiceLocator.getInstance().getEventsRepository(ApplicationProvider.getApplicationContext());
+        /*Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            Integer currentInt = prefsIn.get(INTEGER_KEY);
+            mutablePreferences.set(INTEGER_KEY, currentInt != null ? currentInt + 1 : 1);
+            return Single.just(mutablePreferences);
+        });*/
     }
 
     //TODO: aggiungere nei campi dell'evento l'orario dell'evento
     @Test
     public void writeTest(){
         List<User> users = new ArrayList<>();
-        users.add(new User(1, "Mario", "Rossi"));
-        users.add(new User(2, "Luigi", "Verdi"));
-        users.add(new User(3, "Giovanni", "Bianchi"));
-        Event event = new Event(1, 1, "Evento 1", "2020-01-01", "Via Milano 12", "Luogo evento 1");
+        users.add(new User("1", "Mario", "Rossi"));
+        users.add(new User("2", "Luigi", "Verdi"));
+        users.add(new User("3", "Giovanni", "Bianchi"));
+        Event event = new Event("EventId1", "Evento 1", "2020-01-01", "Via Milano 12", "Luogo evento 1");
         EventWithUsers eventWithUsers = new EventWithUsers(event, users);
         eventsRepository.insertEvent(eventWithUsers);
     }
@@ -47,7 +53,7 @@ public class EntitiesReadWriteTest{
     @Test
     public void readTest(){
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> eventsRepository.fetchEvents().observe(new TestLifecycleOwner(), result -> {
+        handler.post(() -> eventsRepository.fetchEvents(0).observe(new TestLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 List<EventWithUsers> events = ((Result.Success) result).getData();
                 assert(events.size() == 1);
