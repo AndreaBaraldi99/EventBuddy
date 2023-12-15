@@ -76,7 +76,7 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void onDeleteSuccess() {
-
+        EventsRoomDatabase.nukeTables();
     }
 
     @Override
