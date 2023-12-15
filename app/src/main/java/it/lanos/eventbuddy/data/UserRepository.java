@@ -8,6 +8,7 @@ import it.lanos.eventbuddy.data.source.entities.Result;
 import it.lanos.eventbuddy.data.source.entities.User;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
 
 public class UserRepository implements IUserRepository, UserCallback {
@@ -42,17 +43,23 @@ public class UserRepository implements IUserRepository, UserCallback {
         authDataSource.signOut();
     }
 
+    public static void onSignOutSuccess() {
+        EventsRoomDatabase.nukeTables();
+    }
+
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
         authDataSource.changePassword(oldPassword, newPassword);
     }
 
-    // TODO: 15/12/2023  controllare quando va a buon fine e slavare in locale
+
     @Override
     public void onSuccessFromFirebase(User user) {
         if(user == null) {
+            //login
             userCloudDBDataSource.getUser(authDataSource.getCurrentUser().getUid());
         } else {
+            //register
             userCloudDBDataSource.addUser(user);
         }
     }

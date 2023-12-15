@@ -3,9 +3,12 @@ package it.lanos.eventbuddy.data.services;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.OAuthCredential;
 
 public class AuthService {
     private FirebaseAuth mAuth;
@@ -27,6 +30,7 @@ public class AuthService {
 
     public void signOut() {
         mAuth.signOut();
+
     }
 
     public Task<Void>  deleteUser() {
@@ -34,9 +38,9 @@ public class AuthService {
         return currentUser.delete();
     }
 
-    // TODO: 15/12/2023  controlla che la vecchia password sia quella giusta
-    /*public Task<Void> changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
+
+    public Task<Void> changePassword(@NonNull String newPassword) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser.updatePassword(newPassword);
-    } */
+    }
 }
