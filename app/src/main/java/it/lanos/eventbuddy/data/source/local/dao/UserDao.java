@@ -17,9 +17,9 @@ public interface UserDao {
     @Transaction
     @Query("SELECT * FROM User")
     List<UserWithEvents> getUsersWithEvents();
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertUser(User user);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     List<Long> insertUsers(List<User> users);
     @Insert
     void insertUserWithEvents(UserEventCrossRef userEventCrossRef);

@@ -2,6 +2,8 @@ package it.lanos.eventbuddy.data.source.firebase.auth;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import it.lanos.eventbuddy.data.source.UserCallback;
 
 public abstract class BaseUserDataSource {
@@ -14,4 +16,5 @@ public abstract class BaseUserDataSource {
     public abstract void signOut();
     public abstract void deleteUser();
     public abstract void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
+    public abstract FirebaseUser getCurrentUser();
 }

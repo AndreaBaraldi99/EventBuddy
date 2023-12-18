@@ -10,5 +10,6 @@ public abstract class BaseEventsCloudDBDataSource {
     public abstract void getEvents(String uid);
     public abstract void addEvent(EventsCloudResponse event);
     public abstract void joinEvent(String eventId, String uid);
+    public abstract void leaveEvent(String eventId, String uid);
 
 }

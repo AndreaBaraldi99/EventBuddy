@@ -5,15 +5,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import it.lanos.eventbuddy.data.EventWithUsersRepository;
+import it.lanos.eventbuddy.data.EventRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.UserRepository;
+import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.services.CloudDBService;
+import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsEventsCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
+import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
@@ -36,17 +43,26 @@ public class ServiceLocator {
         BaseEventsLocalDataSource eventsLocalDataSource;
         eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder());
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
-        BaseEventsCloudDBDataSource cloudDBDataSource = new EventsEventsCloudDBDataSource(cloudDBService);
+        BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        return new EventWithUsersRepository(eventsLocalDataSource, cloudDBDataSource, user);
+        return new EventRepository(eventsLocalDataSource, cloudDBDataSource, user);
+    }
+
+    public IUserRepository getUserRepository(Application application) {
+        AuthService authService = new AuthService(FirebaseAuth.getInstance());
+        UserDataSource userDataSource = new UserDataSource(authService);
+
+        CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
+        BaseUserCloudDBDataSource cloudDBDataSource = new UserCloudDBDataSource(cloudDBService);
+
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application));
+
+        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource );
     }
 
     public DatastoreBuilder getDatastoreBuilder() {
         return new DatastoreBuilder();
-    }
-    public IUserRepository getAuthRepository() {
-        return null;
     }
 
 }

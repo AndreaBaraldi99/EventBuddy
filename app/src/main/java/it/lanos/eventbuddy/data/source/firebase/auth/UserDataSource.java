@@ -48,7 +48,7 @@ public class UserDataSource extends BaseUserDataSource {
         authService.signIn(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        authCallback.onSuccessFromOnlineDB(null);
+                        authCallback.onSuccessFromFirebase(null);
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
                     }
@@ -99,7 +99,7 @@ public class UserDataSource extends BaseUserDataSource {
             }
         });
     }
-
+    @Override
     public FirebaseUser getCurrentUser() {
         return authService.getCurrentUser();
     }

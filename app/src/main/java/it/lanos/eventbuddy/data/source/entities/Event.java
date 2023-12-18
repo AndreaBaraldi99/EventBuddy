@@ -100,7 +100,9 @@ public class Event {
      * @return                  the event created from the cloud response
      */
     public static Event fromCloudResponse(EventsCloudResponse cloudResponse){
-        return new Event(cloudResponse.getUid(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
+        Event event = new Event(cloudResponse.getUid(), cloudResponse.getName(), cloudResponse.getDate(), cloudResponse.getLocation(), cloudResponse.getDescription());
+        event.setManager(cloudResponse.getManager());
+        return event;
     }
 }
 

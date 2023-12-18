@@ -59,6 +59,7 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-testing:2.6.2")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
+
     val roomVersion = "2.6.1"
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     implementation ("androidx.room:room-rxjava3:$roomVersion")
@@ -82,7 +83,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.android.gms:play-services-auth:20.7.0")

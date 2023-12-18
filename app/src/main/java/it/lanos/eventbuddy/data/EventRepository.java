@@ -18,14 +18,14 @@ import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloud
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 
 
-public class EventWithUsersRepository implements IEventsRepository, EventsCallback{
-    private static final String TAG = EventWithUsersRepository.class.getSimpleName();
+public class EventRepository implements IEventsRepository, EventsCallback{
+    private static final String TAG = EventRepository.class.getSimpleName();
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
     private final FirebaseUser user;
     private final BaseEventsCloudDBDataSource cloudDBDataSource;
 
-    public EventWithUsersRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
+    public EventRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
 
         allEventsMutableLiveData = new MutableLiveData<>();
         this.eventsLocalDataSource = eventsLocalDataSource;
@@ -80,5 +80,10 @@ public class EventWithUsersRepository implements IEventsRepository, EventsCallba
     @Override
     public void joinEvent(String eventId) {
         cloudDBDataSource.joinEvent(eventId, user.getUid());
+    }
+
+    @Override
+    public void leaveEvent(String eventId) {
+        cloudDBDataSource.leaveEvent(eventId, user.getUid());
     }
 }
