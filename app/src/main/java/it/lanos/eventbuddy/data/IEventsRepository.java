@@ -9,4 +9,5 @@ public interface IEventsRepository {
     MutableLiveData<Result> fetchEvents(long lastUpdate);
     void insertEvent(EventWithUsers event);
     void joinEvent(String eventId);
+    void leaveEvent(String eventId);
 }

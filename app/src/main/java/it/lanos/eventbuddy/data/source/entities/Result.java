@@ -23,6 +23,16 @@ public abstract class Result {
         }
     }
 
+    public static final class UserSuccess extends Result {
+        private final List<User> users;
+        public UserSuccess(List<User> users) {
+            this.users = users;
+        }
+        public List<User> getData() {
+            return users;
+        }
+    }
+
     /**
      * Class that represents an error occurred during the interaction
      * with a Web Service or a local database.

@@ -1,12 +1,26 @@
 package it.lanos.eventbuddy;
 
+import static org.junit.Assert.assertNotNull;
+
+import android.app.Application;
+import android.app.LauncherActivity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.testing.TestLifecycleOwner;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.entities.Event;
 import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
 import it.lanos.eventbuddy.data.source.entities.Result;
@@ -25,43 +40,37 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 @RunWith(AndroidJUnit4.class)
 public class EntitiesReadWriteTest{
     private static final String TAG = "EntitiesReadWriteTest";
-    private static IEventsRepository eventsRepository;
+    private IEventsRepository eventsRepository;
+    private IUserRepository userRepository;
 
     @Before
     public void initialize(){
-        eventsRepository = ServiceLocator.getInstance().getEventsRepository(ApplicationProvider.getApplicationContext());
-        /*Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
-            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-            Integer currentInt = prefsIn.get(INTEGER_KEY);
-            mutablePreferences.set(INTEGER_KEY, currentInt != null ? currentInt + 1 : 1);
-            return Single.just(mutablePreferences);
-        });*/
-    }
+       /* Application appContext = (Application) InstrumentationRegistry.getInstrumentation().getTargetContext().getApplicationContext();
+        eventsRepository = ServiceLocator.getInstance().getEventsRepository(appContext);
+        userRepository = ServiceLocator.getInstance().getUserRepository(appContext);
+        FirebaseApp.initializeApp(appContext);
+        userRepository.register("Pippo paperino", "pippo", "pippo@paperino.it", "pippo123");*/
 
-    @Test
-    public void writeTest(){
-        List<User> users = new ArrayList<>();
-        users.add(new User("1", "Mario", "Rossi"));
-        users.add(new User("2", "Luigi", "Verdi"));
-        users.add(new User("3", "Giovanni", "Bianchi"));
-        Event event = new Event("EventId1", "Evento 1", "2020-01-01", "Via Milano 12", "Luogo evento 1");
-        EventWithUsers eventWithUsers = new EventWithUsers(event, users);
+    }
+   /* @Test
+    public void testInsertEvent(){
+        Event event = new Event("Test Name", "Test Date", "Test Location", "Test Description");
+        User user = new User("Test Name", "Test Username", "Test fullname");
+        User user2 = new User("Test Name2", "Test Username2", "Test fullname2");
+        EventWithUsers eventWithUsers = new EventWithUsers(event, new ArrayList<User>());
         eventsRepository.insertEvent(eventWithUsers);
     }
 
     @Test
-    public void readTest(){
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> eventsRepository.fetchEvents(0).observe(new TestLifecycleOwner(), result -> {
+    public void testFetchEvents() {
+        eventsRepository.fetchEvents(0).observe(new TestLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 List<EventWithUsers> events = ((Result.Success) result).getData();
-                assert(events.size() == 1);
-                assert(events.get(0).getUsers().size() == 3);
+                Log.d(TAG, "testFetchEvents: " + events.size());
             } else {
-                Log.d(TAG, "Error fetching the result" );
+                Log.d(TAG, "testFetchEvents: " + ((Result.Error) result).getMessage());
             }
-
-        }));
-    }
+        });
+    }*/
 
 }

@@ -7,4 +7,5 @@ public class Constants {
     public static final int FRESH_TIMEOUT = 300000;
     public static final String DATASTORE_NAME = "eventbuddyDatastore";
     public static final String LAST_UPDATE = "last_update";
+    public static final long TIMEOUT = 5000;
 }

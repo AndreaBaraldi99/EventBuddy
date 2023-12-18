@@ -3,6 +3,8 @@ package it.lanos.eventbuddy.data.source.entities;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.UsersCloudResponse;
@@ -11,14 +13,15 @@ import it.lanos.eventbuddy.data.source.firebase.cloudDB.UsersCloudResponse;
 public class User {
     @PrimaryKey
     @NonNull
-    final String userId;
+    private String userId;
     @ColumnInfo(name = "username")
     @NonNull
     private String username;
     @ColumnInfo(name = "full_name")
     @NonNull
     private String fullName;
-
+    @Ignore
+    public User(){}
     public User(@NonNull String userId, @NonNull String username, @NonNull String fullName) {
         this.userId = userId;
         this.username = username;

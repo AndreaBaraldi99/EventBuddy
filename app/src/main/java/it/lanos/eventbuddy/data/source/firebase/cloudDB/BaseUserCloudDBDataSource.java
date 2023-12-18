@@ -11,4 +11,5 @@ public abstract class BaseUserCloudDBDataSource {
     }
     public abstract void addUser(User user);
     public abstract void getUser(String uid);
+    public abstract void searchUsers(String query);
 }

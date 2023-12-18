@@ -8,4 +8,5 @@ public interface IUserRepository {
     void signOut();
     void deleteUser();
     void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
+    void searchUsers(@NonNull String query);
 }
