@@ -32,5 +32,19 @@
     <string name="event_detail_do_not_join">Don\'t join</string>
     <string name="event_detail_manager">Manager</string>
 
+    <!-- String used for RegistrationActivity -->
+    <string name="registration_button">Sign up</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="to_login_activity">Login</string>
+    <string name="username">Name</string>
+
+    <!-- String used for LoginActivity -->
+    <string name="login_button">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="to_signup_activity">Sign up</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="rememberMe_checkbox">Remember me</string>
+
+
 
 </resources>
