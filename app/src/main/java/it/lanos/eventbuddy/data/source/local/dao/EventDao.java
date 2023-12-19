@@ -19,6 +19,6 @@ public interface EventDao {
     List<EventWithUsers> getEventsWithUsers();
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertEvent(Event event);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEventWithUsers(UserEventCrossRef userEventCrossRef);
 }
