@@ -2,8 +2,8 @@ package it.lanos.eventbuddy.data;
 
 import androidx.lifecycle.MutableLiveData;
 
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.entities.Result;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.Result;
 
 public interface IEventsRepository {
     MutableLiveData<Result> fetchEvents(long lastUpdate);

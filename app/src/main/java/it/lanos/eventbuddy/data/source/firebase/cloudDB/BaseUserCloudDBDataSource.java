@@ -1,6 +1,6 @@
 package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.UserCallback;
 
 public abstract class BaseUserCloudDBDataSource {

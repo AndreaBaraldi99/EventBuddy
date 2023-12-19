@@ -41,7 +41,7 @@ public class ServiceLocator {
 
     public IEventsRepository getEventsRepository(Application application) {
         BaseEventsLocalDataSource eventsLocalDataSource;
-        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder());
+        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder(application));
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,7 +61,7 @@ public class ServiceLocator {
         return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource );
     }
 
-    public DatastoreBuilder getDatastoreBuilder() {
+    public DatastoreBuilder getDatastoreBuilder(Application application) {
         return new DatastoreBuilder();
     }
 

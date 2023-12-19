@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.UI;
+package it.lanos.eventbuddy;
 
 import androidx.appcompat.app.AppCompatActivity;
 

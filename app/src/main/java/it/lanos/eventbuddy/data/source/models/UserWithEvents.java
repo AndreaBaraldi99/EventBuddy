@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.entities;
+package it.lanos.eventbuddy.data.source.models;
 
 import androidx.room.Embedded;
 import androidx.room.Junction;

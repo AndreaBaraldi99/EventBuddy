@@ -4,12 +4,11 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.data.UserRepository;
 import it.lanos.eventbuddy.data.services.AuthService;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public class UserDataSource extends BaseUserDataSource {
     private static final String TAG = UserDataSource.class.getSimpleName();

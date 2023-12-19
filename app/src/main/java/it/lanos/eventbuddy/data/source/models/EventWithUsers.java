@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.entities;
+package it.lanos.eventbuddy.data.source.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -23,6 +23,21 @@ public class EventWithUsers implements Parcelable {
     public EventWithUsers(Event event, List<User> users) {
         this.event = event;
         this.users = users;
+    }
+
+    @Relation(
+            entity = UserEventCrossRef.class,
+            parentColumn = "eventId",
+            entityColumn = "eventId"
+    )
+    private List<UserEventCrossRef> userEventCrossRefs;
+
+    public List<UserEventCrossRef> getUserEventCrossRefs() {
+        return userEventCrossRefs;
+    }
+
+    public void setUserEventCrossRefs(List<UserEventCrossRef> userEventCrossRefs) {
+        this.userEventCrossRefs = userEventCrossRefs;
     }
 
     public Event getEvent() {

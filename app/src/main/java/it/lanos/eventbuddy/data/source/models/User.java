@@ -1,13 +1,10 @@
-package it.lanos.eventbuddy.data.source.entities;
+package it.lanos.eventbuddy.data.source.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.UsersCloudResponse;
 
 @Entity(tableName = "User")
 public class User {
@@ -45,7 +42,5 @@ public class User {
     public void setFullName(@NonNull String fullName) {
         this.fullName = fullName;
     }
-    public static User fromCloudResponse(UsersCloudResponse usersCloudResponse) {
-        return new User(usersCloudResponse.getUid(), usersCloudResponse.getUsername(), usersCloudResponse.getFullname());
-    }
+
 }

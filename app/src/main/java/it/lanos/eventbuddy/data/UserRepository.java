@@ -8,8 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import it.lanos.eventbuddy.data.source.UserCallback;
-import it.lanos.eventbuddy.data.source.entities.Result;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.firebase.auth.BaseUserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
@@ -61,8 +61,8 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public void searchUsers(@NonNull String query) {
-        userCloudDBDataSource.searchUsers(query);
+    public MutableLiveData<Result> searchUsers(@NonNull String query) {
+        return usersSearchedMutableLiveData;
     }
 
 

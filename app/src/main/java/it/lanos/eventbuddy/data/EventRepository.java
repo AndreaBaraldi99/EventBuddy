@@ -9,12 +9,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 import it.lanos.eventbuddy.data.source.EventsCallback;
-import it.lanos.eventbuddy.data.source.entities.Event;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.entities.Result;
+import it.lanos.eventbuddy.data.source.models.Event;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloudResponse;
+import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 
 
@@ -73,9 +73,29 @@ public class EventRepository implements IEventsRepository, EventsCallback{
     }
 
     @Override
+    public void onJoinedEventFromRemote(String eventId) {
+        eventsLocalDataSource.joinEvent(eventId, user.getUid());
+    }
+
+    @Override
+    public void onJoinStatusChangedFromLocal(EventWithUsers event) {
+        Result eventResult = allEventsMutableLiveData.getValue();
+        if(eventResult != null && eventResult.isSuccess()){
+            List<EventWithUsers> eventList = ((Result.Success)eventResult).getData();
+            if(eventList.contains(event)){
+                eventList.set(eventList.indexOf(event), event);
+                allEventsMutableLiveData.postValue(eventResult);
+            }else{
+                eventList.add(event);
+                allEventsMutableLiveData.postValue(eventResult);
+            }
+        }
+    }
+
+    @Override
     public void insertEvent(EventWithUsers event) {
         event.getEvent().setManager(user.getUid());
-        cloudDBDataSource.addEvent(EventsCloudResponse.fromEventsWithUsers(event));
+        cloudDBDataSource.addEvent(event);
     }
     @Override
     public void joinEvent(String eventId) {

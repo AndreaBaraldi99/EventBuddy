@@ -1,8 +1,10 @@
-package it.lanos.eventbuddy.data.source.firebase.cloudDB;
+package it.lanos.eventbuddy.data.source.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public class EventsWithUsersFromCloudResponse {
     EventsCloudResponse event;
@@ -31,4 +33,13 @@ public class EventsWithUsersFromCloudResponse {
     public void setUser(Map<User, Boolean> user) {
         this.user = user;
     }
+
+    public static EventsWithUsersFromCloudResponse fromEventsWithUsers(EventWithUsers event) {
+        Map<User, Boolean> invited = new HashMap<>();
+        for (User user : event.getUsers()) {
+            invited.put(user, false);
+        }
+        return new EventsWithUsersFromCloudResponse(EventsCloudResponse.fromEventsWithUsers(event), invited);
+    }
+
 }

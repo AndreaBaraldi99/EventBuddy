@@ -1,13 +1,7 @@
 package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.List;
-
 import it.lanos.eventbuddy.data.services.CloudDBService;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public class UserCloudDBDataSource extends BaseUserCloudDBDataSource {
 

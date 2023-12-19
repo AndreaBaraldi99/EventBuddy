@@ -1,6 +1,6 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
 
