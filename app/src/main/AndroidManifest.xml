@@ -17,6 +17,10 @@
             android:exported="true"
             android:label="@string/title_activity_create_event"
             android:theme="@style/Theme.EventBuddy">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".UI.WelcomeActivity"
@@ -30,12 +34,9 @@
         </activity>
         <activity
             android:name=".UI.EventDetailActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.EventBuddy" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
     </application>

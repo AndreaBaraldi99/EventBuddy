@@ -88,6 +88,7 @@ public class CreateEventActivity extends AppCompatActivity{
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: IL PROBLEMA è QUI
                 String event_name = eventNameTextInputLayout.getEditText().getText().toString();
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();

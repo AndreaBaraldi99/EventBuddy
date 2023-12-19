@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class BottomNavigationBarActivity extends AppCompatActivity {
 
@@ -18,8 +20,9 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation_bar);
 
+        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
 
-
+        iUserRepository.signIn("Test@eventbuddy.it", "eventbuddy1");
     }
 
 

@@ -63,5 +63,5 @@
     <string name="add_description_hint">Type description here</string>
 
     <!-- Strings used for EventFragment -->
-    <string name ="item_date"> </string>
+    <string name="item_date"> </string>
 </resources>
