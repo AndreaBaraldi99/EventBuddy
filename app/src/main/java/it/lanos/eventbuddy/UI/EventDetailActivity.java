@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 
 public class EventDetailActivity extends AppCompatActivity {
     private EventWithUsers event;

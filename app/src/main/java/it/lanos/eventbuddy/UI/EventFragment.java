@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -24,8 +24,8 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.entities.Result;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventFragment extends Fragment {

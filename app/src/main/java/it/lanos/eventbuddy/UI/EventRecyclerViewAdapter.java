@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 
 /**
  * Custom adapter that extends RecyclerView.Adapter to show an ArrayList of News

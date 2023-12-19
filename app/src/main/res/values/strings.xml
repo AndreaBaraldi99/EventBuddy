@@ -64,4 +64,8 @@
 
     <!-- Strings used for EventFragment -->
     <string name="item_date"> </string>
+    <!-- Strings used for AddGuestFragment -->
+    <string name="add_guest_searchbar_hint">Insert user name here</string>
+    <string name="search_bar_menu_title">Invite guests</string>
+
 </resources>

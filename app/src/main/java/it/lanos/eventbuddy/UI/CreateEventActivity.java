@@ -5,7 +5,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,9 +16,9 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.source.entities.Event;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.Event;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class CreateEventActivity extends AppCompatActivity{
@@ -31,7 +30,6 @@ public class CreateEventActivity extends AppCompatActivity{
     private TextInputLayout locationTextInputLayout;
 
     private String description;
-    private final String TAG = CreateEventActivity.class.getSimpleName();
 
 
     // The dialog fragment receives a reference to this Activity through the
@@ -40,18 +38,30 @@ public class CreateEventActivity extends AppCompatActivity{
     // interface.
 
 
-    public void onDialogConfirmClick(String text, AddDescriptionFragment fragment){
+    public void onDescriptionDialogConfirmClick(String text, AddDescriptionFragment fragment){
        this.description = text;
        fragment.dismiss();
     }
+    public void onGuestDialogConfirmClick() {
 
-    public void onDialogCancelClick(AddDescriptionFragment fragment){
+    }
+
+    public void onDialogCancelClick(DialogFragment fragment){
         fragment.dismiss();
     }
 
-    public void openAddDescriptionDialog() {
+    public void openAddDescriptionDialog(
+
+    ) {
         DialogFragment newFragment = new AddDescriptionFragment();
         newFragment.show(getSupportFragmentManager(), "add description");
+    }
+
+    public void openAddGuestDialog(
+
+    ) {
+        DialogFragment newFragment = new AddGuestsFragment();
+        newFragment.show(getSupportFragmentManager(), "add guests");
     }
 
     public String getDescription() {
@@ -78,6 +88,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
         Button addDescrButton = findViewById(R.id.DescriptionIconButton);
+        Button addGuestButton = findViewById(R.id.GuestsIconButton);
 
         eventNameTextInputLayout = findViewById(R.id.EventNameTextInputLayout);
         dateTextInputLayout = findViewById(R.id.DateTextInputLayout);
@@ -85,6 +96,7 @@ public class CreateEventActivity extends AppCompatActivity{
         locationTextInputLayout = findViewById(R.id.LocationTextInputLayout);
 
         addDescrButton.setOnClickListener(v -> openAddDescriptionDialog());
+        addGuestButton.setOnClickListener(v -> openAddGuestDialog());
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
