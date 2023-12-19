@@ -3,6 +3,7 @@ package it.lanos.eventbuddy.data.source.local.datasource;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import it.lanos.eventbuddy.data.source.models.Event;
@@ -36,7 +37,7 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
             for(User user : eventWithUsers.getUsers()){
                 eventDao.insertEventWithUsers(new UserEventCrossRef(user.getUserId(), eventWithUsers.getEvent().getEventId(), false));
             }
-            datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+            //datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
         });
     }
@@ -50,8 +51,16 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
                 eventDao.insertEventWithUsers(new UserEventCrossRef(entry.getKey().getUserId(), event.getEventId(), entry.getValue()));
             }
 
-            datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+            //datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
+        });
+    }
+
+    @Override
+    public void joinEvent(String eventId, String uid){
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            eventDao.insertEventWithUsers(new UserEventCrossRef(uid, eventId, true));
+            eventsCallback.onJoinStatusChangedFromLocal(eventDao.getEventWithUsers(eventId));
         });
     }
 }

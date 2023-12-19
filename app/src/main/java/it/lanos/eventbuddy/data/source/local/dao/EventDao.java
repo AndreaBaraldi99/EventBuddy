@@ -17,8 +17,11 @@ public interface EventDao {
     @Transaction
     @Query("SELECT * FROM Event")
     List<EventWithUsers> getEventsWithUsers();
+    @Transaction
+    @Query("SELECT * FROM Event WHERE eventId = :eventId")
+    EventWithUsers getEventWithUsers(String eventId);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertEvent(Event event);
-    @Insert
+    void insertEvent(Event event);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEventWithUsers(UserEventCrossRef userEventCrossRef);
 }

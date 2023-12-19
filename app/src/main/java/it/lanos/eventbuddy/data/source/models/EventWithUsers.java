@@ -21,6 +21,21 @@ public class EventWithUsers {
         this.users = users;
     }
 
+    @Relation(
+            entity = UserEventCrossRef.class,
+            parentColumn = "eventId",
+            entityColumn = "eventId"
+    )
+    private List<UserEventCrossRef> userEventCrossRefs;
+
+    public List<UserEventCrossRef> getUserEventCrossRefs() {
+        return userEventCrossRefs;
+    }
+
+    public void setUserEventCrossRefs(List<UserEventCrossRef> userEventCrossRefs) {
+        this.userEventCrossRefs = userEventCrossRefs;
+    }
+
     public Event getEvent() {
         return event;
     }
@@ -36,4 +51,5 @@ public class EventWithUsers {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
 }

@@ -73,9 +73,29 @@ public class EventRepository implements IEventsRepository, EventsCallback{
     }
 
     @Override
+    public void onJoinedEventFromRemote(String eventId) {
+        eventsLocalDataSource.joinEvent(eventId, user.getUid());
+    }
+
+    @Override
+    public void onJoinStatusChangedFromLocal(EventWithUsers event) {
+        Result eventResult = allEventsMutableLiveData.getValue();
+        if(eventResult != null && eventResult.isSuccess()){
+            List<EventWithUsers> eventList = ((Result.Success)eventResult).getData();
+            if(eventList.contains(event)){
+                eventList.set(eventList.indexOf(event), event);
+                allEventsMutableLiveData.postValue(eventResult);
+            }else{
+                eventList.add(event);
+                allEventsMutableLiveData.postValue(eventResult);
+            }
+        }
+    }
+
+    @Override
     public void insertEvent(EventWithUsers event) {
         event.getEvent().setManager(user.getUid());
-        cloudDBDataSource.addEvent(EventsCloudResponse.fromEventsWithUsers(event));
+        cloudDBDataSource.addEvent(event);
     }
     @Override
     public void joinEvent(String eventId) {
