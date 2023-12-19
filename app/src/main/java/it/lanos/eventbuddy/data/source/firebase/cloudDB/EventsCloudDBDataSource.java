@@ -3,7 +3,6 @@ package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import it.lanos.eventbuddy.data.services.CloudDBService;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public class EventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
     private final CloudDBService service;
@@ -52,11 +53,28 @@ public class EventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
     }
     @Override
     public void addEvent(EventsCloudResponse event) {
-       service.addEvent(event).addOnSuccessListener(t -> {}).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+       service.addEvent(event).addOnSuccessListener(t -> {
+           Map<User, Boolean> users = new HashMap<>();
+              for (Map.Entry<String, Boolean> entry : event.getInvited().entrySet()) {
+                service.getUser(entry.getKey()).addOnSuccessListener(queryDocumentSnapshots -> {
+                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                          User user = document.toObject(User.class);
+                          users.put(user, entry.getValue());
+                     }
+                     List<EventsWithUsersFromCloudResponse> eventsWithUsers = new ArrayList<>();
+                     eventsWithUsers.add(new EventsWithUsersFromCloudResponse(event, users));
+                     eventsCallback.onSuccessFromRemote(eventsWithUsers);
+                }).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+              }
+       }).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
     @Override
     public void joinEvent(String eventId, String uid){
-       service.joinEvent(eventId, uid).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+       service.joinEvent(eventId, uid).addOnSuccessListener(
+                t -> {
+
+                }
+       ).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
     @Override
     public void leaveEvent(String eventId, String uid){

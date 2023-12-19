@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.entities;
+package it.lanos.eventbuddy.data.source.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -8,8 +8,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
-
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
 
 
 @Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = User.class,

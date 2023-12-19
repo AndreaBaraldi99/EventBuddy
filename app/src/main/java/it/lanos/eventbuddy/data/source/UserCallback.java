@@ -1,11 +1,8 @@
 package it.lanos.eventbuddy.data.source;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.entities.Result;
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public interface UserCallback {
     void onSuccessFromFirebase(User user);

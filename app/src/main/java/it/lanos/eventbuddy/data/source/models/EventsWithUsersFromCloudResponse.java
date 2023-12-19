@@ -1,8 +1,9 @@
-package it.lanos.eventbuddy.data.source.firebase.cloudDB;
+package it.lanos.eventbuddy.data.source.models;
 
 import java.util.Map;
 
-import it.lanos.eventbuddy.data.source.entities.User;
+import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.User;
 
 public class EventsWithUsersFromCloudResponse {
     EventsCloudResponse event;

@@ -9,12 +9,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 import it.lanos.eventbuddy.data.source.EventsCallback;
-import it.lanos.eventbuddy.data.source.entities.Event;
-import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-import it.lanos.eventbuddy.data.source.entities.Result;
+import it.lanos.eventbuddy.data.source.models.Event;
+import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudResponse;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsWithUsersFromCloudResponse;
+import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 
 

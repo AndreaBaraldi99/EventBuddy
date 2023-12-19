@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source.entities;
+package it.lanos.eventbuddy.data.source.models;
 
 import java.util.List;
 

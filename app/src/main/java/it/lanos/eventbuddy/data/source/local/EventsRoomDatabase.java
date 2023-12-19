@@ -12,11 +12,11 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.lanos.eventbuddy.data.source.entities.Event;
+import it.lanos.eventbuddy.data.source.models.Event;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
-import it.lanos.eventbuddy.data.source.entities.User;
-import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
+import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 
 @Database(entities = {Event.class, User.class, UserEventCrossRef.class}, version = DATABASE_VERSION)
 public abstract class EventsRoomDatabase extends RoomDatabase {

@@ -8,9 +8,9 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import it.lanos.eventbuddy.data.source.entities.User;
-import it.lanos.eventbuddy.data.source.entities.UserEventCrossRef;
-import it.lanos.eventbuddy.data.source.entities.UserWithEvents;
+import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
+import it.lanos.eventbuddy.data.source.models.UserWithEvents;
 
 @Dao
 public interface UserDao {
