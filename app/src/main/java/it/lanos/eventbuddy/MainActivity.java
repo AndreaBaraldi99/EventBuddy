@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
         userRepository.signIn("test@eventbuddy.it", "eventbuddy1");
         IEventsRepository eventsRepository = ServiceLocator.getInstance().getEventsRepository(getApplication());
         eventsRepository.fetchEvents(0).observe(this, result -> {
@@ -32,6 +32,6 @@ public class MainActivity extends AppCompatActivity{
             } else {
                 Log.d(TAG, "onCreate: " + ((Result.Error) result).getMessage());
             }
-        });*/
+        });
     }
 }
