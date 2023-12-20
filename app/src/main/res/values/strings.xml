@@ -67,6 +67,23 @@
     <!-- Strings used for AddGuestFragment -->
     <string name="add_guest_searchbar_hint">Insert user name here</string>
     <string name="search_bar_menu_title">Invite guests</string>
+    <!-- String used for RegistrationActivity -->
+    <string name="registration_button">Sign up</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="to_login_activity">Login</string>
+    <string name="hint_fullUserName">Name</string>
+    <string name="hint_userNickname">Nickname</string>
+    <string name="hint_userEmail">E-mail</string>
+    <string name="hint_userPassword">Password</string>
+
+    <!-- String used for LoginActivity -->
+    <string name="login_button">Login</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="to_signup_activity">Sign up</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="rememberMe_checkbox">Remember me</string>
+
+
 
     <!-- Strings used for FriendsFragment -->
     <string name="friends_fragment_title">Manage Friends</string>
