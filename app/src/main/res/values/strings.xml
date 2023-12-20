@@ -36,7 +36,10 @@
     <string name="registration_button">Sign up</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="to_login_activity">Login</string>
-    <string name="username">Name</string>
+    <string name="hint_fullUserName">Name</string>
+    <string name="hint_userNickname">Nickname</string>
+    <string name="hint_userEmail">E-mail</string>
+    <string name="hint_userPassword">Password</string>
 
     <!-- String used for LoginActivity -->
     <string name="login_button">Login</string>
