@@ -3,6 +3,7 @@
 <resources>
     <color name="seed">#509873</color>
     <color name="md_theme_light_primary">#006C46</color>
+    <color name="md_surface_container_high">#E7E9E4</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#8EF7C0</color>
     <color name="md_theme_light_onPrimaryContainer">#002112</color>
@@ -62,4 +63,7 @@
     <color name="md_theme_dark_surfaceTint">#72DAA5</color>
     <color name="md_theme_dark_outlineVariant">#404943</color>
     <color name="md_theme_dark_scrim">#000000</color>
+    <color name="divisor">#CAC4D0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="surface_settings">#F8FAF5</color>
 </resources>

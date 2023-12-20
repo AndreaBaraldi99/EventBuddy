@@ -68,4 +68,20 @@
     <string name="add_guest_searchbar_hint">Insert user name here</string>
     <string name="search_bar_menu_title">Invite guests</string>
 
+    <!-- Strings used for FriendsFragment -->
+    <string name="friends_fragment_title">Manage Friends</string>
+    <string name="friends_search_bar_hint">Search for new friends</string>
+    <string name="friends_your_list">Your list</string>
+
+    <!-- Strings used for SettingsFragment -->
+    <string name="Settings">Settings</string>
+    <string name="settings_nickname">Nickname</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_advice_account">Manage</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_advice_preferences"><![CDATA[Theme & Languages]]></string>
+    <string name="settings_notification">Notifications</string>
+    <string name="settings_advice_notifications">Change notifications config</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_advice_privacy">Permissions</string>
 </resources>
