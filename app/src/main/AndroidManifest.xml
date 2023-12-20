@@ -13,6 +13,12 @@
         android:theme="@style/Theme.EventBuddy"
         tools:targetApi="31">
         <activity
+            android:name=".UI.RegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.CreateEventActivity"
             android:exported="true"
             android:label="@string/title_activity_create_event"
