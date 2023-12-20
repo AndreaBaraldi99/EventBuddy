@@ -22,7 +22,7 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
 
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
 
-        iUserRepository.signIn("Test@eventbuddy.it", "eventbuddy1");
+        iUserRepository.signIn("test@eventbuddy.it", "eventbuddy1");
     }
 
 
