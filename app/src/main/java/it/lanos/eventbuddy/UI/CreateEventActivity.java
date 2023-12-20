@@ -1,10 +1,20 @@
 package it.lanos.eventbuddy.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,6 +23,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
@@ -30,6 +41,9 @@ public class CreateEventActivity extends AppCompatActivity{
     private TextInputLayout locationTextInputLayout;
 
     private String description;
+
+    private List<User> userList;
+    private AddGuestsRecyclerViewAdapter addGuestsRecyclerViewAdapter;
 
 
     // The dialog fragment receives a reference to this Activity through the
@@ -73,9 +87,40 @@ public class CreateEventActivity extends AppCompatActivity{
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.guest_search_bar, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        ComponentName component = new ComponentName(this, CreateEventActivity.class);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(component);
+        assert searchView != null;
+        searchView.setSearchableInfo(searchableInfo);
+        return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+
+
+
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        handleIntent(getIntent());
 
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
@@ -113,6 +158,8 @@ public class CreateEventActivity extends AppCompatActivity{
 
             }
         });
+
+
 
     }
 
