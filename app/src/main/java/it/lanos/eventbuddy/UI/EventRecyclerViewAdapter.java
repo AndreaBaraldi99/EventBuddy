@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.UI;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,9 +89,10 @@ public class EventRecyclerViewAdapter extends
 
         public void bind(EventWithUsers event) {
             textViewName.setText(event.getEvent().getName());
-            textViewTime.setText(event.getEvent().getDate().substring(11));
+            dateButton.setText(event.getEvent().getDate().substring(0,8));
+            textViewTime.setText(event.getEvent().getDate().substring(9));
             textViewLocation.setText(event.getEvent().getLocation());
-            dateButton.setText(event.getEvent().getDate().substring(0,10));
+
         }
 
 
