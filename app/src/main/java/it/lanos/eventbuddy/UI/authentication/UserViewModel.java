@@ -15,16 +15,16 @@ public class UserViewModel extends ViewModel {
         this.userLiveData = userRepository.getUserMutableLiveData();
     }
 
-    public MutableLiveData<Result> getUserMutableLiveData() {
-        return userLiveData;
-    }
-
     public void register(String fullName, String userName, String email, String password) {
         userRepository.register(fullName, userName, email, password);
     }
 
     public void signIn(String email, String password) {
         userRepository.signIn(email, password);
+    }
+
+    public MutableLiveData<Result> getUserMutableLiveData() {
+        return userLiveData;
     }
 
 }

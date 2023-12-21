@@ -19,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
-
     <Button
         android:id="@+id/login_button"
         android:layout_width="0dp"

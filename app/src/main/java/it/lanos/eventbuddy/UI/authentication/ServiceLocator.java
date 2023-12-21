@@ -43,7 +43,7 @@ public class ServiceLocator {
         return INSTANCE;
     }
 
-    // TODO: 20/12/2023
+
     public IUserRepository getUserRepository() {
         BaseUserDataSource userDataSource = new UserDataSource(authService);
         BaseUserCloudDBDataSource userCloudDBDataSource = new UserCloudDBDataSource(cloudDBService);

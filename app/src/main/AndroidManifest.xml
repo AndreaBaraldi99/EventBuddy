@@ -27,8 +27,6 @@
             android:exported="false"
             android:label="@string/title_activity_create_event"
             android:theme="@style/Theme.EventBuddy">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -36,10 +34,15 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".UI.authentication.WelcomeActivity"
             android:exported="true"
-            android:theme="@style/Theme.EventBuddy" >
+            android:theme="@style/Theme.EventBuddy">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
 
@@ -55,7 +58,7 @@
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/Theme.EventBuddy" >
+            android:theme="@style/Theme.EventBuddy">
 
         </activity>
 

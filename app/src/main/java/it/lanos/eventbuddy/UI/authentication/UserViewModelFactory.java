@@ -13,17 +13,6 @@ public class UserViewModelFactory implements ViewModelProvider.Factory {
         this.iUserRepository = iUserRepository;
     }
 
-    /*
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(UserViewModel.class)) {
-            return (T) new UserViewModel(iUserRepository);
-        }
-        throw new IllegalArgumentException("Unknown ViewModel class");
-    }
-     */
-
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

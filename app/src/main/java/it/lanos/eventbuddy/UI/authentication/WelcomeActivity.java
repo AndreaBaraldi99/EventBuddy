@@ -20,11 +20,13 @@ public class WelcomeActivity extends AppCompatActivity {
         signup_button = findViewById(R.id.signup_button);
         login_button = findViewById(R.id.login_button);
 
+        // Nvigate the user to RegistrationActivity
         signup_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
         });
 
+        //Navigate the user to LoginActivity
         login_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
