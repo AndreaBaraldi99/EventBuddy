@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Application;
@@ -42,9 +43,6 @@ public class RegistrationActivity extends AppCompatActivity {
         // Handle the registration button press
         handleRegistrationButton();
 
-        // Handle the registration response
-        handleRegistrationResponse();
-
         // Navigate the user to the LoginActivity
         navigateToLoginScreen();
     }
@@ -79,86 +77,15 @@ public class RegistrationActivity extends AppCompatActivity {
     private void setTextFieldsListeners() {
         setEndIconsListeners();
 
-        setTextInputLayoutListener(nameTextInputLayout);
-        setTextInputLayoutListener(nicknameTextInputLayout);
-        setEmailTextInputLayoutListener();
-        setPasswordTextInputLayoutListener();
-    }
-
-    // Listener used for validating email address
-    private void setEmailTextInputLayoutListener() {
-        Objects.requireNonNull(emailTextInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String emailText = editable.toString().trim();
-                if (!isValidEmail(emailText)) {
-                    emailTextInputLayout.setError(getString(R.string.not_valid_email));
-                } else {
-                    emailTextInputLayout.setError(null);
-                }
-            }
-        });
-    }
-
-    // Listener used for validating password
-    private void setPasswordTextInputLayoutListener(){
-        Objects.requireNonNull(passwordTextInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String passwordText = editable.toString().trim();
-                if (passwordText.length() < 6) {
-                    passwordTextInputLayout.setError(getString(R.string.weak_registration_password));
-                } else {
-                    passwordTextInputLayout.setError(null);
-                }
-            }
-        });
-    }
-
-    // Listener used if a field cannot be empty
-    private void setTextInputLayoutListener(TextInputLayout textInputLayout) {
-        Objects.requireNonNull(textInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String text = editable.toString().trim();
-                if (text.isEmpty()) {
-                    textInputLayout.setError(getString(R.string.required_field));
-                } else {
-                    textInputLayout.setError(null);
-                }
-            }
-        });
+        Helper.setTextInputLayoutListener(this, nameTextInputLayout);
+        Helper.setTextInputLayoutListener(this, nicknameTextInputLayout);
+        Helper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
+        Helper.setPasswordTextInputLayoutListener(this, passwordTextInputLayout);
     }
 
     // Initialize the view model
     private void initializeViewModel() {
-        IUserRepository userRepository = ServiceLocator.getInstance((Application) getApplicationContext()).getUserRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
 
         userViewModel = new ViewModelProvider(
                 this,
@@ -173,28 +100,24 @@ public class RegistrationActivity extends AppCompatActivity {
             String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
             String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
 
-            if (isValidEmail(email) && password.length() >= 6 && !fullName.isEmpty() && !userName.isEmpty()) {
-                userViewModel.register(fullName, userName, email, password);
+            if (Helper.isValidEmail(email) && password.length() >= 6 && !fullName.isEmpty() && !userName.isEmpty()) {
+                userViewModel.register(fullName, userName, email, password).observe(this, result -> {
+                    if (Helper.isAuthSuccess(result)) {
+                        Snackbar.make(findViewById(android.R.id.content),
+                                        ((Result.AuthSuccess) result).getMessage(),
+                                        Snackbar.LENGTH_LONG)
+                                .show();
+                    } else if (Helper.isError(result)) {
+                        Snackbar.make(findViewById(android.R.id.content),
+                                        ((Result.Error) result).getMessage(),
+                                        Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                });
             }
         });
     }
 
-    // Handle the registration response
-    private void handleRegistrationResponse() {
-        userViewModel.getUserMutableLiveData().observe(this, result -> {
-            if (result instanceof Result.AuthSuccess) {
-                Snackbar.make(findViewById(android.R.id.content),
-                                ((Result.AuthSuccess) result).getMessage(),
-                                Snackbar.LENGTH_LONG)
-                        .show();
-            } else if (result instanceof Result.Error) {
-                Snackbar.make(findViewById(android.R.id.content),
-                                ((Result.Error) result).getMessage(),
-                                Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        });
-    }
 
     // Navigate the user to the LoginActivity
     private void navigateToLoginScreen() {
@@ -204,8 +127,5 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    // Check if a string is a valid email
-    private boolean isValidEmail(String target) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
-    }
+
 }

@@ -43,13 +43,15 @@ public class UserRepository implements IUserRepository, UserCallback {
         usersSearchedMutableLiveData = new MutableLiveData<>();
     }
     @Override
-    public void signIn(@NonNull String email, @NonNull String password) {
+    public MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password) {
         userDataSource.signIn(email, password);
+        return userMutableLiveData;
     }
 
     @Override
-    public void register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password) {
+    public MutableLiveData<Result> register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password) {
         userDataSource.register(fullName, userName, email, password);
+        return userMutableLiveData;
     }
 
     @Override
@@ -89,9 +91,6 @@ public class UserRepository implements IUserRepository, UserCallback {
             Log.d("Debug", "Register success");
             userCloudDBDataSource.addUser(user);
         }
-
-        Result.AuthSuccess authResult = new Result.AuthSuccess("Success");
-        userMutableLiveData.postValue(authResult);
     }
 
     @Override
@@ -128,7 +127,7 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void onFailureFromRemote(Exception e) {
-        Result.Error resultError = new Result.Error(e.getMessage());
-        usersSearchedMutableLiveData.postValue(resultError);
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
+        userMutableLiveData.postValue(resultError);
     }
 }

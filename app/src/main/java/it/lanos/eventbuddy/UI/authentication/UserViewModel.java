@@ -12,19 +12,13 @@ public class UserViewModel extends ViewModel {
 
     public UserViewModel(IUserRepository iUserRepository) {
         this.userRepository = iUserRepository;
-        this.userLiveData = userRepository.getUserMutableLiveData();
     }
 
-    public void register(String fullName, String userName, String email, String password) {
-        userRepository.register(fullName, userName, email, password);
+    public MutableLiveData<Result> register(String fullName, String userName, String email, String password) {
+        return userLiveData = userRepository.register(fullName, userName, email, password);
     }
 
-    public void signIn(String email, String password) {
-        userRepository.signIn(email, password);
+    public MutableLiveData<Result> signIn(String email, String password) {
+        return userLiveData = userRepository.signIn(email, password);
     }
-
-    public MutableLiveData<Result> getUserMutableLiveData() {
-        return userLiveData;
-    }
-
 }

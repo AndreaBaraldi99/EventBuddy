@@ -36,6 +36,9 @@ public abstract class Result {
         }
     }
 
+    /**
+     * Class that represents a success from Firebase
+     */
     public static final class AuthSuccess extends Result {
         private final String message;
         public AuthSuccess(String message) {
@@ -45,6 +48,7 @@ public abstract class Result {
             return message;
         }
     }
+
 
 
     /**

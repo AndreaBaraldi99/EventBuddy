@@ -3,7 +3,6 @@ package it.lanos.eventbuddy.UI.authentication;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -21,7 +20,7 @@ import it.lanos.eventbuddy.data.source.models.Result;
 public class LoginActivity extends AppCompatActivity {
 
     Button login_button, forgot_password_button, signup_textButton;
-    TextInputLayout email_text, password_text;
+    TextInputLayout emailTextInputLayout, passwordTextInputLayout;
     CheckBox rememberMe_checkbox;
     UserViewModel userViewModel;
     static boolean rememberMeBoolean = true;
@@ -33,16 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
         setViewsUp();
 
-        //End email icon listener
-        email_text.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(email_text.getEditText()).setText("");
-        });
+        setTextFieldsListeners();
 
         initializeViewModel();
 
         handleLoginButton();
-
-        handleLoginResponse();
 
         navigateToSignupScreen();
     }
@@ -53,15 +47,15 @@ public class LoginActivity extends AppCompatActivity {
         forgot_password_button = findViewById(R.id.forgot_password_button);
         signup_textButton = findViewById(R.id.signup_textButton);
 
-        email_text = findViewById(R.id.email_text);
-        password_text = findViewById(R.id.password_text);
+        emailTextInputLayout = findViewById(R.id.email_text);
+        passwordTextInputLayout = findViewById(R.id.password_text);
 
         rememberMe_checkbox = findViewById(R.id.rememberMe_checkBox);
     }
 
     // Initialize the view model
     private void initializeViewModel() {
-        IUserRepository userRepository = ServiceLocator.getInstance((Application) getApplicationContext()).getUserRepository();
+        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
 
         userViewModel = new ViewModelProvider(
                 this,
@@ -74,33 +68,23 @@ public class LoginActivity extends AppCompatActivity {
 
             rememberMeBoolean = isRememberMeChecked();
 
-            String email = Objects.requireNonNull(email_text.getEditText()).getText().toString().trim();
-            String password = Objects.requireNonNull(password_text.getEditText()).getText().toString().trim();
+            String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
+            String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
 
             if(!email.isEmpty() && !password.isEmpty()) {
-                userViewModel.signIn(email, password);
-            } else {
-                Snackbar.make(findViewById(android.R.id.content),
-                                getString(R.string.generic_login_error),
-                                Snackbar.LENGTH_LONG)
-                        .show();
-            }
-        });
-    }
-
-    // Handle the login button response
-    private void handleLoginResponse() {
-        userViewModel.getUserMutableLiveData().observe(this, result -> {
-            if (result instanceof Result.AuthSuccess) {
-                Snackbar.make(findViewById(android.R.id.content),
-                                ((Result.AuthSuccess) result).getMessage(),
-                                Snackbar.LENGTH_LONG)
-                        .show();
-            } else if (result instanceof Result.Error) {
-                Snackbar.make(findViewById(android.R.id.content),
-                                ((Result.Error) result).getMessage(),
-                                Snackbar.LENGTH_LONG)
-                        .show();
+                userViewModel.signIn(email, password).observe(this, result -> {
+                    if (Helper.isAuthSuccess(result)) {
+                            Snackbar.make(findViewById(android.R.id.content),
+                                            ((Result.AuthSuccess) result).getMessage(),
+                                            Snackbar.LENGTH_LONG)
+                                .show();
+                    } else if (Helper.isError(result)) {
+                        Snackbar.make(findViewById(android.R.id.content),
+                                        ((Result.Error) result).getMessage(),
+                                        Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                });
             }
         });
     }
@@ -121,7 +105,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Set required listeners for the text fields
+    private void setTextFieldsListeners() {
+        //End email icon listener
+        emailTextInputLayout.setEndIconOnClickListener(view -> {
+            Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
+        });
+
+        Helper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
+        Helper.setTextInputLayoutListener(this, passwordTextInputLayout);
+    }
+
     public static boolean getRememberMeBoolean() {
         return rememberMeBoolean;
     }
+
+
 }

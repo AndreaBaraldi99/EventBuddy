@@ -41,13 +41,13 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/already_have_account"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/login_TextButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registration_button" />
 
     <Button
         android:id="@+id/login_TextButton"
@@ -64,14 +64,15 @@
         android:id="@+id/nameTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:boxBackgroundMode="filled"
+        app:endIconDrawable="@drawable/outline_cancel_24"
+        app:endIconMode="custom"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:startIconDrawable="@drawable/baseline_account_circle_24"
-        app:endIconDrawable="@drawable/baseline_cancel_24"
-        app:endIconMode="custom">
+        app:startIconDrawable="@drawable/outline_account_circle_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -84,15 +85,15 @@
         android:id="@+id/nicknameTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:boxBackgroundMode="filled"
+        app:endIconDrawable="@drawable/outline_cancel_24"
+        app:endIconMode="custom"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/nameTextInputLayout"
-        app:startIconDrawable="@drawable/baseline_account_circle_24"
-        app:endIconDrawable="@drawable/baseline_cancel_24"
-        app:endIconMode="custom">
+        app:startIconDrawable="@drawable/outline_account_circle_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -104,14 +105,14 @@
         android:id="@+id/emailTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:boxBackgroundMode="filled"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/nicknameTextInputLayout"
-        app:startIconDrawable="@android:drawable/ic_dialog_email"
-        app:endIconDrawable="@drawable/baseline_cancel_24"
+        app:startIconDrawable="@drawable/outline_email_24"
+        app:endIconDrawable="@drawable/outline_cancel_24"
         app:endIconMode="custom">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -125,14 +126,14 @@
         android:id="@+id/passwordTextInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:boxBackgroundMode="filled"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout"
         app:passwordToggleEnabled="true"
-        app:startIconDrawable="@drawable/baseline_lock_24">
+        app:startIconDrawable="@drawable/outline_lock_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
