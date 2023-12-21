@@ -70,9 +70,13 @@ public class AddGuestsFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userList = new ArrayList<>();
-
         RecyclerView recyclerView = view.findViewById(R.id.add_guests_recycler_view);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
@@ -116,7 +120,7 @@ public class AddGuestsFragment extends DialogFragment {
                 return handleSearch(newText);
             }
         });
-        return super.onCreateView(inflater, container, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private boolean handleSearch(String text) {
@@ -131,6 +135,7 @@ public class AddGuestsFragment extends DialogFragment {
                 }
             });
         } catch (Exception e) {
+            String stampa = e.toString();
             e.printStackTrace();
             return false;
         }
