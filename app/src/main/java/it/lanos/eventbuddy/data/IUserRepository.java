@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.data;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import it.lanos.eventbuddy.data.source.models.Result;
@@ -12,4 +13,6 @@ public interface IUserRepository {
     void deleteUser();
     void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
     MutableLiveData<Result> searchUsers(@NonNull String query);
+    MutableLiveData<Result> getUserMutableLiveData();
+
 }

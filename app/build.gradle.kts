@@ -92,6 +92,8 @@ dependencies {
 
 
 
+
+
     implementation("androidx.navigation:navigation-fragment:2.7.5")
     implementation("androidx.navigation:navigation-ui:2.7.5")
     testImplementation("junit:junit:4.13.2")

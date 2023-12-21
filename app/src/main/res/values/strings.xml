@@ -67,6 +67,7 @@
     <!-- Strings used for AddGuestFragment -->
     <string name="add_guest_searchbar_hint">Insert user name here</string>
     <string name="search_bar_menu_title">Invite guests</string>
+
     <!-- String used for RegistrationActivity -->
     <string name="registration_button">Sign up</string>
     <string name="already_have_account">Already have an account?</string>
@@ -75,6 +76,9 @@
     <string name="hint_userNickname">Nickname</string>
     <string name="hint_userEmail">E-mail</string>
     <string name="hint_userPassword">Password</string>
+    <string name="not_valid_email">Invalid email address</string>
+    <string name="weak_registration_password">Weak password</string>
+    <string name="required_field">Required field</string>
 
     <!-- String used for LoginActivity -->
     <string name="login_button">Login</string>
@@ -82,6 +86,7 @@
     <string name="to_signup_activity">Sign up</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="rememberMe_checkbox">Remember me</string>
+    <string name="generic_login_error">Generic error</string>
 
 
 

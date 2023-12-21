@@ -17,7 +17,7 @@ public class AuthService {
     }
 
     public Task<AuthResult> register(@NonNull String email, @NonNull String password) {
-        return mAuth.signInWithEmailAndPassword(email, password);
+        return mAuth.createUserWithEmailAndPassword(email, password);
     }
 
     public Task<AuthResult> signIn(@NonNull String email, @NonNull String password) {

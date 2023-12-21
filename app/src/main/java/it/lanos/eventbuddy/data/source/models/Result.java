@@ -36,6 +36,17 @@ public abstract class Result {
         }
     }
 
+    public static final class AuthSuccess extends Result {
+        private final String message;
+        public AuthSuccess(String message) {
+            this.message = message;
+        }
+        public String getMessage() {
+            return message;
+        }
+    }
+
+
     /**
      * Class that represents an error occurred during the interaction
      * with a Web Service or a local database.

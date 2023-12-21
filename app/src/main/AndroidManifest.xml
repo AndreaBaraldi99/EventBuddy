@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,18 +17,16 @@
         android:theme="@style/Theme.EventBuddy"
         tools:targetApi="31">
         <activity
-            android:name=".UI.RegistrationActivity"
+            android:name=".UI.authentication.RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.LoginActivity"
+            android:name=".UI.authentication.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".UI.CreateEventActivity"
             android:exported="false"
             android:label="@string/title_activity_create_event"
             android:theme="@style/Theme.EventBuddy">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -32,10 +34,17 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
-            android:name=".UI.WelcomeActivity"
-            android:exported="false"
-            android:theme="@style/Theme.EventBuddy" />
+            android:name=".UI.authentication.WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.EventBuddy">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
 
         <activity
             android:name=".UI.BottomNavigationBarActivity"
@@ -49,7 +58,7 @@
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/Theme.EventBuddy" >
+            android:theme="@style/Theme.EventBuddy">
 
         </activity>
 
