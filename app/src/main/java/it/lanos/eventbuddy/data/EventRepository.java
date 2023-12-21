@@ -1,10 +1,12 @@
 package it.lanos.eventbuddy.data;
 
+import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -16,23 +18,28 @@ import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSou
 import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
 import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 
 public class EventRepository implements IEventsRepository, EventsCallback{
     private static final String TAG = EventRepository.class.getSimpleName();
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
-    private final FirebaseUser user;
+    //private final FirebaseUser user;
     private final BaseEventsCloudDBDataSource cloudDBDataSource;
+    private final DataEncryptionUtil dataEncryptionUtil;
+    private final Gson gson;
 
-    public EventRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, FirebaseUser user) {
-
+    public EventRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, FirebaseUser user, DataEncryptionUtil dataEncryptionUtil, Gson gson) {
+        this.gson = gson;
+        this.dataEncryptionUtil = dataEncryptionUtil;
         allEventsMutableLiveData = new MutableLiveData<>();
         this.eventsLocalDataSource = eventsLocalDataSource;
         this.cloudDBDataSource = cloudDBDataSource;
         this.eventsLocalDataSource.setEventsCallback(this);
         this.cloudDBDataSource.setEventsCallback(this);
-        this.user = user;
+        //this.user = user;
     }
 
     @Override
@@ -40,7 +47,12 @@ public class EventRepository implements IEventsRepository, EventsCallback{
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - lastUpdate > FRESH_TIMEOUT) {
-            cloudDBDataSource.getEvents(user.getUid());
+            try {
+                User user = gson.fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+                cloudDBDataSource.getEvents(user.getUserId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             eventsLocalDataSource.getEvents();
         }
@@ -72,7 +84,12 @@ public class EventRepository implements IEventsRepository, EventsCallback{
 
     @Override
     public void onJoinedEventFromRemote(String eventId) {
-        eventsLocalDataSource.joinEvent(eventId, user.getUid());
+        try {
+            User user = gson.fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+            eventsLocalDataSource.joinEvent(eventId, user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -89,21 +106,35 @@ public class EventRepository implements IEventsRepository, EventsCallback{
             }
         }
     }
-    /**
-     * NOTE: add the current user as a invited user to the event
-     * */
+
     @Override
     public void insertEvent(EventWithUsers event) {
-        event.getEvent().setManager(user.getUid());
-        cloudDBDataSource.addEvent(event);
+        try {
+            User user = gson.fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+            event.getEvent().setManager(user.getUserId());
+            event.getUsers().add(user);
+            cloudDBDataSource.addEvent(event);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void joinEvent(String eventId) {
-        cloudDBDataSource.joinEvent(eventId, user.getUid());
+        try {
+            User user = gson.fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+            cloudDBDataSource.joinEvent(eventId, user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void leaveEvent(String eventId) {
-        cloudDBDataSource.leaveEvent(eventId, user.getUid());
+        try {
+            User user = gson.fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+            cloudDBDataSource.leaveEvent(eventId, user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
