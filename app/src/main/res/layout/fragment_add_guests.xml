@@ -21,7 +21,8 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="@string/add_guest_searchbar_hint">
+            app:queryHint="@string/add_guest_searchbar_hint"
+            app:iconifiedByDefault="false">
 
         </androidx.appcompat.widget.SearchView>
 

@@ -31,18 +31,19 @@
 
         <activity
             android:name=".UI.authentication.WelcomeActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.EventBuddy">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
 
         <activity
             android:name=".UI.BottomNavigationBarActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
 
         </activity>
