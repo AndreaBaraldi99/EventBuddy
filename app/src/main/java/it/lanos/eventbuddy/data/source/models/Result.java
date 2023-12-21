@@ -8,6 +8,9 @@ public abstract class Result {
     public boolean isSuccess() {
         return this instanceof Success;
     }
+    public boolean isUserSuccess() {
+        return this instanceof UserSuccess;
+    }
 
     /**
      * Class that represents a successful action during the interaction
