@@ -21,6 +21,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final BaseUserLocalDataSource userLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
+
     public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource userLocalDataSource) {
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
@@ -77,6 +78,9 @@ public class UserRepository implements IUserRepository, UserCallback {
             Log.d("Debug", "Register success");
             userCloudDBDataSource.addUser(user);
         }
+
+        Result.AuthSuccess authResult = new Result.AuthSuccess("Success");
+        userMutableLiveData.postValue(authResult);
     }
 
     @Override
@@ -110,5 +114,11 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onFailureFromRemote(Exception e) {
         Result.Error resultError = new Result.Error(e.getMessage());
         userMutableLiveData.postValue(resultError);
+    }
+
+
+    @Override
+    public MutableLiveData<Result> getUserMutableLiveData() {
+        return userMutableLiveData;
     }
 }
