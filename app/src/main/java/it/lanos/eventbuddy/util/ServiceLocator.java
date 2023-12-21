@@ -4,6 +4,7 @@ import android.app.Application;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import it.lanos.eventbuddy.data.EventRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
@@ -46,7 +47,10 @@ public class ServiceLocator {
         BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        return new EventRepository(eventsLocalDataSource, cloudDBDataSource, user);
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+        Gson gson = new Gson();
+
+        return new EventRepository(eventsLocalDataSource, cloudDBDataSource, user, dataEncryptionUtil, gson);
     }
 
     public IUserRepository getUserRepository(Application application) {
@@ -58,7 +62,10 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application));
 
-        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource );
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+        Gson gson = new Gson();
+
+        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource, dataEncryptionUtil, gson);
     }
 
     public DatastoreBuilder getDatastoreBuilder(Application application) {

@@ -1,9 +1,13 @@
 package it.lanos.eventbuddy.data;
 
+import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -14,20 +18,25 @@ import it.lanos.eventbuddy.data.source.firebase.auth.BaseUserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
+import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class UserRepository implements IUserRepository, UserCallback {
     private final BaseUserDataSource userDataSource;
     private final BaseUserCloudDBDataSource userCloudDBDataSource;
-    private final BaseUserLocalDataSource userLocalDataSource;
+    //private final BaseUserLocalDataSource userLocalDataSource;
     //private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
-    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource userLocalDataSource) {
+    private final DataEncryptionUtil dataEncryptionUtil;
+    private final Gson gson;
+    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource userLocalDataSource, DataEncryptionUtil dataEncryptionUtil, Gson gson){
+        this.gson = gson;
+        this.dataEncryptionUtil = dataEncryptionUtil;
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
         this.userCloudDBDataSource = userCloudDBDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
-        this.userLocalDataSource = userLocalDataSource;
-        this.userLocalDataSource.setUserCallback(this);
+        //this.userLocalDataSource = userLocalDataSource;
+        //this.userLocalDataSource.setUserCallback(this);
         //userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
     }
@@ -83,7 +92,12 @@ public class UserRepository implements IUserRepository, UserCallback {
     @Override
     public void onSuccessFromOnlineDB(User user) {
         Log.d("Debug", "Success from online db");
-        userLocalDataSource.addUser(user);
+        try {
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, gson.toJson(user));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //userLocalDataSource.addUser(user);
     }
 
     @Override
