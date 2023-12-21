@@ -13,6 +13,4 @@ public interface IUserRepository {
     void deleteUser();
     void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
     MutableLiveData<Result> searchUsers(@NonNull String query);
-    MutableLiveData<Result> getUserMutableLiveData();
-
 }
