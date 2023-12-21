@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 
 import java.util.ArrayList;
@@ -67,13 +66,18 @@ public class AddGuestsFragment extends DialogFragment {
                         (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
         return builder.create();
     }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userList = new ArrayList<>();
 
-        RecyclerView recyclerView = view.findViewById(R.id.add_guests_recycler_view);
+        RecyclerView recyclerView = requireView().findViewById(R.id.add_guests_recycler_view);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
@@ -90,11 +94,12 @@ public class AddGuestsFragment extends DialogFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(addGuestsRecyclerViewAdapter);
 
-        SearchView searchView = view.findViewById(R.id.add_guest_search_view);
+        SearchView searchView = requireView().findViewById(R.id.add_guest_search_view);
+        iUserRepository.searchUsers("mario");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                try{
+                try {
                     iUserRepository.searchUsers(query).observe(getViewLifecycleOwner(), result -> {
                         if (result instanceof Result.UserSuccess) {
                             userList.clear();
@@ -111,7 +116,7 @@ public class AddGuestsFragment extends DialogFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                try{
+                try {
                     iUserRepository.searchUsers(newText).observe(getViewLifecycleOwner(), result -> {
                         if (result instanceof Result.UserSuccess) {
                             userList.clear();
@@ -126,8 +131,5 @@ public class AddGuestsFragment extends DialogFragment {
                 return true;
             }
         });
-
-
-
     }
 }

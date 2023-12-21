@@ -19,7 +19,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final BaseUserDataSource userDataSource;
     private final BaseUserCloudDBDataSource userCloudDBDataSource;
     private final BaseUserLocalDataSource userLocalDataSource;
-    //private final MutableLiveData<Result> userMutableLiveData;
+    private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
 
     public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource userLocalDataSource) {
@@ -29,7 +29,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         this.userCloudDBDataSource.setUserCallback(this);
         this.userLocalDataSource = userLocalDataSource;
         this.userLocalDataSource.setUserCallback(this);
-        //userMutableLiveData = new MutableLiveData<>();
+        userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
     }
     @Override
