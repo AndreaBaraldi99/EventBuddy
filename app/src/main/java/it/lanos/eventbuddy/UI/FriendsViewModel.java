@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
-//import it.lanos.eventbuddy.data.source.entities.EventWithUsers;
-//import it.lanos.eventbuddy.data.source.entities.Result;
+
 
 public class FriendsViewModel extends ViewModel {
     private final IUserRepository iUserRepository;

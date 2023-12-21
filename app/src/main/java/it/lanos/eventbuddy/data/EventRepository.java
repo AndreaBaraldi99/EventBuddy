@@ -49,9 +49,7 @@ public class EventRepository implements IEventsRepository, EventsCallback{
 
     @Override
     public void onSuccessFromRemote(List<EventsWithUsersFromCloudResponse> eventsCloudResponse) {
-        for(EventsWithUsersFromCloudResponse event : eventsCloudResponse){
-            eventsLocalDataSource.insertEvent(Event.fromCloudResponse(event.getEvent()), event.getUsers());
-        }
+        eventsLocalDataSource.insertEvent(eventsCloudResponse);
     }
 
     @Override
@@ -91,7 +89,9 @@ public class EventRepository implements IEventsRepository, EventsCallback{
             }
         }
     }
-
+    /**
+     * NOTE: add the current user as a invited user to the event
+     * */
     @Override
     public void insertEvent(EventWithUsers event) {
         event.getEvent().setManager(user.getUid());

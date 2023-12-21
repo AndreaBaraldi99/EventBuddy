@@ -6,18 +6,17 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.SearchView;
 import android.widget.TextView;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,6 @@ public class AddGuestsFragment extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_guests, null);
 
-        SearchView searchView = view.findViewById(R.id.add_guest_search_view);
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton(R.string.add_description_confirm,
@@ -70,14 +68,11 @@ public class AddGuestsFragment extends DialogFragment {
         return builder.create();
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         userList = new ArrayList<>();
 
-        Button addGuestButton = view.findViewById(R.id.GuestsIconButton);
-        TextView guestUsername = view.findViewById(R.id.usernameTextView);
         RecyclerView recyclerView = view.findViewById(R.id.add_guests_recycler_view);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
@@ -89,6 +84,7 @@ public class AddGuestsFragment extends DialogFragment {
                     public void onGuestItemClick(User user) {
                         //aggiungere il guest
                         //cambiare il colore del pulsante
+                        // vedi https://developer.android.com/develop/ui/views/layout/recyclerview-custom?hl=it
                     }
                 });
         recyclerView.setLayoutManager(layoutManager);
@@ -98,19 +94,36 @@ public class AddGuestsFragment extends DialogFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                iUserRepository.searchUsers(query).observe(getViewLifecycleOwner(), result -> {
-                    if (result instanceof Result.UserSuccess) {
-                        userList.clear();
-                        userList.addAll(((Result.UserSuccess) result).getData());
-                        addGuestsRecyclerViewAdapter.notifyDataSetChanged();
-                    }
-                });
+                try{
+                    iUserRepository.searchUsers(query).observe(getViewLifecycleOwner(), result -> {
+                        if (result instanceof Result.UserSuccess) {
+                            userList.clear();
+                            userList.addAll(((Result.UserSuccess) result).getData());
+                            addGuestsRecyclerViewAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                try{
+                    iUserRepository.searchUsers(newText).observe(getViewLifecycleOwner(), result -> {
+                        if (result instanceof Result.UserSuccess) {
+                            userList.clear();
+                            userList.addAll(((Result.UserSuccess) result).getData());
+                            addGuestsRecyclerViewAdapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
             }
         });
 
