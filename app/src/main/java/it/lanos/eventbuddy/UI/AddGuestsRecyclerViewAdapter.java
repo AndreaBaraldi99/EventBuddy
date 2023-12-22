@@ -15,26 +15,27 @@ import java.util.List;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
 
-public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuestsRecyclerViewAdapter.NewViewHolder>{
+public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuestsRecyclerViewAdapter.GuestViewHolder>{
     private final Application application;
     private final OnItemClickListener onItemClickListener;
     private final List<User> usersList;
 
     public interface OnItemClickListener {
-        void onGuestItemClick(User user);
+        void onGuestItemClick(User user, Button button);
     }
 
     @NonNull
     @Override
-    public AddGuestsRecyclerViewAdapter.NewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GuestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.add_guest_item, parent, false);
+        GuestViewHolder guestViewHolder = new GuestViewHolder(view);
 
-        return new AddGuestsRecyclerViewAdapter.NewViewHolder(view);
+        return guestViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddGuestsRecyclerViewAdapter.NewViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AddGuestsRecyclerViewAdapter.GuestViewHolder holder, int position) {
         holder.bind(usersList.get(position));
     }
 
@@ -52,16 +53,16 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         this.onItemClickListener = onItemClickListener;
     }
 
-    public class NewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class GuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView userNameTextView;
         private Button addButton;
 
-        public NewViewHolder(@NonNull View itemView) {
+        public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.usernameTextView);
             addButton = itemView.findViewById(R.id.add_guest_button);
-            itemView.setOnClickListener(this);
+            addButton.setOnClickListener(this);
         }
 
         public void bind(User user) {
@@ -72,7 +73,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onGuestItemClick(usersList.get(getAdapterPosition()));
+            onItemClickListener.onGuestItemClick(usersList.get(getAdapterPosition()), addButton);
         }
     }
 }

@@ -78,6 +78,10 @@ public class CreateEventActivity extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "add guests");
     }
 
+    public void onGuestAddClick(User user){
+        userList.add(user);
+    }
+
     public String getDescription() {
         return description;
     }

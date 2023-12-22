@@ -2,11 +2,15 @@ package it.lanos.eventbuddy.UI;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 import java.util.ArrayList;
@@ -85,33 +90,27 @@ public class AddGuestsFragment extends DialogFragment {
         addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication(),
                 new AddGuestsRecyclerViewAdapter.OnItemClickListener() {
                     @Override
-                    public void onGuestItemClick(User user) {
+                    public void onGuestItemClick(User user, Button addButton) {
+                        //((CreateEventActivity) getActivity()).onGuestAddClick(user);
+                        addButton.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_errorContainer));
+
+
+                        //addButton.setBackgroundColor(currentButtonColor);
+
                         //aggiungere il guest
                         //cambiare il colore del pulsante
                         // vedi https://developer.android.com/develop/ui/views/layout/recyclerview-custom?hl=it
                     }
+
                 });
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(addGuestsRecyclerViewAdapter);
 
         SearchView searchView = view.findViewById(R.id.add_guest_search_view);
-        //iUserRepository.searchUsers("mario");
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                /*try {
-                    iUserRepository.searchUsers(query).observe(getViewLifecycleOwner(), result -> {
-                        if (result instanceof Result.UserSuccess) {
-                            userList.clear();
-                            userList.addAll(((Result.UserSuccess) result).getData());
-                            addGuestsRecyclerViewAdapter.notifyDataSetChanged();
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-                return true;*/
                 return false;
             }
 
@@ -124,20 +123,25 @@ public class AddGuestsFragment extends DialogFragment {
     }
 
     private boolean handleSearch(String text) {
-        String prova = text;
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        try {
-            iUserRepository.searchUsers(text).observe(getViewLifecycleOwner(), result -> {
-                if (result instanceof Result.UserSuccess) {
-                    userList.clear();
-                    userList.addAll(((Result.UserSuccess) result).getData());
-                    addGuestsRecyclerViewAdapter.notifyDataSetChanged();
-                }
-            });
-        } catch (Exception e) {
-            String stampa = e.toString();
-            e.printStackTrace();
-            return false;
+        if(text.equals("")){
+            userList.clear();
+            addGuestsRecyclerViewAdapter.notifyDataSetChanged();
+        }
+        else{
+            try {
+                iUserRepository.searchUsers(text).observe(getViewLifecycleOwner(), result -> {
+                    if (result instanceof Result.UserSuccess) {
+                        userList.clear();
+                        userList.addAll(((Result.UserSuccess) result).getData());
+                        addGuestsRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+                });
+            } catch (Exception e) {
+                String stampa = e.toString();
+                e.printStackTrace();
+                return false;
+            }
         }
         return true;
     }
