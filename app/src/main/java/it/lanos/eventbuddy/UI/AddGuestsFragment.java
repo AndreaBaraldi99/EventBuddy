@@ -90,9 +90,18 @@ public class AddGuestsFragment extends DialogFragment {
         addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication(),
                 new AddGuestsRecyclerViewAdapter.OnItemClickListener() {
                     @Override
-                    public void onGuestItemClick(User user, Button addButton) {
-                        //((CreateEventActivity) getActivity()).onGuestAddClick(user);
-                        addButton.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_errorContainer));
+                    public void onGuestItemClick(User user, AddGuestsRecyclerViewAdapter.GuestViewHolder holder) {
+                        if(holder.isSelected() == false) {
+                            holder.setSelected(true);
+                            holder.getAddButton().setBackgroundColor(getResources().getColor(R.color.md_theme_dark_errorContainer));
+                            ((CreateEventActivity) getActivity()).onGuestAddClick(user);
+                        }
+                        else {
+                            holder.setSelected(false);
+                            holder.getAddButton().setBackgroundColor(getResources().getColor(R.color.white));
+                            ((CreateEventActivity) getActivity()).onGuestRemoveClick(user);
+                        }
+
 
 
                         //addButton.setBackgroundColor(currentButtonColor);

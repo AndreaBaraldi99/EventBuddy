@@ -81,6 +81,7 @@ public class CreateEventActivity extends AppCompatActivity{
     public void onGuestAddClick(User user){
         userList.add(user);
     }
+    public void onGuestRemoveClick(User user){userList.remove(user);}
 
     public String getDescription() {
         return description;
@@ -133,7 +134,8 @@ public class CreateEventActivity extends AppCompatActivity{
                 this,
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
-        List<User> users = new ArrayList<>();
+        //List<User> users = new ArrayList<>();
+        userList = new ArrayList<>();
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
         Button addDescrButton = findViewById(R.id.DescriptionIconButton);
@@ -153,12 +155,13 @@ public class CreateEventActivity extends AppCompatActivity{
                 String event_name = eventNameTextInputLayout.getEditText().getText().toString();
                 String date_time = dateTextInputLayout.getEditText().getText().toString() + timeTextInputLayout.getEditText().getText().toString();
                 String location = locationTextInputLayout.getEditText().getText().toString();
-                List<User> guests = new ArrayList<User>();
-                guests.add((new User("134", "lu", "lucrezia")));
-                Event event = new Event(event_name, date_time, location, description);
-
-                EventWithUsers finalEvent = new EventWithUsers(event, guests);
-                eventViewModel.addEvent(finalEvent);
+                //List<User> guests = new ArrayList<User>();
+                //guests.add((new User("134", "lu", "lucrezia")));
+                int test = userList.size();
+                //Event event = new Event(event_name, date_time, location, description);
+                //TODO: Togliere i commenti alla fine dei test
+                //EventWithUsers finalEvent = new EventWithUsers(event, guests);
+                //eventViewModel.addEvent(finalEvent);
 
             }
         });

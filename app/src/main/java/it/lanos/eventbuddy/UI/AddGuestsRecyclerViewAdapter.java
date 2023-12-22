@@ -21,7 +21,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
     private final List<User> usersList;
 
     public interface OnItemClickListener {
-        void onGuestItemClick(User user, Button button);
+        void onGuestItemClick(User user, GuestViewHolder holder);
     }
 
     @NonNull
@@ -57,12 +57,26 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
         private TextView userNameTextView;
         private Button addButton;
+        private boolean selected;
 
         public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.usernameTextView);
             addButton = itemView.findViewById(R.id.add_guest_button);
+            selected = false;
             addButton.setOnClickListener(this);
+        }
+
+        public Button getAddButton() {
+            return addButton;
+        }
+
+        public void setSelected(boolean selected) {
+            this.selected = selected;
+        }
+
+        public boolean isSelected() {
+            return selected;
         }
 
         public void bind(User user) {
@@ -71,9 +85,10 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         }
 
 
+
         @Override
         public void onClick(View v) {
-            onItemClickListener.onGuestItemClick(usersList.get(getAdapterPosition()), addButton);
+            onItemClickListener.onGuestItemClick(usersList.get(getAdapterPosition()),this);
         }
     }
 }
