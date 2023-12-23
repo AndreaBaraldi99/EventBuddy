@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.selection.ItemDetailsLookup;
+import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,11 +20,11 @@ import it.lanos.eventbuddy.data.source.models.User;
 
 public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuestsRecyclerViewAdapter.GuestViewHolder>{
     private final Application application;
-    private final OnItemClickListener onItemClickListener;
     private final List<User> usersList;
+    private SelectionTracker<Long> selectionTracker;
 
-    public interface OnItemClickListener {
-        void onGuestItemClick(User user, GuestViewHolder holder);
+    public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
+        this.selectionTracker = selectionTracker;
     }
 
     @NonNull
@@ -37,6 +40,20 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
     @Override
     public void onBindViewHolder(@NonNull AddGuestsRecyclerViewAdapter.GuestViewHolder holder, int position) {
         holder.bind(usersList.get(position));
+        boolean isSelected = selectionTracker != null && selectionTracker.isSelected((long) position);
+        holder.itemView.setActivated(isSelected);
+        holder.itemView.setOnClickListener(view -> {
+            if (selectionTracker != null) {
+                selectionTracker.select((long) position);
+            }
+        });
+
+        if (isSelected) {
+            holder.itemView.setBackgroundResource(R.color.md_theme_light_secondaryContainer);
+        } else {
+            holder.itemView.setBackgroundResource(android.R.color.transparent);
+        }
+
     }
 
     @Override
@@ -47,13 +64,12 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         return 0;
     }
 
-    public AddGuestsRecyclerViewAdapter(List <User> usersList, Application application, AddGuestsRecyclerViewAdapter.OnItemClickListener onItemClickListener) {
+    public AddGuestsRecyclerViewAdapter(List <User> usersList, Application application) {
         this.usersList = usersList;
         this.application = application;
-        this.onItemClickListener = onItemClickListener;
     }
 
-    public class GuestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class GuestViewHolder extends RecyclerView.ViewHolder {
 
         private TextView userNameTextView;
         private Button addButton;
@@ -64,15 +80,6 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
             userNameTextView = itemView.findViewById(R.id.usernameTextView);
             addButton = itemView.findViewById(R.id.add_guest_button);
             selected = false;
-            addButton.setOnClickListener(this);
-        }
-
-        public Button getAddButton() {
-            return addButton;
-        }
-
-        public void setSelected(boolean selected) {
-            this.selected = selected;
         }
 
         public boolean isSelected() {
@@ -85,10 +92,30 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         }
 
 
+        public ItemDetailsLookup.ItemDetails<Long> getItemDetails() {
+            return new ItemDetailsLookup.ItemDetails<Long>() {
+                @Override
+                public int getPosition() {
+                    return getAdapterPosition();
+                }
 
-        @Override
-        public void onClick(View v) {
-            onItemClickListener.onGuestItemClick(usersList.get(getAdapterPosition()),this);
+                @Nullable
+                @Override
+                public Long getSelectionKey() {
+                    return (long) getAdapterPosition();
+                }
+            };
+        }
+
+        public void setItemSelection(int position, boolean isSelected) {
+            if (selectionTracker != null) {
+                if (isSelected) {
+                    selectionTracker.select((long) position);
+                } else {
+                    selectionTracker.deselect((long) position);
+                }
+            }
+            notifyItemChanged(position);
         }
     }
 }

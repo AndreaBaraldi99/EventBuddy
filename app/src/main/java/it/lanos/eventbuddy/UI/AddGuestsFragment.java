@@ -13,9 +13,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.selection.ItemKeyProvider;
+import androidx.recyclerview.selection.SelectionPredicates;
+import androidx.recyclerview.selection.SelectionTracker;
+import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,36 +92,38 @@ public class AddGuestsFragment extends DialogFragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication(),
-                new AddGuestsRecyclerViewAdapter.OnItemClickListener() {
-                    @Override
-                    public void onGuestItemClick(User user, AddGuestsRecyclerViewAdapter.GuestViewHolder holder) {
-                        if(holder.isSelected() == false) {
-                            holder.setSelected(true);
-                            holder.getAddButton().setBackgroundColor(getResources().getColor(R.color.md_theme_dark_errorContainer));
-                            ((CreateEventActivity) getActivity()).onGuestAddClick(user);
-                        }
-                        else {
-                            holder.setSelected(false);
-                            holder.getAddButton().setBackgroundColor(getResources().getColor(R.color.white));
-                            ((CreateEventActivity) getActivity()).onGuestRemoveClick(user);
-                        }
-
-
-
-                        //addButton.setBackgroundColor(currentButtonColor);
-
-                        //aggiungere il guest
-                        //cambiare il colore del pulsante
-                        // vedi https://developer.android.com/develop/ui/views/layout/recyclerview-custom?hl=it
-                    }
-
-                });
+        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(addGuestsRecyclerViewAdapter);
 
         SearchView searchView = view.findViewById(R.id.add_guest_search_view);
 
+        MyItemKeyProvider myItemKeyProvider = new MyItemKeyProvider(ItemKeyProvider.SCOPE_MAPPED, recyclerView);
+        MyItemDetailsLookup myItemDetailsLookup = new MyItemDetailsLookup(recyclerView);
+
+        SelectionTracker<Long> selectionTracker = new SelectionTracker.Builder<>(
+                "mySelection",
+                recyclerView,
+                new MyItemKeyProvider(ItemKeyProvider.SCOPE_MAPPED, recyclerView),
+                myItemDetailsLookup,
+                StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(SelectionPredicates.createSelectAnything()).build();
+        addGuestsRecyclerViewAdapter.setSelectionTracker(selectionTracker);
+        selectionTracker.addObserver(new SelectionTracker.SelectionObserver<Long>() {
+            @Override
+            public void onItemStateChanged(@NonNull Long key, boolean selected) {
+                super.onItemStateChanged(key, selected);
+                CreateEventActivity createEventActivity = (CreateEventActivity) getActivity();
+                if (selected) {
+                    assert createEventActivity != null;
+                    createEventActivity.onGuestAddClick(userList.get(key.intValue()));
+                } else {
+                    assert createEventActivity != null;
+                    createEventActivity.onGuestRemoveClick(userList.get(key.intValue()));
+                    Log.d("AddGuestsFragment", "onItemStateChanged: " + userList.get(key.intValue()).getUsername());
+                }
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

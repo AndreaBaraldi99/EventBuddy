@@ -61,6 +61,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
 
     val roomVersion = "2.6.1"
     annotationProcessor("androidx.room:room-compiler:$roomVersion")

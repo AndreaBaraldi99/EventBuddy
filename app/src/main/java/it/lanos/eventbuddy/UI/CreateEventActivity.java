@@ -2,6 +2,7 @@ package it.lanos.eventbuddy.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.FrameMetricsAggregator;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,7 +34,6 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class CreateEventActivity extends AppCompatActivity{
-
     private EventViewModel eventViewModel;
     private TextInputLayout eventNameTextInputLayout;
     private TextInputLayout dateTextInputLayout;
@@ -106,26 +106,9 @@ public class CreateEventActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIntent(intent);
-    }
-
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-
-
-
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
-        handleIntent(getIntent());
 
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
@@ -134,7 +117,6 @@ public class CreateEventActivity extends AppCompatActivity{
                 this,
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
-        //List<User> users = new ArrayList<>();
         userList = new ArrayList<>();
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
