@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import java.util.Iterator;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
@@ -43,9 +44,18 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
 
         TextView text = convertView.findViewById(R.id.usernameTextView);
         Button add = convertView.findViewById(R.id.add_guest_button);
-        if(callback.getUser().contains(searchingUsers.get(position))){
-            add.setText("Remove");
+
+        //SETUP LIST ITEM FOR CONSISTENCY
+        add.setText("Add");
+        Iterator it = callback.getUser().iterator();
+        while(it.hasNext()){
+            User iter = (User) it.next();
+            if(iter.getUsername().equals(searchingUsers.get(position).getUsername())) {
+                add.setText("Remove");
+            }
         }
+        //if(callback.getUser().contains(searchingUsers.get(position))){
+            //add.setText("Remove");
 
         text.setText(searchingUsers.get(position).getUsername());
         add.setOnClickListener(new View.OnClickListener() {
