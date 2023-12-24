@@ -43,18 +43,21 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
 
         TextView text = convertView.findViewById(R.id.usernameTextView);
         Button add = convertView.findViewById(R.id.add_guest_button);
+        if(callback.getUser().contains(searchingUsers.get(position))){
+            add.setText("Remove");
+        }
 
         text.setText(searchingUsers.get(position).getUsername());
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = searchingUsers.get(position);
-                if(add.getText().equals("add")) {
-                    add.setText("remove");
+                if(add.getText().toString().equals("Add")) {
+                    add.setText("Remove");
                     callback.onAddClick(user);
                 }
                 else {
-                    add.setText("add");
+                    add.setText("Add");
                     callback.onRemoveClick(user);
                 }
 

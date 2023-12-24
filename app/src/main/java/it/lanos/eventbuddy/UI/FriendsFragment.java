@@ -22,6 +22,7 @@ import android.widget.ListView;
 import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
@@ -40,6 +41,10 @@ public class FriendsFragment extends Fragment {
 
     private SearchFriendsAdapter searchAdapter;
 
+    public List<User> getUser() {
+        return user;
+    }
+
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -55,7 +60,14 @@ public class FriendsFragment extends Fragment {
     }
 
     public void onRemoveClick(User user){
-        this.user.remove(user);
+        Iterator it = this.user.iterator();
+        while(it.hasNext()){
+            User iter = (User) it.next();
+            if(iter.getUsername().equals(user.getUsername())) {
+                this.user.remove(iter);
+                break;
+            }
+        }
         friendsAdapter.notifyDataSetChanged();
     }
 
