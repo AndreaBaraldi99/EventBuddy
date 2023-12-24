@@ -8,13 +8,21 @@
     android:fillViewport="true">
    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/sfondo">
+        android:layout_height="wrap_content">
 
-           <com.google.android.material.appbar.MaterialToolbar
+       <ImageView
+           android:id="@+id/imageView2"
+           android:layout_width="match_parent"
+           android:layout_height="730dp"
+           android:background="@drawable/sfondo"
+           app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+
+       <com.google.android.material.appbar.MaterialToolbar
            android:id="@+id/detail_event_top_appbar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_marginTop="52dp"
            android:minHeight="?attr/actionBarSize"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
@@ -138,11 +146,12 @@
 
            <TextView
                android:id="@+id/event_number_partecipants"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
+               android:layout_width="28dp"
+               android:layout_height="32dp"
                android:gravity="center"
                android:text="+8"
                android:textColor="#FFFFFF"
+               app:layout_constraintBottom_toBottomOf="parent"
                app:layout_constraintStart_toStartOf="parent"
                app:layout_constraintTop_toTopOf="parent" />
        </androidx.constraintlayout.widget.ConstraintLayout>
@@ -195,5 +204,13 @@
            android:text="@string/event_detail_do_not_join"
            app:layout_constraintBottom_toBottomOf="parent"
            app:layout_constraintStart_toStartOf="parent" />
+
+       <androidx.constraintlayout.widget.Guideline
+           android:id="@+id/guideline3"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           app:layout_constraintGuide_begin="385dp" />
+
    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

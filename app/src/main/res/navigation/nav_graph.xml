@@ -30,4 +30,19 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </activity>
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="it.lanos.eventbuddy.UI.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="it.lanos.eventbuddy.UI.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/activeFragment"
+        android:name="it.lanos.eventbuddy.UI.ActiveFragment"
+        android:label="fragment_active"
+        tools:layout="@layout/fragment_active" />
 </navigation>

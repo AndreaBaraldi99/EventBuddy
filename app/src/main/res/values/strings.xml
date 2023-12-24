@@ -89,7 +89,6 @@
     <string name="generic_login_error">Generic error</string>
 
 
-
     <!-- Strings used for FriendsFragment -->
     <string name="friends_fragment_title">Manage Friends</string>
     <string name="friends_search_bar_hint">Search for new friends</string>
