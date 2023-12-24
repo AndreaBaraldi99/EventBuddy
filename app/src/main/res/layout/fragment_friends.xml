@@ -21,20 +21,25 @@
             app:title="@string/friends_fragment_title"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginEnd="26dp"
-            android:backgroundTint="@color/md_surface_container_high"
-            android:hint="@string/friends_search_bar_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_appbar">
 
-        </com.google.android.material.search.SearchBar>
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="26dp"
+                android:background="@drawable/search_view_background"
+                android:hint="@string/friends_search_bar_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/top_appbar"
+                app:queryHint="@string/friends_search_bar_hint"
+                app:queryBackground="@null"
+                app:iconifiedByDefault="false">
+            </androidx.appcompat.widget.SearchView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -71,6 +76,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <ListView
+            android:id="@+id/listViewSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
