@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         signup_textButton = findViewById(R.id.signup_textButton);
 
         emailTextInputLayout = findViewById(R.id.email_text);
-        passwordTextInputLayout = findViewById(R.id.password_text);
+        passwordTextInputLayout = findViewById(R.id.new_password_text);
 
         rememberMe_checkbox = findViewById(R.id.rememberMe_checkBox);
     }

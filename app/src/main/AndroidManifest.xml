@@ -17,6 +17,9 @@
         android:theme="@style/Theme.EventBuddy"
         tools:targetApi="31">
         <activity
+            android:name=".UI.AccountSettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.authentication.RegistrationActivity"
             android:exported="false" />
         <activity
@@ -26,30 +29,24 @@
             android:name=".UI.CreateEventActivity"
             android:exported="true"
             android:label="@string/title_activity_create_event"
-            android:theme="@style/Theme.EventBuddy">
-        </activity>
-
+            android:theme="@style/Theme.EventBuddy"></activity>
         <activity
             android:name=".UI.authentication.WelcomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.EventBuddy">
-        </activity>
-
+            android:theme="@style/Theme.EventBuddy"></activity>
         <activity
             android:name=".UI.BottomNavigationBarActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/eventDetail">
-
-        </activity>
-
+            android:theme="@style/eventDetail"></activity>
     </application>
 
 </manifest>

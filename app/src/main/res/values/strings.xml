@@ -105,4 +105,11 @@
     <string name="settings_advice_notifications">Change notifications config</string>
     <string name="settings_privacy">Privacy</string>
     <string name="settings_advice_privacy">Permissions</string>
+    <string name="settings_name">Name</string>
+    <string name="settings_email">Email</string>
+    <string name="settings_hint_current_user_password">Current password</string>
+    <string name="settings_new_password">New password</string>
+    <string name="settings_confirm_password">Confirm new password</string>
+    <string name="settings_button_change_password">Change password</string>
+    <string name="settings_button_delete_account">Delete account</string>
 </resources>

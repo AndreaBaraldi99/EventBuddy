@@ -4,10 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +89,14 @@ public class SettingsFragment extends Fragment {
             // Return CONSUMED if you don't want want the window insets to keep passing
             // down to descendant views.
             return WindowInsetsCompat.CONSUMED;
+        });
+
+        ConstraintLayout accountConstraint = view.findViewById(R.id.accountConstraint);
+        accountConstraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity);
+            }
         });
 
     }

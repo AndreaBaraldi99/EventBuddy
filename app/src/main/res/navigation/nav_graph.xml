@@ -39,10 +39,19 @@
         android:id="@+id/settingsFragment"
         android:name="it.lanos.eventbuddy.UI.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_accountSettingsActivity"
+            app:destination="@id/accountSettingsActivity" />
+    </fragment>
     <fragment
         android:id="@+id/activeFragment"
         android:name="it.lanos.eventbuddy.UI.ActiveFragment"
         android:label="fragment_active"
         tools:layout="@layout/fragment_active" />
+    <activity
+        android:id="@+id/accountSettingsActivity"
+        android:name="it.lanos.eventbuddy.UI.AccountSettingsActivity"
+        android:label="activity_account_settings"
+        tools:layout="@layout/activity_account_settings" />
 </navigation>
