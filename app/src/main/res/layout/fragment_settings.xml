@@ -98,7 +98,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
+            android:id="@+id/preferencesConstraint"
             android:layout_width="360dp"
             android:layout_height="72dp"
             android:layout_marginStart="20dp"
@@ -148,7 +148,7 @@
             android:layout_marginTop="13dp"
             android:background="@drawable/round_rectangle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/preferencesConstraint">
 
             <ImageView
                 android:id="@+id/notificationsIcon"

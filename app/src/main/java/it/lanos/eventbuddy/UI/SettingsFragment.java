@@ -99,5 +99,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        ConstraintLayout preferencesConstraint = view.findViewById(R.id.preferencesConstraint);
+        preferencesConstraint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity);
+            }
+        });
+
+
     }
 }

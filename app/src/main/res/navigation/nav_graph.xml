@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_accountSettingsActivity"
             app:destination="@id/accountSettingsActivity" />
+        <action
+            android:id="@+id/action_settingsFragment_to_preferencesSettingsActivity"
+            app:destination="@id/preferencesSettingsActivity" />
     </fragment>
     <fragment
         android:id="@+id/activeFragment"
@@ -54,4 +57,9 @@
         android:name="it.lanos.eventbuddy.UI.AccountSettingsActivity"
         android:label="activity_account_settings"
         tools:layout="@layout/activity_account_settings" />
+    <activity
+        android:id="@+id/preferencesSettingsActivity"
+        android:name="it.lanos.eventbuddy.UI.PreferencesSettingsActivity"
+        android:label="activity_preferences_settings"
+        tools:layout="@layout/activity_preferences_settings" />
 </navigation>

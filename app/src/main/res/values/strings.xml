@@ -112,4 +112,10 @@
     <string name="settings_confirm_password">Confirm new password</string>
     <string name="settings_button_change_password">Change password</string>
     <string name="settings_button_delete_account">Delete account</string>
+    <string name="settings_preferences_language">Language</string>
+    <string name="settings_preferences_theme">Dark theme</string>
+    <string-array name="languages">
+        <item>English</item>
+        <item>Italian</item>
+    </string-array>
 </resources>
