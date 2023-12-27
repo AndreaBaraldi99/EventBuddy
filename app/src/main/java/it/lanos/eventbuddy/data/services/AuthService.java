@@ -43,4 +43,8 @@ public class AuthService {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser.updatePassword(newPassword);
     }
+
+    public Task<Void> resetPassword(@NonNull String email) {
+        return mAuth.sendPasswordResetEmail(email);
+    }
 }

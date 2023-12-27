@@ -11,5 +11,6 @@ public interface UserCallback {
     void onUserSearchedSuccess(List<User> users);
     void onDeleteSuccess();
     void onChangePasswordSuccess();
+    void onResetPasswordSuccess();
     void onFailureFromRemote(Exception e);
 }

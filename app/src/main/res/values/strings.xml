@@ -87,6 +87,8 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="rememberMe_checkbox">Remember me</string>
     <string name="generic_login_error">Generic error</string>
+    <string name="enter_email">Enter your email:</string>
+    <string name="send_email">Send email</string>
 
 
     <!-- Strings used for FriendsFragment -->
@@ -114,6 +116,7 @@
     <string name="settings_button_delete_account">Delete account</string>
     <string name="settings_preferences_language">Language</string>
     <string name="settings_preferences_theme">Dark theme</string>
+
     <string-array name="languages">
         <item>English</item>
         <item>Italian</item>

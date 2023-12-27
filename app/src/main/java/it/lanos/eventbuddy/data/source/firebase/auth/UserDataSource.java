@@ -80,8 +80,6 @@ public class UserDataSource extends BaseUserDataSource {
     /***
      * Change the user password
      */
-
-
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword){
         FirebaseUser currentUser = authService.getCurrentUser();
@@ -98,8 +96,26 @@ public class UserDataSource extends BaseUserDataSource {
             }
         });
     }
+
+    /***
+     * Send an email to the user to initiate a password reset
+     * @param email user email
+     */
+    @Override
+    public void resetPassword(@NonNull String email) {
+        authService.resetPassword(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        authCallback.onResetPasswordSuccess();
+                    } else {
+                        authCallback.onFailureFromRemote(task.getException());
+                    }
+                });
+    }
     @Override
     public FirebaseUser getCurrentUser() {
         return authService.getCurrentUser();
     }
+
+
 }

@@ -55,6 +55,12 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
+    public MutableLiveData<Result> resetPassword(@NonNull String email) {
+        userDataSource.resetPassword(email);
+        return userMutableLiveData;
+    }
+
+    @Override
     public void deleteUser() {
         userDataSource.deleteUser();
     }
@@ -123,6 +129,11 @@ public class UserRepository implements IUserRepository, UserCallback {
     @Override
     public void onChangePasswordSuccess() {
 
+    }
+    @Override
+    public void onResetPasswordSuccess() {
+        Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Email sent");
+        userMutableLiveData.postValue(resultSuccess);
     }
 
     @Override

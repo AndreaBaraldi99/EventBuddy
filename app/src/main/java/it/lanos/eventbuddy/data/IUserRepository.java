@@ -9,6 +9,7 @@ import it.lanos.eventbuddy.data.source.models.Result;
 public interface IUserRepository {
     MutableLiveData<Result> register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password);
     MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password);
+    MutableLiveData<Result> resetPassword(@NonNull String email);
     void signOut();
     void deleteUser();
     void changePassword(@NonNull String oldPassword, @NonNull String newPassword);

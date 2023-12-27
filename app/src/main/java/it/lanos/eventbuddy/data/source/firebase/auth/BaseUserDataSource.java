@@ -16,5 +16,6 @@ public abstract class BaseUserDataSource {
     public abstract void signOut();
     public abstract void deleteUser();
     public abstract void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
+    public abstract void resetPassword(@NonNull String email);
     public abstract FirebaseUser getCurrentUser();
 }

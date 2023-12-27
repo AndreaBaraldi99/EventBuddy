@@ -38,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
 
         handleLoginButton();
 
+        navigateToForgottenPasswordScreen();
+
         navigateToSignupScreen();
     }
 
@@ -71,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
             String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
 
-            if(!email.isEmpty() && !password.isEmpty()) {
+            if(Helper.isValidEmail(email) && !password.isEmpty()) {
                 userViewModel.signIn(email, password).observe(this, result -> {
                     if (Helper.isAuthSuccess(result)) {
                             Snackbar.make(findViewById(android.R.id.content),
@@ -116,9 +118,15 @@ public class LoginActivity extends AppCompatActivity {
         Helper.setTextInputLayoutListener(this, passwordTextInputLayout);
     }
 
+    // Navigate the user to ForgottenPasswordActivity
+    public void navigateToForgottenPasswordScreen() {
+        forgot_password_button.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ForgottenPasswordActivity.class);
+            startActivity(intent);
+        });
+    }
+
     public static boolean getRememberMeBoolean() {
         return rememberMeBoolean;
     }
-
-
 }
