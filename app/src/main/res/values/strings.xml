@@ -31,6 +31,7 @@
     <string name="add_guests_button">Button add guests</string>
     <string name="create_event_add_guests_text_view">Add guests</string>
     <string name="create_event_button_add_text">Add </string>
+    <string name="create_event_button_remove_text">Remove </string>
 
     <!-- Strings used for EventDetailActivity -->
     <string name="event_detail_join">Join</string>

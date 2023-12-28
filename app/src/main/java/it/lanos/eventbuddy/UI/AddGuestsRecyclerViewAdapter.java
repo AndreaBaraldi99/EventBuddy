@@ -32,9 +32,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
     public GuestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.add_guest_item, parent, false);
-        GuestViewHolder guestViewHolder = new GuestViewHolder(view);
-
-        return guestViewHolder;
+        return new GuestViewHolder(view);
     }
 
     @Override
@@ -47,13 +45,8 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
                 selectionTracker.select((long) position);
             }
         });
-
-        if (isSelected) {
-            holder.itemView.setBackgroundResource(R.color.md_theme_light_secondaryContainer);
-        } else {
-            holder.itemView.setBackgroundResource(android.R.color.transparent);
-        }
-
+        holder.bind(usersList.get(position));
+        holder.updateButtonState(isSelected);
     }
 
     @Override
@@ -73,17 +66,19 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
         private TextView userNameTextView;
         private Button addButton;
-        private boolean selected;
 
         public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.usernameTextView);
             addButton = itemView.findViewById(R.id.add_guest_button);
-            selected = false;
-        }
-
-        public boolean isSelected() {
-            return selected;
+            addButton.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    boolean isSelected = !isItemSelected(position);
+                    updateButtonState(isSelected);
+                    setItemSelection(position, isSelected);
+                }
+            });
         }
 
         public void bind(User user) {
@@ -91,6 +86,19 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
             //TODO: implementare visualizzazione immagine di profilo
         }
 
+        public boolean isItemSelected(int position) {
+            return selectionTracker != null && selectionTracker.isSelected((long) position);
+        }
+
+        public void updateButtonState(boolean isSelected) {
+            this.isItemSelected(getAdapterPosition());
+
+            if (isSelected) {
+                addButton.setText(R.string.create_event_button_remove_text);
+            } else {
+                addButton.setText(R.string.create_event_button_add_text);
+            }
+        }
 
         public ItemDetailsLookup.ItemDetails<Long> getItemDetails() {
             return new ItemDetailsLookup.ItemDetails<Long>() {

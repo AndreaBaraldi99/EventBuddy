@@ -2,15 +2,11 @@ package it.lanos.eventbuddy.UI;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.selection.ItemKeyProvider;
@@ -120,7 +116,6 @@ public class AddGuestsFragment extends DialogFragment {
                 } else {
                     assert createEventActivity != null;
                     createEventActivity.onGuestRemoveClick(userList.get(key.intValue()));
-                    Log.d("AddGuestsFragment", "onItemStateChanged: " + userList.get(key.intValue()).getUsername());
                 }
             }
         });
@@ -132,13 +127,14 @@ public class AddGuestsFragment extends DialogFragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return handleSearch(newText);
+                handleSearch(newText);
+                return true;
             }
         });
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private boolean handleSearch(String text) {
+    private void handleSearch(String text) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         if(text.equals("")){
             userList.clear();
@@ -156,10 +152,8 @@ public class AddGuestsFragment extends DialogFragment {
             } catch (Exception e) {
                 String stampa = e.toString();
                 e.printStackTrace();
-                return false;
             }
         }
-        return true;
     }
 
 }
