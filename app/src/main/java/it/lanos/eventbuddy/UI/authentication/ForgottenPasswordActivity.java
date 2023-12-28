@@ -15,6 +15,7 @@ import java.util.Objects;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class ForgottenPasswordActivity extends AppCompatActivity {
 
