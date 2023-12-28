@@ -50,15 +50,13 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     }
 
     @Override
-    public void insertEvent(Event event, Map<User, Boolean> users){
+    public void insertEvent(EventWithUsers eventWithUsers){
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            userDao.insertUsers(new ArrayList<>(users.keySet()));
-            eventDao.insertEvent(event);
-            for (Map.Entry<User, Boolean> entry : users.entrySet()) {
-                eventDao.insertEventWithUsers(new UserEventCrossRef(entry.getKey().getUserId(), event.getEventId(), entry.getValue()));
+            userDao.insertUsers(eventWithUsers.getUsers());
+            eventDao.insertEvent(eventWithUsers.getEvent());
+            for(User user : eventWithUsers.getUsers()){
+                eventDao.insertEventWithUsers(new UserEventCrossRef(user.getUserId(), eventWithUsers.getEvent().getEventId(), false));
             }
-
-            //datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
         });
     }

@@ -24,21 +24,16 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     private final BaseUserDataSource userDataSource;
     private final BaseUserCloudDBDataSource userCloudDBDataSource;
-    private final BaseUserLocalDataSource userLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
     private final DataEncryptionUtil dataEncryptionUtil;
-    private final Gson gson;
 
-    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource userLocalDataSource, DataEncryptionUtil dataEncryptionUtil, Gson gson){
-        this.gson = gson;
+    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
         this.userCloudDBDataSource = userCloudDBDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
-        this.userLocalDataSource = userLocalDataSource;
-        this.userLocalDataSource.setUserCallback(this);
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
     }
@@ -107,7 +102,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onSuccessFromOnlineDB(User user) {
         Log.d("Debug", "Success from online db");
         try {
-            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, gson.toJson(user));
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, new Gson().toJson(user));
         } catch (Exception e) {
             e.printStackTrace();
         }

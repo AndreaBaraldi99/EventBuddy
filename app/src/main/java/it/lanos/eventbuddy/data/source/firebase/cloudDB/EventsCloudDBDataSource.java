@@ -54,11 +54,7 @@ public class EventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
     @Override
     public void addEvent(EventWithUsers event) {
         EventsCloudResponse convertedEvent = EventsCloudResponse.fromEventsWithUsers(event);
-        service.addEvent(convertedEvent).addOnSuccessListener(t -> {
-            List<EventsWithUsersFromCloudResponse> events = new ArrayList<>();
-            events.add(EventsWithUsersFromCloudResponse.fromEventsWithUsers(event));
-           eventsCallback.onSuccessFromRemote(events);
-       }).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+        service.addEvent(convertedEvent).addOnSuccessListener(t -> eventsCallback.onInsertedEvent(event)).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
     @Override
     public void joinEvent(String eventId, String uid){
