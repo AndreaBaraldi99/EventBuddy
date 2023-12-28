@@ -134,8 +134,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if(message != null) {
             Snackbar.make(findViewById(android.R.id.content),
-                    message,
-                    Snackbar.LENGTH_LONG)
+                            message,
+                            Snackbar.LENGTH_LONG)
                     .show();
         }
     }

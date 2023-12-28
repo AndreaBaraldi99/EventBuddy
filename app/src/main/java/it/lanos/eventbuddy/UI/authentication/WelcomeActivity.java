@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.UI.authentication.LoginActivity;
 import it.lanos.eventbuddy.UI.authentication.RegistrationActivity;
 
@@ -14,6 +17,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private static WelcomeActivity instance;
     Button signup_button, login_button;
+    UserViewModel userViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,10 +25,14 @@ public class WelcomeActivity extends AppCompatActivity {
 
         instance = this;
 
+        // Initialize the view model
+        userViewModel = UserHelper.initializeAndGetViewModel(this);
+        alreadyLoggedUser();
+
         signup_button = findViewById(R.id.signup_button);
         login_button = findViewById(R.id.login_button);
 
-        // Nvigate the user to RegistrationActivity
+        // Navigate the user to RegistrationActivity
         signup_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
@@ -40,6 +48,15 @@ public class WelcomeActivity extends AppCompatActivity {
     public static void closeActivity() {
         if (instance != null) {
             instance.finish();
+        }
+    }
+
+    private void alreadyLoggedUser() {
+        FirebaseUser currentUser = userViewModel.getCurrentUser();
+        if(currentUser != null) {
+            Intent intent = new Intent(this, BottomNavigationBarActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }

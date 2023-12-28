@@ -3,6 +3,8 @@ package it.lanos.eventbuddy.UI.authentication;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 
@@ -28,5 +30,13 @@ public class UserViewModel extends ViewModel {
 
     public void signOut() {
         userRepository.signOut();
+    }
+
+    public MutableLiveData<Result> deleteUser() {
+        return userLiveData = userRepository.deleteUser();
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return userRepository.getCurrentUser();
     }
 }

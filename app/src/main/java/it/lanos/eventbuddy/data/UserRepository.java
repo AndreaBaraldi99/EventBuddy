@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -56,8 +57,9 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public void deleteUser() {
+    public MutableLiveData<Result> deleteUser() {
         userDataSource.deleteUser();
+        return userMutableLiveData;
     }
 
     @Override
@@ -93,8 +95,6 @@ public class UserRepository implements IUserRepository, UserCallback {
             //register
             Log.d("Debug", "Register success");
             userCloudDBDataSource.addUser(user);
-            Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
-            userMutableLiveData.postValue(resultSuccess);
         }
     }
 
@@ -107,6 +107,8 @@ public class UserRepository implements IUserRepository, UserCallback {
             e.printStackTrace();
         }
         //userLocalDataSource.addUser(user);
+        Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
+        userMutableLiveData.postValue(resultSuccess);
     }
 
     @Override
@@ -123,6 +125,8 @@ public class UserRepository implements IUserRepository, UserCallback {
     @Override
     public void onDeleteSuccess() {
         EventsRoomDatabase.nukeTables();
+        Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Account deleted");
+        userMutableLiveData.postValue(resultSuccess);
     }
 
     @Override
@@ -139,5 +143,10 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onFailureFromRemote(Exception e) {
         Result.Error resultError = new Result.Error(e.getLocalizedMessage());
         userMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public FirebaseUser getCurrentUser() {
+        return userDataSource.getCurrentUser();
     }
 }

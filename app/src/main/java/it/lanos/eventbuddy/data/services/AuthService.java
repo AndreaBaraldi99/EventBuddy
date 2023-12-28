@@ -3,12 +3,9 @@ package it.lanos.eventbuddy.data.services;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.OAuthCredential;
 
 public class AuthService {
     private FirebaseAuth mAuth;
@@ -35,6 +32,7 @@ public class AuthService {
 
     public Task<Void>  deleteUser() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        signOut();
         return currentUser.delete();
     }
 

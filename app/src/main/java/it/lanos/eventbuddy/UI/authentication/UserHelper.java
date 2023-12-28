@@ -14,6 +14,7 @@ import java.util.Objects;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class UserHelper {
 
@@ -43,7 +44,7 @@ public class UserHelper {
     }
 
     // Listener used for validating password
-    static void setPasswordTextInputLayoutListener(Context context, TextInputLayout passwordTextInputLayout){
+    public static void setPasswordTextInputLayoutListener(Context context, TextInputLayout passwordTextInputLayout){
         Objects.requireNonNull(passwordTextInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -93,7 +94,7 @@ public class UserHelper {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    static boolean isAuthSuccess(Result result) {
+    public static boolean isAuthSuccess(Result result) {
         if(result instanceof Result.AuthSuccess) {
             return true;
         } else {
@@ -101,7 +102,7 @@ public class UserHelper {
         }
     }
 
-     static boolean isError(Result result) {
+     public static boolean isError(Result result) {
         if(result instanceof Result.Error) {
             return true;
         } else {
