@@ -18,6 +18,6 @@ public abstract class BaseEventsLocalDataSource {
 
     public abstract void getEvents();
     public abstract void insertEvent(List<EventsWithUsersFromCloudResponse> eventList);
-    public abstract void insertEvent(Event event, Map<User, Boolean> users);
+    public abstract void insertEvent(EventWithUsers eventWithUsers);
     public abstract void joinEvent(String eventId, String uid);
 }

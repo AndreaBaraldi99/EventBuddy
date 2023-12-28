@@ -103,7 +103,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onSuccessFromOnlineDB(User user) {
         Log.d("Debug", "Success from online db");
         try {
-            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, gson.toJson(user));
+            dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, new Gson().toJson(user));
         } catch (Exception e) {
             e.printStackTrace();
         }

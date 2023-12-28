@@ -43,14 +43,13 @@ public class ServiceLocator {
     public IEventsRepository getEventsRepository(Application application) {
         BaseEventsLocalDataSource eventsLocalDataSource;
         eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder(application));
+
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
-        Gson gson = new Gson();
 
-        return new EventRepository(eventsLocalDataSource, cloudDBDataSource, user, dataEncryptionUtil, gson);
+        return new EventRepository(eventsLocalDataSource, cloudDBDataSource, dataEncryptionUtil);
     }
 
     public IUserRepository getUserRepository(Application application) {
@@ -60,12 +59,10 @@ public class ServiceLocator {
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseUserCloudDBDataSource cloudDBDataSource = new UserCloudDBDataSource(cloudDBService);
 
-        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application));
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
-        Gson gson = new Gson();
 
-        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource, dataEncryptionUtil, gson);
+        return new UserRepository(userDataSource, cloudDBDataSource, dataEncryptionUtil);
     }
 
     public DatastoreBuilder getDatastoreBuilder(Application application) {

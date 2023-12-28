@@ -34,12 +34,4 @@ public class EventsWithUsersFromCloudResponse {
         this.user = user;
     }
 
-    public static EventsWithUsersFromCloudResponse fromEventsWithUsers(EventWithUsers event) {
-        Map<User, Boolean> invited = new HashMap<>();
-        for (User user : event.getUsers()) {
-            invited.put(user, false);
-        }
-        return new EventsWithUsersFromCloudResponse(EventsCloudResponse.fromEventsWithUsers(event), invited);
-    }
-
 }
