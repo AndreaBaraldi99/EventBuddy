@@ -82,6 +82,7 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword){
+
         FirebaseUser currentUser = authService.getCurrentUser();
 
         AuthCredential credential = EmailAuthProvider

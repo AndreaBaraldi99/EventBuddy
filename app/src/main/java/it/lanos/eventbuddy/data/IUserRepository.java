@@ -15,7 +15,7 @@ public interface IUserRepository {
     FirebaseUser getCurrentUser();
     void signOut();
     MutableLiveData<Result> deleteUser();
-    void changePassword(@NonNull String oldPassword, @NonNull String newPassword);
+    MutableLiveData<Result> changePassword(@NonNull String oldPassword, @NonNull String newPassword);
     MutableLiveData<Result> searchUsers(@NonNull String query);
 
 }

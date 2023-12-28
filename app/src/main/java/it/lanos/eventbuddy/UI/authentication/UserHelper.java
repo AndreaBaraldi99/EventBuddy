@@ -68,6 +68,64 @@ public class UserHelper {
         });
     }
 
+    // Check if the text secondTextInputLayout is equal to the text in firstTextInputLayout
+    public static void checkEqualTextInputLayout(
+            Context context,
+            TextInputLayout firstTextInputLayout,
+            TextInputLayout secondTextInputLayout) {
+
+        Objects.requireNonNull(firstTextInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
+
+            // Listener for firstTextInputLayout
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String firstTextString = getString(firstTextInputLayout);
+                String secondTextString = getString(secondTextInputLayout);
+
+                if(!secondTextString.equals(firstTextString) && !secondTextString.isEmpty()) {
+                    secondTextInputLayout.setError(context.getString(R.string.password_doesnt_match));
+                } else {
+                    secondTextInputLayout.setError(null);
+                }
+            }
+        });
+
+        // Listener for secondTextInputLayout
+        Objects.requireNonNull(secondTextInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String firstTextString = getString(firstTextInputLayout);
+                String secondTextString = getString(secondTextInputLayout);
+
+                if(!secondTextString.equals(firstTextString)) {
+                    secondTextInputLayout.setError(context.getString(R.string.password_doesnt_match));
+                } else {
+                    secondTextInputLayout.setError(null);
+                }
+            }
+        });
+    }
+
     // Listener used for a field that cannot be empty
     static void setTextInputLayoutListener(Context context, TextInputLayout textInputLayout) {
         Objects.requireNonNull(textInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {

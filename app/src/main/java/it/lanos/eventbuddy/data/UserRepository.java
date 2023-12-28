@@ -72,8 +72,9 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public void changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
+    public MutableLiveData<Result> changePassword(@NonNull String oldPassword, @NonNull String newPassword) {
         userDataSource.changePassword(oldPassword, newPassword);
+        return userMutableLiveData;
     }
 
     @Override
@@ -129,7 +130,8 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void onChangePasswordSuccess() {
-
+        Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Password changed");
+        userMutableLiveData.postValue(resultSuccess);
     }
     @Override
     public void onResetPasswordSuccess() {
