@@ -26,10 +26,6 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation_bar);
 
-        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
-
-        iUserRepository.signIn("test@eventbuddy.it", "eventbuddy1");
-
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().
                 findFragmentById(R.id.fragment_container_view);
         NavController navController = navHostFragment.getNavController();

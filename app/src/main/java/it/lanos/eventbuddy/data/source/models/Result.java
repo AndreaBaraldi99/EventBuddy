@@ -1,6 +1,10 @@
 package it.lanos.eventbuddy.data.source.models;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import it.lanos.eventbuddy.data.source.models.mapbox.Feature;
+import it.lanos.eventbuddy.data.source.models.mapbox.Suggestion;
 
 public abstract class Result {
     private Result() {}
@@ -49,7 +53,25 @@ public abstract class Result {
         }
     }
 
+    public static final class SuggestionsSuccess extends Result {
+        private final List<Suggestion> suggestions;
+        public SuggestionsSuccess(List<Suggestion> suggestions) {
+            this.suggestions = suggestions;
+        }
+        public List<Suggestion> getData() {
+            return suggestions;
+        }
+    }
 
+    public static final class FeatureSuccess extends Result {
+        private final ArrayList<Feature> features;
+        public FeatureSuccess(ArrayList<Feature> features) {
+            this.features = features;
+        }
+        public ArrayList<Feature> getData() {
+            return features;
+        }
+    }
 
     /**
      * Class that represents an error occurred during the interaction

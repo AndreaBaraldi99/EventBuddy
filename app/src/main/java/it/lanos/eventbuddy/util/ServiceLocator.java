@@ -7,11 +7,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import it.lanos.eventbuddy.data.EventRepository;
+import it.lanos.eventbuddy.data.ISuggestionsRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.UserRepository;
 import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.services.CloudDBService;
+import it.lanos.eventbuddy.data.services.MapboxService;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
@@ -22,6 +25,10 @@ import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteMapboxDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteMapboxDataSource;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceLocator {
     private static volatile ServiceLocator INSTANCE = null;
@@ -63,6 +70,20 @@ public class ServiceLocator {
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
         return new UserRepository(userDataSource, cloudDBDataSource, dataEncryptionUtil);
+    }
+
+    public ISuggestionsRepository getSuggestionsRepository() {
+        MapboxService mapboxService = getMapboxApiService();
+
+        BaseAutocompleteMapboxDataSource mapboxDataSource = new AutoCompleteMapboxDataSource(mapboxService);
+
+        return new SuggestionsRepository(mapboxDataSource);
+    }
+
+    private MapboxService getMapboxApiService() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL).
+                addConverterFactory(GsonConverterFactory.create()).build();
+        return retrofit.create(MapboxService.class);
     }
 
     public DatastoreBuilder getDatastoreBuilder(Application application) {
