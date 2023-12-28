@@ -92,10 +92,14 @@ public class UserRepository implements IUserRepository, UserCallback {
             //login
             Log.d("Debug", "Login success");
             userCloudDBDataSource.getUser(userDataSource.getCurrentUser().getUid());
+            Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
+            userMutableLiveData.postValue(resultSuccess);
         } else {
             //register
             Log.d("Debug", "Register success");
             userCloudDBDataSource.addUser(user);
+            Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
+            userMutableLiveData.postValue(resultSuccess);
         }
     }
 

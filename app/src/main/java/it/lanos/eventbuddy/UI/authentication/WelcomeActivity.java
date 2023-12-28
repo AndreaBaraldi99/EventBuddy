@@ -11,11 +11,15 @@ import it.lanos.eventbuddy.UI.authentication.LoginActivity;
 import it.lanos.eventbuddy.UI.authentication.RegistrationActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
+
+    private static WelcomeActivity instance;
     Button signup_button, login_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        instance = this;
 
         signup_button = findViewById(R.id.signup_button);
         login_button = findViewById(R.id.login_button);
@@ -31,5 +35,11 @@ public class WelcomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
+    }
+
+    public static void closeActivity() {
+        if (instance != null) {
+            instance.finish();
+        }
     }
 }

@@ -25,4 +25,8 @@ public class UserViewModel extends ViewModel {
     public MutableLiveData<Result> resetPassword(String email) {
         return userLiveData = userRepository.resetPassword(email);
     }
+
+    public void signOut() {
+        userRepository.signOut();
+    }
 }

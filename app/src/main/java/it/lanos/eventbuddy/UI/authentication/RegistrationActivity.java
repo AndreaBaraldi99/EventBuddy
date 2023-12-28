@@ -1,14 +1,9 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Button;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -17,7 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.data.source.models.Result;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -38,7 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setTextFieldsListeners();
 
         // Initialize the ViewModel
-        initializeViewModel();
+        userViewModel = UserHelper.initializeAndGetViewModel(this);
 
         // Handle the registration button press
         handleRegistrationButton();
@@ -77,37 +72,26 @@ public class RegistrationActivity extends AppCompatActivity {
     private void setTextFieldsListeners() {
         setEndIconsListeners();
 
-        Helper.setTextInputLayoutListener(this, nameTextInputLayout);
-        Helper.setTextInputLayoutListener(this, nicknameTextInputLayout);
-        Helper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
-        Helper.setPasswordTextInputLayoutListener(this, passwordTextInputLayout);
+        UserHelper.setTextInputLayoutListener(this, nameTextInputLayout);
+        UserHelper.setTextInputLayoutListener(this, nicknameTextInputLayout);
+        UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
+        UserHelper.setPasswordTextInputLayoutListener(this, passwordTextInputLayout);
     }
 
-    // Initialize the view model
-    private void initializeViewModel() {
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
-
-        userViewModel = new ViewModelProvider(
-                this,
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-    }
 
     // Handle the registration button press
     private void handleRegistrationButton() {
         registration_button.setOnClickListener(view -> {
-            String fullName = Objects.requireNonNull(nameTextInputLayout.getEditText()).getText().toString().trim();
-            String userName = Objects.requireNonNull(nicknameTextInputLayout.getEditText()).getText().toString().trim();
-            String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
-            String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
+            String fullName = UserHelper.getString(nameTextInputLayout);
+            String userName = UserHelper.getString(nameTextInputLayout);
+            String email = UserHelper.getString(emailTextInputLayout);
+            String password = UserHelper.getString(passwordTextInputLayout);
 
-            if (Helper.isValidEmail(email) && password.length() >= 6 && !fullName.isEmpty() && !userName.isEmpty()) {
+            if (UserHelper.isValidEmail(email) && password.length() >= 6 && !fullName.isEmpty() && !userName.isEmpty()) {
                 userViewModel.register(fullName, userName, email, password).observe(this, result -> {
-                    if (Helper.isAuthSuccess(result)) {
-                        Snackbar.make(findViewById(android.R.id.content),
-                                        ((Result.AuthSuccess) result).getMessage(),
-                                        Snackbar.LENGTH_LONG)
-                                .show();
-                    } else if (Helper.isError(result)) {
+                    if (UserHelper.isAuthSuccess(result)) {
+                        navigateToHomeScreen();
+                    } else if (UserHelper.isError(result)) {
                         Snackbar.make(findViewById(android.R.id.content),
                                         ((Result.Error) result).getMessage(),
                                         Snackbar.LENGTH_LONG)
@@ -127,5 +111,12 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
+    // Navigate the user to HomeScreen
+    private void navigateToHomeScreen() {
+        Intent intent = new Intent(this, BottomNavigationBarActivity.class);
+        startActivity(intent);
+        WelcomeActivity.closeActivity();
+        finish();
+    }
 
 }

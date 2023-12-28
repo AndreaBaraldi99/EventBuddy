@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.data.source.models.Result;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,17 +29,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Find the views by ID
         setViewsUp();
 
         setTextFieldsListeners();
 
-        initializeViewModel();
+        // Initialize the view model
+        userViewModel = UserHelper.initializeAndGetViewModel(this);
 
         handleLoginButton();
 
+        // Navigate the user to ForgottenPasswordActivity
         navigateToForgottenPasswordScreen();
 
         navigateToSignupScreen();
+
+        //Show a snackbar with a message "Email sent" if the user reset his password
+        showPopupIfComingFromForgottenPassword();
     }
 
     // Find views by ID
@@ -55,14 +60,6 @@ public class LoginActivity extends AppCompatActivity {
         rememberMe_checkbox = findViewById(R.id.rememberMe_checkBox);
     }
 
-    // Initialize the view model
-    private void initializeViewModel() {
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
-
-        userViewModel = new ViewModelProvider(
-                this,
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
-    }
 
     // Handle the login button press
     private void handleLoginButton() {
@@ -70,17 +67,14 @@ public class LoginActivity extends AppCompatActivity {
 
             rememberMeBoolean = isRememberMeChecked();
 
-            String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
-            String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
+            String email = UserHelper.getString(emailTextInputLayout);
+            String password = UserHelper.getString(passwordTextInputLayout);
 
-            if(Helper.isValidEmail(email) && !password.isEmpty()) {
+            if(UserHelper.isValidEmail(email) && !password.isEmpty()) {
                 userViewModel.signIn(email, password).observe(this, result -> {
-                    if (Helper.isAuthSuccess(result)) {
-                            Snackbar.make(findViewById(android.R.id.content),
-                                            ((Result.AuthSuccess) result).getMessage(),
-                                            Snackbar.LENGTH_LONG)
-                                .show();
-                    } else if (Helper.isError(result)) {
+                    if (UserHelper.isAuthSuccess(result)) {
+                            navigateToHomeScreen();
+                    } else if (UserHelper.isError(result)) {
                         Snackbar.make(findViewById(android.R.id.content),
                                         ((Result.Error) result).getMessage(),
                                         Snackbar.LENGTH_LONG)
@@ -114,18 +108,36 @@ public class LoginActivity extends AppCompatActivity {
             Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
         });
 
-        Helper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
-        Helper.setTextInputLayoutListener(this, passwordTextInputLayout);
+        UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
+        UserHelper.setTextInputLayoutListener(this, passwordTextInputLayout);
     }
 
     // Navigate the user to ForgottenPasswordActivity
-    public void navigateToForgottenPasswordScreen() {
+    private void navigateToForgottenPasswordScreen() {
         forgot_password_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, ForgottenPasswordActivity.class);
             startActivity(intent);
         });
     }
 
+    // Navigate the user to HomeScreen
+    private void navigateToHomeScreen() {
+        Intent intent = new Intent(this, BottomNavigationBarActivity.class);
+        startActivity(intent);
+        WelcomeActivity.closeActivity();
+        finish();
+    }
+
+    private void showPopupIfComingFromForgottenPassword() {
+        String message = getIntent().getStringExtra("EmailSentMessage");
+
+        if(message != null) {
+            Snackbar.make(findViewById(android.R.id.content),
+                    message,
+                    Snackbar.LENGTH_LONG)
+                    .show();
+        }
+    }
     public static boolean getRememberMeBoolean() {
         return rememberMeBoolean;
     }

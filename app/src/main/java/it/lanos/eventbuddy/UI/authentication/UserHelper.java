@@ -4,14 +4,18 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 
-public class Helper {
+public class UserHelper {
 
     // Listener used for validating email address
     static void setEmailTextInputLayoutListener(Context context, TextInputLayout emailTextInputLayout) {
@@ -103,5 +107,19 @@ public class Helper {
         } else {
             return false;
         }
+    }
+
+    // Initialize the view model
+    public static UserViewModel initializeAndGetViewModel(AppCompatActivity activity) {
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(activity.getApplication());
+
+        return new ViewModelProvider(activity,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+    }
+
+    // Return a trimmed string from a TextInputLayout
+    public static String getString(TextInputLayout textInputLayout) {
+        return Objects.requireNonNull(textInputLayout.getEditText()).getText().toString().trim();
     }
 }

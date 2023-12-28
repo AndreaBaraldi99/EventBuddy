@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 
 public class ForgottenPasswordActivity extends AppCompatActivity {
@@ -29,20 +27,11 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
         emailTextInputLayout = findViewById(R.id.email_text);
         resetButton = findViewById(R.id.reset_button);
 
-        initializeViewModel();
+        userViewModel = UserHelper.initializeAndGetViewModel(this);
 
         setTextFieldsListeners();
 
         handleResetButton();
-    }
-
-    // Initialize the view model
-    private void initializeViewModel() {
-        IUserRepository userRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
-
-        userViewModel = new ViewModelProvider(
-                this,
-                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
 
     // Set required listeners for the text fields
@@ -52,28 +41,26 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
             Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
         });
 
-        Helper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
+        UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
     }
 
     // Navigate the user to LoginActivity
-    public void navigateToLoginActivity() {
+    public void navigateToLoginActivity(String message) {
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("EmailSentMessage", message);
         startActivity(intent);
     }
 
     // Handle reset button press
     public void handleResetButton() {
         resetButton.setOnClickListener(view -> {
-            String email = emailTextInputLayout.getEditText().getText().toString().trim();
-            if(Helper.isValidEmail(email)) {
+            String email = UserHelper.getString(emailTextInputLayout);
+            if(UserHelper.isValidEmail(email)) {
                 userViewModel.resetPassword(email).observe(this, result -> {
-                    if(Helper.isAuthSuccess(result)) {
-                        Snackbar.make(findViewById(android.R.id.content),
-                                        ((Result.AuthSuccess) result).getMessage(),
-                                        Snackbar.LENGTH_LONG)
-                                .show();
-                        navigateToLoginActivity();
-                    } else if (Helper.isError(result)) {
+                    if(UserHelper.isAuthSuccess(result)) {
+                        userViewModel.signOut();
+                        navigateToLoginActivity(((Result.AuthSuccess) result).getMessage());
+                    } else if (UserHelper.isError(result)) {
                         Snackbar.make(findViewById(android.R.id.content),
                                         ((Result.Error) result).getMessage(),
                                         Snackbar.LENGTH_LONG)
