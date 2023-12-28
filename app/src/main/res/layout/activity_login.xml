@@ -78,10 +78,13 @@
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="@string/forgot_password"
         android:textAllCaps="false"
         app:layout_constraintBaseline_toBaselineOf="@+id/rememberMe_checkBox"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/rememberMe_checkBox" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_text"
@@ -129,14 +132,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="57dp" />
+        app:layout_constraintGuide_begin="40dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="57dp" />
+        app:layout_constraintGuide_end="40dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
