@@ -150,6 +150,15 @@ public class Event implements Parcelable {
             return new Event[size];
         }
     };
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Event){
+            Event event = (Event) obj;
+            return this.eventId.equals(event.getEventId());
+        }
+        return false;
+    }
 }
 
 

@@ -29,8 +29,8 @@ public class CloudDBService {
     public Task<DocumentReference> addUser(User user){
         return usersRef.add(user);
     }
-    public Task<DocumentReference> addEvent(EventsCloudResponse event){
-        return eventsRef.add(event);
+    public Task<Void> addEvent(EventsCloudResponse event){
+        return eventsRef.document(event.getUid()).set(event);
     }
     public Task<Void> joinEvent(String eventId, String uid){
         return eventsRef.document(eventId).update("invited." + uid, true);

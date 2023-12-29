@@ -12,6 +12,7 @@ public interface EventsCallback {
     void onSuccessFromLocal(List<EventWithUsers> eventsList);
     void onFailureFromLocal(Exception exception);
     void onJoinedEventFromRemote(String eventId);
+    void onLeftEventFromRemote(String eventId);
     void onJoinStatusChangedFromLocal(EventWithUsers event);
     void onInsertedEvent(EventWithUsers event);
 

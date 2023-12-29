@@ -20,4 +20,5 @@ public abstract class BaseEventsLocalDataSource {
     public abstract void insertEvent(List<EventsWithUsersFromCloudResponse> eventList);
     public abstract void insertEvent(EventWithUsers eventWithUsers);
     public abstract void joinEvent(String eventId, String uid);
+    public abstract void leaveEvent(String eventId, String uid);
 }

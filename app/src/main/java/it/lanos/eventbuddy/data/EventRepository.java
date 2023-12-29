@@ -82,6 +82,10 @@ public class EventRepository implements IEventsRepository, EventsCallback{
     public void onJoinedEventFromRemote(String eventId) {
         eventsLocalDataSource.joinEvent(eventId, user.getUserId());
     }
+    @Override
+    public void onLeftEventFromRemote(String eventId) {
+        eventsLocalDataSource.leaveEvent(eventId, user.getUserId());
+    }
 
     @Override
     public void onJoinStatusChangedFromLocal(EventWithUsers event) {

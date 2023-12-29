@@ -1,7 +1,5 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
-import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +63,13 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     public void joinEvent(String eventId, String uid){
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
             eventDao.insertEventWithUsers(new UserEventCrossRef(uid, eventId, true));
+            eventsCallback.onJoinStatusChangedFromLocal(eventDao.getEventWithUsers(eventId));
+        });
+    }
+    @Override
+    public void leaveEvent(String eventId, String uid){
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            eventDao.insertEventWithUsers(new UserEventCrossRef(uid, eventId, false));
             eventsCallback.onJoinStatusChangedFromLocal(eventDao.getEventWithUsers(eventId));
         });
     }

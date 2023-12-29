@@ -64,6 +64,6 @@ public class EventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
     }
     @Override
     public void leaveEvent(String eventId, String uid){
-        service.leaveEvent(eventId, uid).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
+        service.leaveEvent(eventId, uid).addOnSuccessListener(t -> eventsCallback.onLeftEventFromRemote(eventId)).addOnFailureListener(e -> eventsCallback.onFailureFromRemote(e));
     }
 }

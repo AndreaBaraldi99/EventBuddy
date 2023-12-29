@@ -90,4 +90,12 @@ public class EventWithUsers implements Parcelable {
             return new EventWithUsers[size];
         }
     };
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof EventWithUsers){
+            EventWithUsers eventWithUsers = (EventWithUsers) obj;
+            return eventWithUsers.getEvent().equals(this.getEvent());
+        }
+        return false;
+    }
 }
