@@ -48,8 +48,9 @@ public class ServiceLocator {
     }
 
     public IEventsRepository getEventsRepository(Application application) {
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
         BaseEventsLocalDataSource eventsLocalDataSource;
-        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), getDatastoreBuilder(application));
+        eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), sharedPreferencesUtil);
 
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
@@ -72,12 +73,15 @@ public class ServiceLocator {
         return new UserRepository(userDataSource, cloudDBDataSource, dataEncryptionUtil);
     }
 
-    public ISuggestionsRepository getSuggestionsRepository() {
+    public ISuggestionsRepository getSuggestionsRepository(Application application) {
+
         MapboxService mapboxService = getMapboxApiService();
 
         BaseAutocompleteMapboxDataSource mapboxDataSource = new AutoCompleteMapboxDataSource(mapboxService);
 
-        return new SuggestionsRepository(mapboxDataSource);
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+
+        return new SuggestionsRepository(mapboxDataSource, dataEncryptionUtil);
     }
 
     private MapboxService getMapboxApiService() {
@@ -85,9 +89,4 @@ public class ServiceLocator {
                 addConverterFactory(GsonConverterFactory.create()).build();
         return retrofit.create(MapboxService.class);
     }
-
-    public DatastoreBuilder getDatastoreBuilder(Application application) {
-        return new DatastoreBuilder();
-    }
-
 }

@@ -19,8 +19,8 @@ public class AutoCompleteMapboxDataSource extends BaseAutocompleteMapboxDataSour
         this.mapboxService = mapboxService;
     }
     @Override
-    public void getSuggestions(String query) {
-        Call<SuggestionsApiResponse> suggestionsResponseCall = mapboxService.getSuggestions(query, ACCESS_KEY, SESSION_KEY);
+    public void getSuggestions(String query, String sessionKey) {
+        Call<SuggestionsApiResponse> suggestionsResponseCall = mapboxService.getSuggestions(query, ACCESS_KEY, sessionKey);
         suggestionsResponseCall.enqueue(new Callback<SuggestionsApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<SuggestionsApiResponse> call, @NonNull Response<SuggestionsApiResponse> response) {

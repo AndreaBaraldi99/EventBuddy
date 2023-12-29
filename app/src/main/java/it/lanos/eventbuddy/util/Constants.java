@@ -17,4 +17,5 @@ public class Constants {
     public static final String API_KEY_ERROR = "api_key_error";
     public static final String TOKEN_PARAMETER = "id";
     public static final String BASE_URL = "https://api.mapbox.com/";
+    public static final String SHARED_PREFERENCES_FILE_NAME = "it.lanos.eventbuddy.preferences";
 }

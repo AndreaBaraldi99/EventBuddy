@@ -7,6 +7,7 @@ public abstract class BaseAutocompleteMapboxDataSource {
     public void setSuggestionsCallback(SuggestionsCallback suggestionsCallback) {
         this.suggestionsCallback = suggestionsCallback;
     }
-    public abstract void getSuggestions(String query);
+    public abstract void getSuggestions(String query, String sessionKey);
+
     public abstract void getFeature(String id);
 }
