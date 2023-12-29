@@ -7,10 +7,12 @@ import androidx.core.app.NavUtils;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,10 +117,6 @@ public class CreateEventActivity extends AppCompatActivity{
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
 
-        eventViewModel = new ViewModelProvider(
-                this,
-                new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
-
         userList = new ArrayList<>();
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
@@ -140,14 +138,18 @@ public class CreateEventActivity extends AppCompatActivity{
                 String location = Objects.requireNonNull(locationTextInputLayout.getEditText()).getText().toString();
                 Event event = new Event(event_name, date_time, location, description);
                 EventWithUsers finalEvent = new EventWithUsers(event, userList);
-                eventViewModel.addEvent(finalEvent);
-
-                //onBackPressed();
+                returnResultToCallingActivity(finalEvent);
             }
         });
 
 
 
+    }
+    private void returnResultToCallingActivity(EventWithUsers eventWithUsers) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("new_event", eventWithUsers);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
 

@@ -2,7 +2,9 @@ package it.lanos.eventbuddy.UI;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
@@ -36,6 +38,7 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 public class EventDetailActivity extends AppCompatActivity {
     private EventWithUsers event;
     private User user;
+    private boolean somethingChange = false;
     Button join;
     Button doNotJoin;
 
@@ -78,6 +81,7 @@ public class EventDetailActivity extends AppCompatActivity {
                 join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
                 iEventsRepository.joinEvent(event.getEvent().getEventId());
+                somethingChange = true;
             }
         });
 
@@ -87,6 +91,7 @@ public class EventDetailActivity extends AppCompatActivity {
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
                 join.setBackgroundColor(getResources().getColor(R.color.divisor));
                 iEventsRepository.leaveEvent(event.getEvent().getEventId());
+                somethingChange = true;
             }
         });
 
@@ -203,7 +208,6 @@ public class EventDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 
 }
 

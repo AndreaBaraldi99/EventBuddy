@@ -1,7 +1,11 @@
 package it.lanos.eventbuddy.UI;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +38,25 @@ public class EventFragment extends Fragment {
     private List<EventWithUsers> eventList;
     private EventRecyclerViewAdapter eventRecyclerViewAdapter;
     private EventViewModel eventViewModel;
+
+    private final ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // L'Activity CREATE_EVENT ha restituito con successo il risultato
+
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Estrarre l'oggetto EventWithUsers dal risultato
+                        EventWithUsers eventWithUsers = data.getParcelableExtra("new_event");
+
+                        // Ora puoi utilizzare l'oggetto eventWithUsers come necessario
+                        // ad esempio, aggiornare l'UI con il nuovo evento
+                        eventViewModel.addEvent(eventWithUsers);
+                    }
+                }
+            }
+    );
 
 
 
@@ -76,7 +99,8 @@ public class EventFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
+                //Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
+                startCreateEventActivity();
             }
         });
 
@@ -111,8 +135,7 @@ public class EventFragment extends Fragment {
                                 EventFragmentDirections.goToEventDetail();
                         action.setEventClick(event);
 
-                        Navigation.findNavController(view).navigate((NavDirections) action);
-
+                        Navigation.findNavController(view).navigate(action);
 
                     }
                 }
@@ -131,5 +154,12 @@ public class EventFragment extends Fragment {
                 //TODO: gestire eccezione
         }});
     }
+
+    private void startCreateEventActivity() {
+        Intent intent = new Intent(requireContext(), CreateEventActivity.class);
+        createEventLauncher.launch(intent);
+    }
+
+
 }
 
