@@ -3,6 +3,9 @@ package it.lanos.eventbuddy.UI;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
@@ -17,6 +20,7 @@ public class EventViewModel extends ViewModel {
     }
 
     public void addEvent(EventWithUsers event) {
+
         iEventsRepository.insertEvent(event);
     }
 

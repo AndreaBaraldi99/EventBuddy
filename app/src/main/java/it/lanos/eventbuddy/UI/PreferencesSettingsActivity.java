@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.UI;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,8 @@ public class PreferencesSettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                NavUtils.navigateUpFromSameTask(PreferencesSettingsActivity.this);
+
             }
         });
 

@@ -1,9 +1,9 @@
 package it.lanos.eventbuddy.UI;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.FrameMetricsAggregator;
-import androidx.core.view.MenuItemCompat;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,15 +11,13 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -44,7 +42,6 @@ public class CreateEventActivity extends AppCompatActivity{
     private String description;
 
     private List<User> userList;
-    private AddGuestsRecyclerViewAdapter addGuestsRecyclerViewAdapter;
 
 
     // The dialog fragment receives a reference to this Activity through the
@@ -88,10 +85,6 @@ public class CreateEventActivity extends AppCompatActivity{
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -111,6 +104,13 @@ public class CreateEventActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        MaterialToolbar createEventToolbar = findViewById(R.id.create_event_toolbar);
+        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(CreateEventActivity.this);
+            }
+        });
 
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
@@ -141,7 +141,8 @@ public class CreateEventActivity extends AppCompatActivity{
                 Event event = new Event(event_name, date_time, location, description);
                 EventWithUsers finalEvent = new EventWithUsers(event, userList);
                 eventViewModel.addEvent(finalEvent);
-                onBackPressed();
+
+                //onBackPressed();
             }
         });
 

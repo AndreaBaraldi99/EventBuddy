@@ -30,7 +30,12 @@
             android:exported="false" />
         <activity
             android:name=".UI.PreferencesSettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".UI.AccountSettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.AccountSettingsActivity" />
+        </activity>
         <activity
             android:name=".UI.AccountSettingsActivity"
             android:exported="false" />
@@ -44,16 +49,11 @@
             android:name=".UI.CreateEventActivity"
             android:exported="false"
             android:label="@string/title_activity_create_event"
-            android:theme="@style/Theme.EventBuddy" />
-        <activity
-            android:name=".UI.authentication.WelcomeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.EventBuddy">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.EventBuddy"
+            android:parentActivityName=".UI.BottomNavigationBarActivity"/>
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".UI.BottomNavigationBarActivity" />
         <activity
             android:name=".UI.BottomNavigationBarActivity"
             android:exported="false">
