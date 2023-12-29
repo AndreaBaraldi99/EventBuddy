@@ -153,19 +153,25 @@
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="22dp"
         android:text="@string/settings_button_delete_account"
-        android:textColor="@color/md_theme_light_onErrorContainer"
-        android:backgroundTint="@color/md_theme_light_errorContainer"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red_delete_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:text="Button"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/md_theme_light_errorContainer"
+        android:text="@string/settings_button_change_logout"
+        android:textColor="@color/md_theme_dark_errorContainer"
         app:layout_constraintBottom_toTopOf="@+id/delete_account"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

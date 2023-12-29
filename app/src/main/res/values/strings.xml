@@ -91,7 +91,6 @@
     <string name="enter_email">Enter your email:</string>
     <string name="send_email">Send email</string>
 
-
     <!-- Strings used for FriendsFragment -->
     <string name="friends_fragment_title">Manage Friends</string>
     <string name="friends_search_bar_hint">Search for new friends</string>
@@ -114,9 +113,18 @@
     <string name="settings_new_password">New password</string>
     <string name="settings_confirm_password">Confirm new password</string>
     <string name="settings_button_change_password">Change password</string>
-    <string name="settings_button_delete_account">Delete account</string>
     <string name="settings_preferences_language">Language</string>
     <string name="settings_preferences_theme">Dark theme</string>
+
+    <!-- Strings used for AccountSettingsActivity -->
+    <string name="settings_button_change_logout">Logout</string>
+    <string name="settings_button_delete_account">Delete account</string>
+    <string name="password_doesnt_match">Password doesn\'t match</string>
+    <string name="confirm_elimination">Confirm elimination</string>
+    <string name="insert_password">Insert your password:</string>
+    <string name="confirm_alert">Confirm</string>
+    <string name="cancel_alert">Cancel</string>
+    <string name="wrong_delete_password">Wrong password</string>
 
     <string-array name="languages">
         <item>English</item>
