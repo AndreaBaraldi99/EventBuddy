@@ -53,8 +53,12 @@ public class EventDetailActivity extends AppCompatActivity {
 
 
 
-
-        event = EventDetailActivityArgs.fromBundle(getIntent().getExtras()).getEventClick();
+        Intent intent = getIntent();
+        //event = EventDetailActivityArgs.fromBundle(getIntent().getExtras()).getEventClick();
+        if (intent != null && intent.hasExtra("event")) {
+            // Recupera l'oggetto EventWithUsers dalla Intent
+            event = intent.getParcelableExtra("event");
+        }
         List<UserEventCrossRef> usersInfo = event.getUserEventCrossRefs();
         List<UserEventCrossRef> joinedUsers = getJoinedUsers(usersInfo);
 
@@ -207,6 +211,17 @@ public class EventDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void returnResultToCallingActivity(boolean change) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("change", change);
+        setResult(Activity.RESULT_OK, resultIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        returnResultToCallingActivity(somethingChange);
+        super.onBackPressed();
     }
 
 }

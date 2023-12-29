@@ -24,11 +24,6 @@
         android:id="@+id/eventDetailActivity"
         android:name="it.lanos.eventbuddy.UI.EventDetailActivity"
         android:label="EventDetailActivity" >
-        <argument
-            android:name="eventClick"
-            app:argType="it.lanos.eventbuddy.data.source.models.EventWithUsers"
-            app:nullable="true"
-            android:defaultValue="@null" />
     </activity>
     <fragment
         android:id="@+id/friendsFragment"

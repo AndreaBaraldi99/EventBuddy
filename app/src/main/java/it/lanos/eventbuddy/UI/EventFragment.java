@@ -58,6 +58,28 @@ public class EventFragment extends Fragment {
             }
     );
 
+    private final ActivityResultLauncher<Intent> detailEventLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // L'Activity CREATE_EVENT ha restituito con successo il risultato
+
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // Estrarre l'oggetto EventWithUsers dal risultato
+                        boolean change = data.getBooleanExtra("change", false);
+                        if(change == true) {
+                            eventViewModel.fetchEvents(0);
+                        }
+
+                        // Ora puoi utilizzare l'oggetto eventWithUsers come necessario
+                        // ad esempio, aggiornare l'UI con il nuovo evento
+
+                    }
+                }
+            }
+    );
+
 
 
 
@@ -131,11 +153,12 @@ public class EventFragment extends Fragment {
                 new EventRecyclerViewAdapter.OnItemClickListener(){
                     @Override
                     public void onEventItemClick(EventWithUsers event){
-                        EventFragmentDirections.GoToEventDetail action =
+                        /*EventFragmentDirections.GoToEventDetail action =
                                 EventFragmentDirections.goToEventDetail();
                         action.setEventClick(event);
 
-                        Navigation.findNavController(view).navigate(action);
+                        Navigation.findNavController(view).navigate(action);*/
+                        startDetailEventActivity(event);
 
                     }
                 }
@@ -158,6 +181,12 @@ public class EventFragment extends Fragment {
     private void startCreateEventActivity() {
         Intent intent = new Intent(requireContext(), CreateEventActivity.class);
         createEventLauncher.launch(intent);
+    }
+
+    private void startDetailEventActivity(EventWithUsers event) {
+        Intent intent = new Intent(requireContext(), EventDetailActivity.class);
+        intent.putExtra("event", event);
+        detailEventLauncher.launch(intent);
     }
 
 

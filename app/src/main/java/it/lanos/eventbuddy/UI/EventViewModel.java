@@ -28,6 +28,7 @@ public class EventViewModel extends ViewModel {
         eventListLiveData = iEventsRepository.fetchEvents(lastUpdate);
     }
 
+
     public MutableLiveData<Result> getEvents(long lastUpdate) {
         if (eventListLiveData == null) {
             fetchEvents(lastUpdate);

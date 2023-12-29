@@ -16,7 +16,7 @@ import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 @Dao
 public interface EventDao {
     @Transaction
-    @Query("SELECT * FROM Event")
+    @Query("SELECT * FROM Event ORDER BY eventId DESC")
     List<EventWithUsers> getEventsWithUsers();
     @Transaction
     @Query("SELECT * FROM Event WHERE eventId = :eventId")
