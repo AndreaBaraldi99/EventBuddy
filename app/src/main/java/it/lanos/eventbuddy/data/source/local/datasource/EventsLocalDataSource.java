@@ -1,5 +1,8 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
+import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
+import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +16,17 @@ import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
 import it.lanos.eventbuddy.util.DatastoreBuilder;
+import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     private final EventDao eventDao;
     private final UserDao userDao;
-    private final DatastoreBuilder datastoreBuilder;
+    private final SharedPreferencesUtil sharedPreferencesUtil;
 
-    public EventsLocalDataSource(EventsRoomDatabase newsRoomDatabase, DatastoreBuilder datastoreBuilder){
+    public EventsLocalDataSource(EventsRoomDatabase newsRoomDatabase, SharedPreferencesUtil sharedPreferencesUtil){
         this.eventDao = newsRoomDatabase.eventDao();
         this.userDao = newsRoomDatabase.userDao();
-        this.datastoreBuilder = datastoreBuilder;
+        this.sharedPreferencesUtil = sharedPreferencesUtil;
     }
     @Override
     public void getEvents() {
@@ -41,7 +45,8 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
                 eventDao.insertEventWithUsers(new UserEventCrossRef(entry.getKey().getUserId(), ev.getEventId(), entry.getValue()));
             }
 
-            //datastoreBuilder.putStringValue(LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                        LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
             });
         };
