@@ -37,6 +37,7 @@ public class EventFragment extends Fragment {
 
 
 
+
     public EventFragment() {
         // Required empty public constructor
     }
@@ -59,6 +60,7 @@ public class EventFragment extends Fragment {
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
         eventList = new ArrayList<>();
+
     }
 
     @Override

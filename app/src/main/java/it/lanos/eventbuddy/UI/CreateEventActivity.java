@@ -29,7 +29,6 @@ import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Event;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
@@ -112,9 +111,6 @@ public class CreateEventActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(getApplication());
-
-        iUserRepository.signIn("test@eventbuddy.it", "eventbuddy1");
 
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
@@ -140,11 +136,12 @@ public class CreateEventActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String event_name = Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getText().toString();
-                String date_time = Objects.requireNonNull(dateTextInputLayout.getEditText()).getText().toString() + timeTextInputLayout.getEditText().getText().toString();
+                String date_time = Objects.requireNonNull(dateTextInputLayout.getEditText()).getText().toString()+"/"+timeTextInputLayout.getEditText().getText().toString();
                 String location = Objects.requireNonNull(locationTextInputLayout.getEditText()).getText().toString();
                 Event event = new Event(event_name, date_time, location, description);
                 EventWithUsers finalEvent = new EventWithUsers(event, userList);
                 eventViewModel.addEvent(finalEvent);
+                onBackPressed();
             }
         });
 

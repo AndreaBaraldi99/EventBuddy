@@ -63,20 +63,21 @@ public class EventWithUsers implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable((Parcelable) this.event, flags);
-        dest.writeList(this.users);
+        dest.writeParcelable(this.event, flags);
+        dest.writeTypedList(this.users);
+        dest.writeTypedList(this.userEventCrossRefs);
     }
 
     public void readFromParcel(Parcel source) {
         this.event = source.readParcelable(Event.class.getClassLoader());
-        this.users = new ArrayList<User>();
-        source.readList(this.users, User.class.getClassLoader());
+        this.users = source.createTypedArrayList(User.CREATOR);
+        this.userEventCrossRefs = source.createTypedArrayList(UserEventCrossRef.CREATOR);
     }
 
     protected EventWithUsers(Parcel in) {
         this.event = in.readParcelable(Event.class.getClassLoader());
-        this.users = new ArrayList<User>();
-        in.readList(this.users, User.class.getClassLoader());
+        this.users = in.createTypedArrayList(User.CREATOR);
+        this.userEventCrossRefs = in.createTypedArrayList(UserEventCrossRef.CREATOR);
     }
 
     public static final Parcelable.Creator<EventWithUsers> CREATOR = new Parcelable.Creator<EventWithUsers>() {

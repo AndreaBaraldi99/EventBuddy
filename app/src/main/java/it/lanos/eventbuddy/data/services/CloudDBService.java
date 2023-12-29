@@ -33,6 +33,7 @@ public class CloudDBService {
         return eventsRef.document(event.getUid()).set(event);
     }
     public Task<Void> joinEvent(String eventId, String uid){
+        DocumentReference a = eventsRef.document(eventId);
         return eventsRef.document(eventId).update("invited." + uid, true);
     }
     public Task<Void> leaveEvent(String eventId, String uid){
