@@ -30,11 +30,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/EventNameTextInputLayout"
         style="?attr/textInputFilledStyle"
-        app:boxBackgroundColor="@color/md_theme_light_background"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="26dp"
+        app:boxBackgroundColor="@color/md_theme_light_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/create_event_toolbar">
@@ -51,11 +51,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/DateTextInputLayout"
         style="?attr/textInputFilledStyle"
-        app:boxBackgroundColor="@color/md_theme_light_background"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="26dp"
+        app:boxBackgroundColor="@color/md_theme_light_background"
         app:endIconDrawable="@drawable/outline_calendar_today_24"
         app:endIconTint="@color/md_theme_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,11 +75,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TimeTextInputLayout"
         style="?attr/textInputFilledStyle"
-        app:boxBackgroundColor="@color/md_theme_light_background"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="26dp"
+        app:boxBackgroundColor="@color/md_theme_light_background"
         app:endIconDrawable="@drawable/outline_access_time_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -96,29 +96,64 @@
             android:text="@string/event_time_input" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/LocationTextInputLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/locationLayout"
         style="?attr/textInputFilledStyle"
-        app:boxBackgroundColor="@color/md_theme_light_background"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="26dp"
+        app:boxBackgroundColor="@color/md_theme_light_background"
         app:endIconDrawable="@drawable/outline_location_on_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/TimeTextInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/LocationInputText"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/locationSearch"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryBackground="@null"
+            app:closeIcon="@android:color/transparent"
+            app:queryHint="@string/create_event_location_hint"
+            app:searchIcon="@null">
+
+        </androidx.appcompat.widget.SearchView>
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_light_background"
-            android:drawableEnd="@drawable/outline_location_on_24"
-            android:hint="@string/create_event_location_hint"
-            android:inputType="text"
-            android:text="" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/locationSearch"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/outline_location_on_24" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/md_theme_dark_error"
+            android:backgroundTint="@color/md_theme_light_onSurfaceVariant"
+            app:layout_constraintBottom_toBottomOf="@+id/locationSearch">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ListView
+        android:id="@+id/suggestionListView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_light_surface"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/locationLayout"
+        app:layout_constraintStart_toStartOf="@+id/locationLayout"
+        app:layout_constraintTop_toBottomOf="@+id/locationLayout" />
 
     <TextView
         android:id="@+id/AddDescriptionTextView"
@@ -131,7 +166,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/LocationTextInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/locationLayout" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
@@ -153,7 +188,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/AddDescriptionTextView"
-        app:layout_constraintTop_toBottomOf="@+id/LocationTextInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/locationLayout" />
 
     <TextView
         android:id="@+id/AddGuestsTextView"
@@ -186,15 +221,22 @@
         android:layout_width="111dp"
         android:layout_height="56dp"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="216dp"
+        android:layout_marginTop="462dp"
         android:contentDescription=""
         android:text="@string/create_event_button_add_text"
         app:backgroundTint="@color/md_theme_light_tertiaryContainer"
         app:icon="@drawable/baseline_check_24"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.914"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_event_toolbar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="333dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

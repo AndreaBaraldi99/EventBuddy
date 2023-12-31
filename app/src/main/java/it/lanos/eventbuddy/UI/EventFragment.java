@@ -170,10 +170,9 @@ public class EventFragment extends Fragment {
 
         eventViewModel.getEvents(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
-                int initialSize = this.eventList.size();
                 this.eventList.clear();
                 this.eventList.addAll(((Result.Success) result).getData());
-                eventRecyclerViewAdapter.notifyItemRangeInserted(initialSize, this.eventList.size());
+                eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});
     }

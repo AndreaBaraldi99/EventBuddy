@@ -12,5 +12,12 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
+        <!-- Altri attributi di stile specifici della tua app se necessario -->
+
+        <!-- Cambia il colore del testo del suggerimento -->
+        <item name="android:textColorHint">#000000</item>
+    </style>
+
 
 </resources>

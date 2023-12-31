@@ -15,6 +15,8 @@ public abstract class Result {
     public boolean isUserSuccess() {
         return this instanceof UserSuccess;
     }
+    public boolean isSuggestionSuccess(){return this instanceof SuggestionsSuccess;}
+    public boolean isFeatureSuccess(){return this instanceof FeatureSuccess;}
 
     /**
      * Class that represents a successful action during the interaction

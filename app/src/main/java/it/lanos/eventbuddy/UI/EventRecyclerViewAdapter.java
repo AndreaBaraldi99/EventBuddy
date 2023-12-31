@@ -91,7 +91,9 @@ public class EventRecyclerViewAdapter extends
             textViewName.setText(event.getEvent().getName());
             dateButton.setText(event.getEvent().getDate().substring(0,8));
             textViewTime.setText(event.getEvent().getDate().substring(9));
-            textViewLocation.setText(event.getEvent().getLocation());
+            String address = event.getEvent().getLocation();
+            String showAddress =  address.split(",")[0];
+            textViewLocation.setText(showAddress);
 
         }
 

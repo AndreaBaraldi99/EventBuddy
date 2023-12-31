@@ -53,6 +53,12 @@ public class SuggestionsRepository implements SuggestionsCallback, ISuggestionsR
         featureLiveData.postValue(featureSuccess);
     }
 
+    public MutableLiveData<Result> attachSuggestions() {
+        return suggestionsLiveData;
+    }
+
+    public MutableLiveData<Result> attachFeature(){return featureLiveData; }
+
     @Override
     public MutableLiveData<Result> getSuggestions(String query) {
         mapboxDataSource.getSuggestions(query, user.getUserId());

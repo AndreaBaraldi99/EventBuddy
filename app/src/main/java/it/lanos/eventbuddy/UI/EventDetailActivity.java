@@ -33,6 +33,7 @@ import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
+import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventDetailActivity extends AppCompatActivity {
@@ -100,9 +101,9 @@ public class EventDetailActivity extends AppCompatActivity {
         });
 
 
-        String[] date_time = event.getEvent().getDate().split("/");
-        String formatted_date = formatDate(date_time);
-        String formatted_time = date_time[3];
+        String date_time = event.getEvent().getDate();
+        String formatted_date = Parser.formatDate(date_time);
+        String formatted_time = Parser.formatTime(date_time);
 
 
 
@@ -145,66 +146,6 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    private String formatDate(String[] dateTime) {
-        String month;
-        switch(dateTime[1]){
-            case "01": {
-                month = "January";
-                break;
-            }
-            case "02": {
-                month = "February";
-                break;
-            }
-            case "03": {
-                month = "March";
-                break;
-            }
-            case "04": {
-                month = "April";
-                break;
-            }
-            case "05": {
-                month = "May";
-                break;
-            }
-            case "06": {
-                month = "June";
-                break;
-            }
-            case "07": {
-                month = "July";
-                break;
-            }
-            case "08": {
-                month = "August";
-                break;
-            }
-            case "09": {
-                month = "September";
-                break;
-            }
-            case "10": {
-                month = "October";
-                break;
-            }
-            case "11": {
-                month = "November";
-                break;
-            }
-            case "12": {
-                month = "December";
-                break;
-            }
-            default:
-                month = "";
-        }
-        if(dateTime[2].length() == 2)
-            dateTime[2] = "20"+dateTime[2];
-
-        String date = month+", "+dateTime[0]+" "+dateTime[2];
-        return date;
-    }
     private void readUser(DataEncryptionUtil dataEncryptionUtil){
         try {
             this.user = new Gson().fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
