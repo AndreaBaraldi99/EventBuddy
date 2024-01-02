@@ -113,13 +113,15 @@
             android:id="@+id/locationSearch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:backgroundTint="@color/md_theme_light_background"
+            app:closeIcon="@android:color/transparent"
             app:iconifiedByDefault="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:queryBackground="@null"
-            app:closeIcon="@android:color/transparent"
             app:queryHint="@string/create_event_location_hint"
-            app:searchIcon="@null">
+
+            app:searchIcon="@null" >
 
         </androidx.appcompat.widget.SearchView>
 
@@ -133,24 +135,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/outline_location_on_24" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/md_theme_dark_error"
-            android:backgroundTint="@color/md_theme_light_onSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="@+id/locationSearch">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
         android:id="@+id/suggestionListView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/md_theme_light_surface"
         android:layout_marginTop="8dp"
+        android:background="@color/md_theme_light_surface"
         app:layout_constraintEnd_toEndOf="@+id/locationLayout"
         app:layout_constraintStart_toStartOf="@+id/locationLayout"
         app:layout_constraintTop_toBottomOf="@+id/locationLayout" />
@@ -236,7 +228,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="333dp" />
+        app:layout_constraintGuide_begin="386dp" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="26dp"
+        app:dividerColor="@color/md_theme_dark_outlineVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/locationLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

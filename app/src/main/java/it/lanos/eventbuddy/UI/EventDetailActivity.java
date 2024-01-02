@@ -15,10 +15,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -48,6 +50,14 @@ public class EventDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+
+        MaterialToolbar createEventToolbar = findViewById(R.id.detail_event_top_appbar);
+        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(EventDetailActivity.this);
+            }
+        });
 
         EventRepository iEventsRepository = (EventRepository)
                 ServiceLocator.getInstance().getEventsRepository(this.getApplication());

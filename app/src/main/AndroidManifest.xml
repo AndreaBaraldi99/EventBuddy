@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EventBuddy"
         tools:targetApi="31">
+
         <activity
             android:name=".UI.authentication.WelcomeActivity"
             android:exported="true"
@@ -25,9 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".UI.authentication.ForgottenPasswordActivity"
             android:exported="false" />
+
         <activity
             android:name=".UI.PreferencesSettingsActivity"
             android:exported="false"
@@ -36,15 +39,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UI.AccountSettingsActivity" />
         </activity>
+
         <activity
             android:name=".UI.AccountSettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".UI.AccountSettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.AccountSettingsActivity" />
+        </activity>
+
         <activity
             android:name=".UI.authentication.RegistrationActivity"
             android:exported="false" />
+
         <activity
             android:name=".UI.authentication.LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".UI.CreateEventActivity"
             android:exported="false"
@@ -54,14 +66,20 @@
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".UI.BottomNavigationBarActivity" />
+
         <activity
             android:name=".UI.BottomNavigationBarActivity"
             android:exported="false">
         </activity>
+
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/eventDetail" />
-    </application>
+            android:theme="@style/eventDetail"
+            android:parentActivityName=".UI.BottomNavigationBarActivity"/>
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".UI.BottomNavigationBarActivity" />
 
+    </application>
 </manifest>

@@ -149,8 +149,6 @@ public class CreateEventActivity extends AppCompatActivity{
                 new CreateEventViewModelFactory(iSuggestionsRepository)).get(CreateEventViewModel.class);
 
 
-
-
         //GESTIONE INDIRIZZO
         //iSuggestionsRepository
         createEventViewModel.attachSuggestions().observe(this, result -> {
@@ -167,7 +165,6 @@ public class CreateEventActivity extends AppCompatActivity{
                 addressAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
             }
-
         });
 
         createEventViewModel.attachFeature().observe(this, result -> {

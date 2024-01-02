@@ -15,15 +15,24 @@
             android:id="@+id/top_appbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/event_fragment_top_app_bar_menu"
             app:title="@string/friends_fragment_title"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/materialDividerFirends"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="50dp"
+            app:dividerColor="@color/md_theme_light_surfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
-
-            <androidx.appcompat.widget.SearchView
+        <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,30 +50,16 @@
             </androidx.appcompat.widget.SearchView>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginEnd="48dp"
-            android:background="@color/divisor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="6dp"
             android:text="@string/friends_your_list"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/materialDividerFirends" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friendsRecyclerView"

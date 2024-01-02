@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/fragment_more_options"
+        android:id="@+id/fragment_simple_menu_bar"
         android:enabled="true"
         android:icon="@drawable/outline_more_vert_24"
         android:title="@string/event_fragment_title" />

@@ -15,14 +15,14 @@
            android:layout_width="match_parent"
            android:layout_height="730dp"
            android:background="@drawable/sfondo"
-           app:layout_constraintTop_toTopOf="parent"></ImageView>
+           app:layout_constraintTop_toTopOf="parent">
+       </ImageView>
 
 
        <com.google.android.material.appbar.MaterialToolbar
            android:id="@+id/detail_event_top_appbar"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:layout_marginTop="52dp"
            android:minHeight="?attr/actionBarSize"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
            android:layout_marginTop="112dp"
            android:textSize="28sp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text="Month, DD, Year"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +50,7 @@
            android:layout_marginTop="152dp"
            android:textSize="22sp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text="00:00 AM/PM"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +62,7 @@
            android:layout_marginTop="204dp"
            android:textSize="40sp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text="Event Name"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,7 +74,7 @@
            android:layout_marginTop="315dp"
            android:textSize="14sp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text="Place name \nAddress"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +83,10 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="12dp"
-           android:layout_marginTop="323dp"
+           android:layout_marginTop="328dp"
+           android:layout_marginEnd="5dp"
+           app:layout_constraintEnd_toStartOf="@+id/event_address"
+           app:layout_constraintHorizontal_bias="0.666"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
            app:srcCompat="@drawable/outline_location_on_24" />
@@ -149,7 +152,7 @@
                android:layout_width="28dp"
                android:layout_height="32dp"
                android:gravity="center"
-               android:text="+8"
+               android:text=""
                android:textColor="#FFFFFF"
                app:layout_constraintBottom_toBottomOf="parent"
                app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +167,7 @@
            android:layout_marginTop="416dp"
            android:textSize="12sp"
            android:fontFamily="@font/robotoslab_semibold"
-           android:text="Pippo e altri x partecipano"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,7 +179,7 @@
            android:textSize="14sp"
            android:layout_marginStart="18dp"
            android:layout_marginTop="485dp"
-           android:text="Event description"
+           android:text=""
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -187,7 +190,7 @@
            android:layout_height="wrap_content"
            android:layout_marginStart="18dp"
            android:layout_marginBottom="24dp"
-           android:drawableLeft="@drawable/baseline_check_24"
+           android:drawableStart="@drawable/baseline_check_24"
            android:drawableTint="#FFFFFF"
            android:text="@string/event_detail_join"
            app:layout_constraintBottom_toBottomOf="parent"
@@ -200,7 +203,7 @@
            android:layout_marginStart="164dp"
            android:layout_marginBottom="24dp"
            android:backgroundTint="@color/md_theme_dark_error"
-           android:drawableLeft="@drawable/baseline_close_24"
+           android:drawableStart="@drawable/baseline_close_24"
            android:drawableTint="#FFFFFF"
            android:text="@string/event_detail_do_not_join"
            app:layout_constraintBottom_toBottomOf="parent"

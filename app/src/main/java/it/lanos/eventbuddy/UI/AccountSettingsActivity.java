@@ -2,10 +2,12 @@ package it.lanos.eventbuddy.UI;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,8 +38,14 @@ public class AccountSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_settings);
-        MaterialToolbar toolbar = findViewById(R.id.toolbarAccountSettings);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        MaterialToolbar createEventToolbar = findViewById(R.id.toolbarAccountSettings);
+        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavUtils.navigateUpFromSameTask(AccountSettingsActivity.this);
+            }
+        });
 
         // Find the views by ID
         setViewsUp();
