@@ -10,20 +10,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
-import it.lanos.eventbuddy.UI.authentication.LoginActivity;
-import it.lanos.eventbuddy.UI.authentication.RegistrationActivity;
 
 public class WelcomeActivity extends AppCompatActivity {
-
-    private static WelcomeActivity instance;
     Button signup_button, login_button;
     UserViewModel userViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
-        instance = this;
 
         // Initialize the view model
         userViewModel = UserHelper.initializeAndGetViewModel(this);
@@ -36,19 +30,15 @@ public class WelcomeActivity extends AppCompatActivity {
         signup_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
+            finish();
         });
 
         //Navigate the user to LoginActivity
         login_button.setOnClickListener(view -> {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         });
-    }
-
-    public static void closeActivity() {
-        if (instance != null) {
-            instance.finish();
-        }
     }
 
     private void alreadyLoggedUser() {

@@ -153,19 +153,11 @@ public class UserHelper {
     }
 
     public static boolean isAuthSuccess(Result result) {
-        if(result instanceof Result.AuthSuccess) {
-            return true;
-        } else {
-            return false;
-        }
+        return result instanceof Result.AuthSuccess;
     }
 
      public static boolean isError(Result result) {
-        if(result instanceof Result.Error) {
-            return true;
-        } else {
-            return false;
-        }
+         return result instanceof Result.Error;
     }
 
     // Initialize the view model
@@ -181,4 +173,6 @@ public class UserHelper {
     public static String getString(TextInputLayout textInputLayout) {
         return Objects.requireNonNull(textInputLayout.getEditText()).getText().toString().trim();
     }
+
+
 }

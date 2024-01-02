@@ -1,5 +1,6 @@
 package it.lanos.eventbuddy.UI.authentication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,7 +15,6 @@ import java.util.Objects;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class RegistrationActivity extends AppCompatActivity {
     TextInputLayout nameTextInputLayout, nicknameTextInputLayout,
@@ -26,6 +26,8 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        setupBackButtonHandling();
 
         // Find views by ID
         setViewsUp();
@@ -56,17 +58,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // Set listeners for the end icons of text fields
     private void setEndIconsListeners() {
-        nameTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(nameTextInputLayout.getEditText()).setText("");
-        });
+        nameTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(nameTextInputLayout.getEditText()).setText(""));
 
-        nicknameTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(nicknameTextInputLayout.getEditText()).setText("");
-        });
+        nicknameTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(nicknameTextInputLayout.getEditText()).setText(""));
 
-        emailTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
-        });
+        emailTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(emailTextInputLayout.getEditText()).setText(""));
     }
 
     // Set required listeners for the text fields
@@ -116,8 +112,21 @@ public class RegistrationActivity extends AppCompatActivity {
     private void navigateToHomeScreen() {
         Intent intent = new Intent(this, BottomNavigationBarActivity.class);
         startActivity(intent);
-        WelcomeActivity.closeActivity();
         finish();
+    }
+
+    //Navigate the user to WelcomeActivity
+    private void setupBackButtonHandling() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                // Handle the back button event
+                Intent intent = new Intent(RegistrationActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
 }
