@@ -1,14 +1,6 @@
 buildscript {
     repositories{
         google()
-        maven {
-            url = uri("https://api.mapbox.com/downloads/v2/releases/maven")
-// Do not change the username below. It should always be "mapbox" (not your username).
-            credentials.username = "mapbox"
-// Use the secret token stored in gradle.properties as the password
-            credentials.password = "sk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNscXBlbWtrNjNpMnAya3M1em16ajUxZnEifQ.6sLqYWu7D6GDopk4Sg0n4Q"
-            authentication.create<BasicAuthentication>("basic")
-        }
     }
     dependencies {
         val nav_version="2.7.6"
