@@ -30,7 +30,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        setupBackButtonHandling();
+        // Navigate the user to welcome activity when back button is pressed
+        UserHelper.setupBackButtonHandling(this, WelcomeActivity.class);
 
         // Find the views by ID
         setViewsUp();
@@ -136,19 +137,5 @@ public class LoginActivity extends AppCompatActivity {
     }
     public static boolean getRememberMeBoolean() {
         return rememberMeBoolean;
-    }
-
-    //Navigate the user to WelcomeActivity
-    private void setupBackButtonHandling() {
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                // Handle the back button event
-                Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 }

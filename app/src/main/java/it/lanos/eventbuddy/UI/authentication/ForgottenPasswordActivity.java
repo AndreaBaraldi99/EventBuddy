@@ -50,6 +50,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("EmailSentMessage", message);
         startActivity(intent);
+        finish();
     }
 
     // Handle reset button press

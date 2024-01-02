@@ -27,7 +27,8 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
-        setupBackButtonHandling();
+        // Navigate the user to welcome activity when back button is pressed
+        UserHelper.setupBackButtonHandling(this, WelcomeActivity.class);
 
         // Find views by ID
         setViewsUp();
@@ -114,19 +115,4 @@ public class RegistrationActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-    //Navigate the user to WelcomeActivity
-    private void setupBackButtonHandling() {
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
-            @Override
-            public void handleOnBackPressed() {
-                // Handle the back button event
-                Intent intent = new Intent(RegistrationActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
-    }
-
 }
