@@ -1,6 +1,5 @@
 package it.lanos.eventbuddy.UI.authentication;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;

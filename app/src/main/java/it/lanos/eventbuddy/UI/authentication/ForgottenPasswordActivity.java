@@ -13,7 +13,6 @@ import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class ForgottenPasswordActivity extends AppCompatActivity {
 
@@ -38,9 +37,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
     // Set required listeners for the text fields
     private void setTextFieldsListeners() {
         //End email icon listener
-        emailTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
-        });
+        emailTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(emailTextInputLayout.getEditText()).setText(""));
 
         UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
     }

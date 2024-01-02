@@ -176,6 +176,7 @@ public class UserHelper {
         return Objects.requireNonNull(textInputLayout.getEditText()).getText().toString().trim();
     }
 
+    //Take the user to selected activity when back button is pressed
     public static void setupBackButtonHandling(AppCompatActivity activity, Class<?> destinationActivity) {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
