@@ -33,9 +33,9 @@
 
     <TextView
         android:id="@+id/app_title"
-        android:layout_width="370dp"
+        android:layout_width="357dp"
         android:layout_height="77dp"
-        android:layout_marginTop="430dp"
+        android:layout_marginTop="432dp"
         android:fontFamily="@font/robotoslab_semibold"
         android:includeFontPadding="false"
         android:lineSpacingExtra="0dp"
@@ -44,7 +44,6 @@
         android:textColor="@color/md_theme_dark_background"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
