@@ -21,6 +21,7 @@ public class LocationRepository implements ILocationRepository, LocationCallback
     private User user;
     public LocationRepository(BaseLocationRealtimeDBDataSource locationRealtimeDBDataSource, DataEncryptionUtil dataEncryptionUtil) {
         this.locationRealtimeDBDataSource = locationRealtimeDBDataSource;
+        this.locationRealtimeDBDataSource.setLocationCallback(this);
         locationLiveData = new MutableLiveData<>();
         readUser(dataEncryptionUtil);
     }
