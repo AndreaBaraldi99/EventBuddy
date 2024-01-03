@@ -10,16 +10,20 @@ import it.lanos.eventbuddy.data.EventRepository;
 import it.lanos.eventbuddy.data.ISuggestionsRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.LocationRepository;
 import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.UserRepository;
 import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.services.MapboxService;
+import it.lanos.eventbuddy.data.source.ILocationRepository;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRealtimeDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.realtimeDB.LocationRealtimeDBDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
@@ -82,6 +86,14 @@ public class ServiceLocator {
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
         return new SuggestionsRepository(mapboxDataSource, dataEncryptionUtil);
+    }
+
+    public ILocationRepository getLocationRepository(Application application) {
+        BaseLocationRealtimeDBDataSource locationRealtimeDBDataSource = new LocationRealtimeDBDataSource();
+
+        DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
+
+        return new LocationRepository(locationRealtimeDBDataSource, dataEncryptionUtil);
     }
 
     private MapboxService getMapboxApiService() {
