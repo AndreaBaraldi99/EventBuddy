@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:clickable="false"
-                android:text="@string/create_event_button_add_text"
+                android:text="@string/add_text"
                 app:icon="@drawable/baseline_check_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -122,7 +122,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     //Set the user email into the textview
     private void setUserEmail(TextView textView) {
-        String email = userViewModel.getCurrentUser().getEmail().toString().trim();
+        String email = userViewModel.getCurrentUser().getEmail().trim();
         textView.setText(email);
     }
 
@@ -135,11 +135,11 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     .setTitle(getString(R.string.confirm_elimination))
                     .setMessage(getString(R.string.insert_password))
                     .setView(input)
-                    .setPositiveButton(getString(R.string.confirm_alert), (dialog, whichButton) -> {
+                    .setPositiveButton(getString(R.string.confirm_text), (dialog, whichButton) -> {
                         String password = input.getText().toString();
                         checkPassword(password);
                     })
-                    .setNegativeButton(getString(R.string.cancel_alert), (dialog, whichButton) -> dialog.cancel())
+                    .setNegativeButton(getString(R.string.cancel_text), (dialog, whichButton) -> dialog.cancel())
                     .show();
         });
     }

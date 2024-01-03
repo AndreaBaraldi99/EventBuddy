@@ -17,7 +17,7 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="25dp"
             android:layout_marginBottom="36dp"
-            android:contentDescription="@string/event_fragment_button"
+            android:contentDescription="@string/null_text"
             android:src="@drawable/outline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

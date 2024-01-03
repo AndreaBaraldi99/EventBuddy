@@ -49,7 +49,7 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
                         LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
             eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
             });
-        };
+        }
     }
 
     @Override

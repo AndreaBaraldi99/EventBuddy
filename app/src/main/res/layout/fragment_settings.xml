@@ -16,7 +16,7 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/Settings"
+            app:title="@string/settings_text"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -29,7 +29,7 @@
             android:layout_marginEnd="28dp"
             app:boxBackgroundColor="@color/surface_settings"
             android:textColorHint="@color/md_theme_dark_outline"
-            android:hint="@string/settings_nickname"
+            android:hint="@string/nickname_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profilePic"
             app:layout_constraintTop_toTopOf="@+id/profilePic">
@@ -65,6 +65,7 @@
 
             <ImageView
                 android:id="@+id/accountIcon"
+                android:contentDescription="@string/null_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -108,6 +109,7 @@
 
             <ImageView
                 android:id="@+id/preferencesIcon"
+                android:contentDescription="@string/null_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -151,6 +153,7 @@
 
             <ImageView
                 android:id="@+id/notificationsIcon"
+                android:contentDescription="@string/null_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -193,6 +196,7 @@
 
             <ImageView
                 android:id="@+id/privacyIcon"
+                android:contentDescription="@string/null_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthService {
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
     public AuthService(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
     }

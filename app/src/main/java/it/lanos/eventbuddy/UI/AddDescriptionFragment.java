@@ -45,9 +45,9 @@ public class AddDescriptionFragment extends DialogFragment {
         // Pass null as the parent view because it's going in the dialog layout.
         builder.setView(view)
                 // Add action buttons
-                .setPositiveButton(R.string.add_description_confirm,
+                .setPositiveButton(R.string.confirm_text,
                         (dialog, id) -> {((CreateEventActivity) getActivity()).onDescriptionDialogConfirmClick(textInputLayout.getEditText().getText().toString(), this);})
-                .setNegativeButton(R.string.add_description_cancel,
+                .setNegativeButton(R.string.cancel_text,
                         (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
 
         return builder.create();

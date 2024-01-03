@@ -12,7 +12,7 @@ import it.lanos.eventbuddy.data.source.models.User;
 
 public class UserDataSource extends BaseUserDataSource {
     private static final String TAG = UserDataSource.class.getSimpleName();
-    private AuthService authService;
+    private final AuthService authService;
 
     public UserDataSource(AuthService authService) {
         this.authService = authService;

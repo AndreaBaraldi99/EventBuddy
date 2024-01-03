@@ -64,8 +64,8 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
     public class GuestViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView userNameTextView;
-        private Button addButton;
+        private final TextView userNameTextView;
+        private final Button addButton;
 
         public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,9 +94,9 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
             this.isItemSelected(getAdapterPosition());
 
             if (isSelected) {
-                addButton.setText(R.string.create_event_button_remove_text);
+                addButton.setText(R.string.remove_text);
             } else {
-                addButton.setText(R.string.create_event_button_add_text);
+                addButton.setText(R.string.add_text);
             }
         }
 

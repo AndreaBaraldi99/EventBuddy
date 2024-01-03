@@ -95,11 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isRememberMeChecked() {
-        if(rememberMe_checkbox.isChecked()) {
-            return true;
-        } else {
-            return false;
-        }
+        return rememberMe_checkbox.isChecked();
     }
 
     // Set required listeners for the text fields

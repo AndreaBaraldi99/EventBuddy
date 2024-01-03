@@ -18,7 +18,7 @@ import it.lanos.eventbuddy.data.source.models.mapbox.Suggestion;
 
 
 public class suggestionAdapter extends ArrayAdapter<Suggestion> {
-    private List<Suggestion> suggestions;
+    private final List<Suggestion> suggestions;
     private final int layout;
 
     public suggestionAdapter(@NonNull Context context, int layout, List<Suggestion> suggestions) {

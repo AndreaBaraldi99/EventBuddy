@@ -8,7 +8,7 @@ import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 
 public class CreateEventViewModel extends ViewModel {
-    private SuggestionsRepository suggestionRepository;
+    private final SuggestionsRepository suggestionRepository;
     private MutableLiveData<Result> suggestionListLiveData;
 
     private MutableLiveData<Result> feature;

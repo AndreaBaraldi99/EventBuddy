@@ -16,11 +16,9 @@ import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 
 import java.util.ArrayList;
@@ -67,9 +65,9 @@ public class AddGuestsFragment extends DialogFragment {
 
         builder.setView(view)
                 // Add action buttons
-                .setPositiveButton(R.string.add_description_confirm,
+                .setPositiveButton(R.string.confirm_text,
                         (dialog, id) -> {((CreateEventActivity) getActivity()).onGuestDialogConfirmClick();})
-                .setNegativeButton(R.string.add_description_cancel,
+                .setNegativeButton(R.string.cancel_text,
                         (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
         return builder.create();
     }

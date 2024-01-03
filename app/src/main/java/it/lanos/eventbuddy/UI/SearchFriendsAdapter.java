@@ -20,10 +20,10 @@ import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
 
 public class SearchFriendsAdapter extends ArrayAdapter<User> {
-    private List<User> searchingUsers;
+    private final List<User> searchingUsers;
     private final int layout;
 
-    private FriendsFragment callback;
+    private final FriendsFragment callback;
 
 
 

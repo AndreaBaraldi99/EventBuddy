@@ -9,7 +9,7 @@ import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 
 public class UserViewModel extends ViewModel {
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
     private MutableLiveData<Result> userLiveData;
 
     public UserViewModel(IUserRepository iUserRepository) {

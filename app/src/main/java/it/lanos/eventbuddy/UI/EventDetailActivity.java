@@ -132,7 +132,7 @@ public class EventDetailActivity extends AppCompatActivity {
         Iterator it = usersInfo.iterator();
         while(it.hasNext()){
             UserEventCrossRef current = (UserEventCrossRef) it.next();
-            if(current.getJoined() == true)
+            if(current.getJoined())
                 joinedUsers.add(current);
         }
         return joinedUsers;
@@ -143,12 +143,12 @@ public class EventDetailActivity extends AppCompatActivity {
         Iterator it = usersInfo.iterator();
         while(it.hasNext()){
             UserEventCrossRef current = (UserEventCrossRef) it.next();
-            if(current.getUserId().equals(this.user.getUserId()) && current.getJoined() == true) {
+            if(current.getUserId().equals(this.user.getUserId()) && current.getJoined()) {
                 join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
                 break;
             }
-            else if(current.getUserId().equals(this.user.getUserId()) && current.getJoined() == false) {
+            else if(current.getUserId().equals(this.user.getUserId()) && !current.getJoined()) {
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
                 join.setBackgroundColor(getResources().getColor(R.color.divisor));
                 break;

@@ -68,7 +68,7 @@ public class EventFragment extends Fragment {
                     if (data != null) {
                         // Estrarre l'oggetto EventWithUsers dal risultato
                         boolean change = data.getBooleanExtra("change", false);
-                        if(change == true) {
+                        if(change) {
                             eventViewModel.fetchEvents(0);
                         }
 
