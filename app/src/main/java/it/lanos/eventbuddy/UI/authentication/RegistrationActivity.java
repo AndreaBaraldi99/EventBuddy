@@ -14,7 +14,6 @@ import java.util.Objects;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class RegistrationActivity extends AppCompatActivity {
     TextInputLayout nameTextInputLayout, nicknameTextInputLayout,
@@ -26,6 +25,9 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        // Navigate the user to welcome activity when back button is pressed
+        UserHelper.setupBackButtonHandling(this, WelcomeActivity.class);
 
         // Find views by ID
         setViewsUp();
@@ -56,17 +58,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // Set listeners for the end icons of text fields
     private void setEndIconsListeners() {
-        nameTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(nameTextInputLayout.getEditText()).setText("");
-        });
+        nameTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(nameTextInputLayout.getEditText()).setText(""));
 
-        nicknameTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(nicknameTextInputLayout.getEditText()).setText("");
-        });
+        nicknameTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(nicknameTextInputLayout.getEditText()).setText(""));
 
-        emailTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
-        });
+        emailTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(emailTextInputLayout.getEditText()).setText(""));
     }
 
     // Set required listeners for the text fields
@@ -116,8 +112,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private void navigateToHomeScreen() {
         Intent intent = new Intent(this, BottomNavigationBarActivity.class);
         startActivity(intent);
-        WelcomeActivity.closeActivity();
         finish();
     }
-
 }

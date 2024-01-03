@@ -7,7 +7,6 @@ import androidx.core.app.NavUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.authentication.UserHelper;
@@ -40,12 +37,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account_settings);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.toolbarAccountSettings);
-        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavUtils.navigateUpFromSameTask(AccountSettingsActivity.this);
-            }
-        });
+        createEventToolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(AccountSettingsActivity.this));
 
         // Find the views by ID
         setViewsUp();
@@ -109,6 +101,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private void handleLogoutButton() {
         logout_button.setOnClickListener(view -> {
             userViewModel.signOut();
+            finish();
             navigateUserToWelcomeScreen();
         });
     }
@@ -116,7 +109,14 @@ public class AccountSettingsActivity extends AppCompatActivity {
     // Navigate the user to WelcomeActivity
     private void navigateUserToWelcomeScreen() {
         Intent intent = new Intent(this, WelcomeActivity.class);
+
+        // Set flags to clear the activity stack and start a new task
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        // Start the welcome screen activity
         startActivity(intent);
+
+        // Finish the current activity
         finish();
     }
 

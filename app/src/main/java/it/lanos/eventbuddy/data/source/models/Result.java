@@ -10,10 +10,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        return this instanceof Success;
-    }
-    public boolean isUserSuccess() {
-        return this instanceof UserSuccess;
+        return this instanceof Success || this instanceof AuthSuccess || this instanceof SuggestionsSuccess || this instanceof FeatureSuccess;
     }
     public boolean isSuggestionSuccess(){return this instanceof SuggestionsSuccess;}
     public boolean isFeatureSuccess(){return this instanceof FeatureSuccess;}
@@ -62,6 +59,16 @@ public abstract class Result {
         }
         public List<Suggestion> getData() {
             return suggestions;
+        }
+    }
+
+    public static final class LocationSuccess extends Result {
+        private final Location location;
+        public LocationSuccess(Location location){
+            this.location = location;
+        }
+        public Location getLocation(){
+            return location;
         }
     }
 

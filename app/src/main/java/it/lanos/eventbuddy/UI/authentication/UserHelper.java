@@ -1,9 +1,11 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -173,4 +175,18 @@ public class UserHelper {
     public static String getString(TextInputLayout textInputLayout) {
         return Objects.requireNonNull(textInputLayout.getEditText()).getText().toString().trim();
     }
+
+    //Take the user to selected activity when back button is pressed
+    public static void setupBackButtonHandling(AppCompatActivity activity, Class<?> destinationActivity) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                activity.startActivity(new Intent(activity, destinationActivity));
+                activity.finish();
+            }
+        };
+        activity.getOnBackPressedDispatcher().addCallback(activity, callback);
+    }
+
+
 }

@@ -15,7 +15,6 @@ import java.util.Objects;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -29,6 +28,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Navigate the user to welcome activity when back button is pressed
+        UserHelper.setupBackButtonHandling(this, WelcomeActivity.class);
 
         // Find the views by ID
         setViewsUp();
@@ -45,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         navigateToSignupScreen();
 
-        //Show a snackbar with a message "Email sent" if the user reset his password
+        //Show a snack-bar with a message "Email sent" if the user reset his password
         showPopupIfComingFromForgottenPassword();
     }
 
@@ -101,9 +103,7 @@ public class LoginActivity extends AppCompatActivity {
     // Set required listeners for the text fields
     private void setTextFieldsListeners() {
         //End email icon listener
-        emailTextInputLayout.setEndIconOnClickListener(view -> {
-            Objects.requireNonNull(emailTextInputLayout.getEditText()).setText("");
-        });
+        emailTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(emailTextInputLayout.getEditText()).setText(""));
 
         UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
         UserHelper.setTextInputLayoutListener(this, passwordTextInputLayout);
@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToHomeScreen() {
         Intent intent = new Intent(this, BottomNavigationBarActivity.class);
         startActivity(intent);
-        WelcomeActivity.closeActivity();
         finish();
     }
 
