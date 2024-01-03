@@ -36,7 +36,7 @@
     <string name="event_detail_join">Join</string>
     <string name="event_detail_do_not_join">Don\'t join</string>
     <string name="event_detail_manager">Manager</string>
-    <string name="noone_partecipating">Noone joined yet,\nyou will be first?</string>
+    <string name="noone_partecipating">No one joined yet,\nyou will be first?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

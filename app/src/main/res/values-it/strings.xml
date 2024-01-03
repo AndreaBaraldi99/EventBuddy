@@ -4,9 +4,9 @@
     <string name="null_text">null</string>
 
     <!-- Strings used for WelcomeActivity -->
-    <string name="welcome_text">Benvenuti in</string>
-    <string name="login_text">Login</string>
-    <string name="signup_text">Sign up</string>
+    <string name="welcome_text">Benvenuti su</string>
+    <string name="login_text">Accedi</string>
+    <string name="signup_text">Registrati</string>
 
     <!--Strings used for BottomNavigationBar -->
     <string name="bottom_bar_event_title">Eventi</string>
