@@ -1,6 +1,8 @@
 package it.lanos.eventbuddy.UI.authentication;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
+import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,15 +34,27 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Navigate the user to welcome activity when back button is pressed
-        UserHelper.setupBackButtonHandling(this, WelcomeActivity.class);
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
 
         // Find the views by ID
         setViewsUp();
 
         setTextFieldsListeners();
 
-        // Initialize the view model
-        userViewModel = UserHelper.initializeAndGetViewModel(this);
+        // Initialize the ViewModel
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(getApplication());
+
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
 
         handleLoginButton();
 
@@ -70,20 +86,25 @@ public class LoginActivity extends AppCompatActivity {
 
             rememberMeBoolean = isRememberMeChecked();
 
-            String email = UserHelper.getString(emailTextInputLayout);
-            String password = UserHelper.getString(passwordTextInputLayout);
+            String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
+            String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
 
-            if(UserHelper.isValidEmail(email) && !password.isEmpty()) {
-                userViewModel.signIn(email, password).observe(this, result -> {
-                    if (UserHelper.isAuthSuccess(result)) {
+            if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if(!password.isEmpty()) {
+                    userViewModel.signIn(email, password).observe(this, result -> {
+                        if (result.isSuccess()) {
                             navigateToHomeScreen();
-                    } else if (UserHelper.isError(result)) {
-                        Snackbar.make(findViewById(android.R.id.content),
-                                        ((Result.Error) result).getMessage(),
-                                        Snackbar.LENGTH_LONG)
-                                .show();
-                    }
-                });
+                        } else {
+                            Snackbar.make(findViewById(android.R.id.content),
+                                            ((Result.Error) result).getMessage(),
+                                            Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
+                }
+            } else {
+                emailTextInputLayout.setError(getString(R.string.not_valid_email));
+                TextInputListenerHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
             }
         });
     }
@@ -104,9 +125,6 @@ public class LoginActivity extends AppCompatActivity {
     private void setTextFieldsListeners() {
         //End email icon listener
         emailTextInputLayout.setEndIconOnClickListener(view -> Objects.requireNonNull(emailTextInputLayout.getEditText()).setText(""));
-
-        UserHelper.setEmailTextInputLayoutListener(this, emailTextInputLayout);
-        UserHelper.setTextInputLayoutListener(this, passwordTextInputLayout);
     }
 
     // Navigate the user to ForgottenPasswordActivity

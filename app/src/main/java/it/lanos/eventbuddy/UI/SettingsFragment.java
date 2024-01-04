@@ -1,5 +1,9 @@
 package it.lanos.eventbuddy.UI;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,21 +97,50 @@ public class SettingsFragment extends Fragment {
         });
 
         ConstraintLayout accountConstraint = view.findViewById(R.id.accountConstraint);
-        accountConstraint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity);
-            }
-        });
+        accountConstraint.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity));
 
         ConstraintLayout preferencesConstraint = view.findViewById(R.id.preferencesConstraint);
-        preferencesConstraint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity);
+        preferencesConstraint.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity));
+
+        // Navigate the user to notification settings
+        ConstraintLayout notificationsConstraint = view.findViewById(R.id.notificationsConstraint);
+        notificationsConstraint.setOnClickListener(v -> {
+            // Intent to open the specific App Info page:
+            Intent intent = new Intent();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Android Oreo (8.0) and above versions
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, v.getContext().getPackageName());
+            } else {
+                // Android Lollipop (5.0) - Android Nougat (7.1)
+                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                intent.putExtra("app_package", v.getContext().getPackageName());
+                intent.putExtra("app_uid", v.getContext().getApplicationInfo().uid);
+            }
+
+            try {
+                v.getContext().startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
             }
         });
 
+        // Navigate the user to permission settings
+        ConstraintLayout permissionsConstraint = view.findViewById(R.id.permissionsConstraint);
+        permissionsConstraint.setOnClickListener(v -> {
+            // Intent to open the App Info page of your app
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 
+            // Create a Uri from the package name of your app
+            Uri uri = Uri.fromParts("package", v.getContext().getPackageName(), null);
+            intent.setData(uri);
+
+            try {
+                v.getContext().startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

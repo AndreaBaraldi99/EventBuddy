@@ -1,24 +1,16 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.IUserRepository;
-import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
-public class UserHelper {
+public class TextInputListenerHelper {
 
     // Listener used for validating email address
     static void setEmailTextInputLayoutListener(Context context, TextInputLayout emailTextInputLayout) {
@@ -36,7 +28,7 @@ public class UserHelper {
             @Override
             public void afterTextChanged(Editable editable) {
                 String emailText = editable.toString().trim();
-                if (!isValidEmail(emailText)) {
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
                     emailTextInputLayout.setError(context.getString(R.string.not_valid_email));
                 } else {
                     emailTextInputLayout.setError(null);
@@ -70,6 +62,7 @@ public class UserHelper {
         });
     }
 
+    /*
     // Check if the text secondTextInputLayout is equal to the text in firstTextInputLayout
     public static void checkEqualTextInputLayout(
             Context context,
@@ -128,6 +121,9 @@ public class UserHelper {
         });
     }
 
+     */
+
+    /*
     // Listener used for a field that cannot be empty
     static void setTextInputLayoutListener(Context context, TextInputLayout textInputLayout) {
         Objects.requireNonNull(textInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
@@ -149,19 +145,15 @@ public class UserHelper {
         });
     }
 
+     */
+    /*
     // Check if a string is a valid email
     static boolean isValidEmail(String target) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
-    public static boolean isAuthSuccess(Result result) {
-        return result instanceof Result.AuthSuccess;
-    }
-
-     public static boolean isError(Result result) {
-         return result instanceof Result.Error;
-    }
-
+     */
+    /*
     // Initialize the view model
     public static UserViewModel initializeAndGetViewModel(AppCompatActivity activity) {
         IUserRepository userRepository =
@@ -170,12 +162,16 @@ public class UserHelper {
         return new ViewModelProvider(activity,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
     }
-
+    */
+    /*
     // Return a trimmed string from a TextInputLayout
     public static String getString(TextInputLayout textInputLayout) {
         return Objects.requireNonNull(textInputLayout.getEditText()).getText().toString().trim();
     }
 
+     */
+
+    /*
     //Take the user to selected activity when back button is pressed
     public static void setupBackButtonHandling(AppCompatActivity activity, Class<?> destinationActivity) {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -187,6 +183,8 @@ public class UserHelper {
         };
         activity.getOnBackPressedDispatcher().addCallback(activity, callback);
     }
+
+     */
 
 
 }
