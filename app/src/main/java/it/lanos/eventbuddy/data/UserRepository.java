@@ -28,6 +28,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
     private final DataEncryptionUtil dataEncryptionUtil;
+    private User user;
 
     public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
@@ -77,10 +78,17 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
+    public void changeUsername(@NonNull String newUsername) {
+        userCloudDBDataSource.changeUsername(new User(user.getUserId(), newUsername, user.getFullName()));
+    }
+
+    @Override
     public MutableLiveData<Result> searchUsers(@NonNull String query) {
         userCloudDBDataSource.searchUsers(query);
         return usersSearchedMutableLiveData;
     }
+
+
 
 
     @Override
@@ -105,6 +113,7 @@ public class UserRepository implements IUserRepository, UserCallback {
             e.printStackTrace();
         }
         //userLocalDataSource.addUser(user);
+        this.user = user;
         Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
         userMutableLiveData.postValue(resultSuccess);
     }

@@ -26,8 +26,8 @@ public class CloudDBService {
     public Task<QuerySnapshot> getEvents(String uid){
         return eventsRef.orderBy("invited." + uid).get();
     }
-    public Task<DocumentReference> addUser(User user){
-        return usersRef.add(user);
+    public Task<Void> addUser(User user){
+        return usersRef.document(user.getUserId()).set(user);
     }
     public Task<Void> addEvent(EventsCloudResponse event){
         return eventsRef.document(event.getUid()).set(event);
@@ -37,5 +37,8 @@ public class CloudDBService {
     }
     public Task<Void> leaveEvent(String eventId, String uid){
         return eventsRef.document(eventId).update("invited." + uid, false);
+    }
+    public Task<Void> changeUsername(User user){
+        return usersRef.document(user.getUserId()).update("username", user.getUsername());
     }
 }

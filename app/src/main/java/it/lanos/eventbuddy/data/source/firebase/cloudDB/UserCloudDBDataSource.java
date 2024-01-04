@@ -31,5 +31,12 @@ public class UserCloudDBDataSource extends BaseUserCloudDBDataSource {
         }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 
+    @Override
+    public void changeUsername(User newUser) {
+        service.changeUsername(newUser).addOnSuccessListener(aVoid -> {
+            userCallback.onSuccessFromOnlineDB(newUser);
+        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+    }
+
 
 }
