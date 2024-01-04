@@ -20,4 +20,5 @@ public class Constants {
     public static final String SHARED_PREFERENCES_FILE_NAME = "it.lanos.eventbuddy.preferences";
     public static final String DATABASE_URL = "https://eventbuddy-e5fe9-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String FIREBASE_LOCATION_COLLECTION = "locations";
+
 }
