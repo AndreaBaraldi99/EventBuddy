@@ -18,7 +18,6 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.firebase.auth.BaseUserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
-import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class UserRepository implements IUserRepository, UserCallback {

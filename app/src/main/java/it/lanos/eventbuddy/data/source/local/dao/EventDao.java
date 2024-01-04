@@ -25,4 +25,9 @@ public interface EventDao {
     void insertEvent(Event event);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEventWithUsers(UserEventCrossRef userEventCrossRef);
+    @Delete
+    void deleteEvent(Event event);
+    @Transaction
+    @Query("DELETE FROM UserEventCrossRef WHERE eventId = :eventId")
+    void deleteUserEventCrossRef(String eventId);
 }

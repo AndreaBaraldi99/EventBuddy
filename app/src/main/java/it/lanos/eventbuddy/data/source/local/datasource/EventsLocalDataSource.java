@@ -34,22 +34,42 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
     }
     @Override
     public void insertEvent(List<EventsWithUsersFromCloudResponse> eventWithUsers){
-        EventsRoomDatabase.nukeTables();
-        for(EventsWithUsersFromCloudResponse event : eventWithUsers){
-            Event ev = Event.fromCloudResponse(event.getEvent());
-            Map<User, Boolean> users = event.getUsers();
-            EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            userDao.insertUsers(new ArrayList<>(users.keySet()));
-            eventDao.insertEvent(ev);
-            for (Map.Entry<User, Boolean> entry : users.entrySet()) {
-                eventDao.insertEventWithUsers(new UserEventCrossRef(entry.getKey().getUserId(), ev.getEventId(), entry.getValue()));
-            }
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<EventWithUsers> eventWithUsersList = new ArrayList<>();
+            for(EventsWithUsersFromCloudResponse event : eventWithUsers){
+                Event ev = Event.fromCloudResponse(event.getEvent());
+                Map<User, Boolean> users = event.getUsers();
+                EventWithUsers newEvent = new EventWithUsers(ev, new ArrayList<>(users.keySet()));
+                List<UserEventCrossRef> newUserEventCrossRefs = new ArrayList<>();
+                userDao.insertUsers(new ArrayList<>(users.keySet()));
+                eventDao.insertEvent(ev);
+                for (Map.Entry<User, Boolean> entry : users.entrySet()) {
+                    UserEventCrossRef userEventCrossRef = new UserEventCrossRef(entry.getKey().getUserId(), ev.getEventId(), entry.getValue());
+                    eventDao.insertEventWithUsers(userEventCrossRef);
+                    newUserEventCrossRefs.add(userEventCrossRef);
+                }
+                newEvent.setUserEventCrossRefs(newUserEventCrossRefs);
+                eventWithUsersList.add(newEvent);
+            };
+            deleteOldEvents(eventWithUsersList);
+            sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
+                    LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
 
-                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
-                        LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
-            eventsCallback.onSuccessFromLocal(eventDao.getEventsWithUsers());
-            });
-        }
+            eventsCallback.onSuccessFromLocal(eventWithUsersList);
+        });
+    }
+
+    private void deleteOldEvents(List<EventWithUsers> newData){
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<EventWithUsers> oldData = eventDao.getEventsWithUsers();
+            for(EventWithUsers event : oldData){
+                if(!newData.contains(event)){
+                    eventDao.deleteEvent(event.getEvent());
+                    eventDao.deleteUserEventCrossRef(event.getEvent().getEventId());
+                    userDao.deleteUsersWithNoEvents(event.getEvent().getEventId());
+                }
+            }
+        });
     }
 
     @Override
