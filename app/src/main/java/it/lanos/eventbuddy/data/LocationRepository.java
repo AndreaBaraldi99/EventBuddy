@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 
-import it.lanos.eventbuddy.data.source.ILocationRepository;
 import it.lanos.eventbuddy.data.source.LocationCallback;
 import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRealtimeDBDataSource;
 import it.lanos.eventbuddy.data.source.models.Location;

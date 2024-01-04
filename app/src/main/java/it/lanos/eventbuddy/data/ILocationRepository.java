@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.data.source;
+package it.lanos.eventbuddy.data;
 
 import androidx.lifecycle.MutableLiveData;
 
