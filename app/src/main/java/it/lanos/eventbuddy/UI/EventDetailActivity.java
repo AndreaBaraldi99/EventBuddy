@@ -3,25 +3,22 @@ package it.lanos.eventbuddy.UI;
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
+import com.mapbox.geojson.Point;
+import com.mapbox.maps.CameraOptions;
+import com.mapbox.maps.MapView;
+import com.mapbox.maps.Style;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,8 +26,6 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.EventRepository;
-import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
@@ -114,6 +109,26 @@ public class EventDetailActivity extends AppCompatActivity {
         String date_time = event.getEvent().getDate();
         String formatted_date = Parser.formatDate(date_time);
         String formatted_time = Parser.formatTime(date_time);
+        String location = event.getEvent().getLocation();
+        String showLocation = Parser.formatLocation(location);
+        double[] cord = Parser.getCord(location);
+        MapView map = findViewById(R.id.active_mapView);
+
+
+        map.getMapboxMap().loadStyleUri(
+                Style.STANDARD,
+                new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+                        CameraOptions camera = new CameraOptions.Builder().center(Point.fromLngLat(cord[1], cord[0]))
+                                .zoom(15.5).build();
+                        map.getMapboxMap().setCamera(camera);
+                    }
+                }
+        );
+
+
+
 
 
 
@@ -122,7 +137,7 @@ public class EventDetailActivity extends AppCompatActivity {
         eventDate.setText(formatted_date);
         eventHour.setText(formatted_time); //TODO: Dividere la data dall'ora
         eventName.setText(event.getEvent().getName());
-        eventAddress.setText(event.getEvent().getLocation());
+        eventAddress.setText(showLocation);
         eventDescription.setText(event.getEvent().getDescription());
 
     }
@@ -174,6 +189,8 @@ public class EventDetailActivity extends AppCompatActivity {
         returnResultToCallingActivity(somethingChange);
         super.onBackPressed();
     }
+
+
 
 }
 

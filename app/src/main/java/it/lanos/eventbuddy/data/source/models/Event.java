@@ -10,6 +10,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -93,6 +94,8 @@ public class Event implements Parcelable {
     public String getDescription() {
         return description;
     }
+
+
 
     /**
      * Static method to create an event from a cloud response

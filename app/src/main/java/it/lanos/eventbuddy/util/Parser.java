@@ -67,4 +67,22 @@ public class Parser {
         String[] dateTime = date.split("/");
         return dateTime[3];
     }
+
+    public static String formatLocation(String location) {
+        String firstSplit = location.split("/")[0];
+        String[] secondSplit = firstSplit.split(",");
+        String showLocation = secondSplit[0]+",\n"+secondSplit[1];
+        return showLocation;
+    }
+
+    public static double[] getCord(String location) {
+        String firstSplit = location.split("/")[1];
+        String[] secondSplit = firstSplit.split("_");
+        double[] cord = new double[2];
+        cord[0] = Double.parseDouble(secondSplit[0]);
+        cord[1] = Double.parseDouble(secondSplit[1]);
+
+        return cord;
+
+    }
 }

@@ -100,8 +100,11 @@ public class EventFragment extends Fragment {
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(requireActivity().getApplication());
 
-        eventViewModel = new ViewModelProvider(
+        /*eventViewModel = new ViewModelProvider(
                 this,
+                new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);*/
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
         eventList = new ArrayList<>();

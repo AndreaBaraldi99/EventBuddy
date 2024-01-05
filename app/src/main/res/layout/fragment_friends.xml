@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_appbar"
+            android:id="@+id/appbar_active_frag"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
            app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                 android:hint="@string/friends_search_bar_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top_appbar"
+                app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
                 app:queryHint="@string/friends_search_bar_hint"
                 app:queryBackground="@null"
                 app:iconifiedByDefault="false">
