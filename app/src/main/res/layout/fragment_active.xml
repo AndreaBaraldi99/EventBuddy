@@ -29,8 +29,8 @@
             app:menu="@menu/event_fragment_top_app_bar_menu"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
-
-        <com.mapbox.maps.MapView
+        <!-- Sostituendo con googleMaps
+        <MapView
             android:id="@+id/active_mapView"
             android:layout_width="372dp"
             android:layout_height="220dp"
@@ -38,11 +38,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
-            app:mapbox_cameraBearing="0.0"
-            app:mapbox_cameraPitch="0.0"
-            app:mapbox_cameraTargetLat="39.5"
-            app:mapbox_cameraTargetLng="-98.0"
-            app:mapbox_cameraZoom="2.0" />
+            />
+            -->
 
         <ImageView
             android:id="@+id/event_map_icon"

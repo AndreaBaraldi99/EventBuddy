@@ -183,19 +183,16 @@
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
-       <com.mapbox.maps.MapView
+       <!-- Sostituendo con googleMaps
+       <MapView
            android:id="@+id/active_mapView"
            android:layout_width="372dp"
            android:layout_height="220dp"
            android:layout_marginTop="12dp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/event_description"
-           app:mapbox_cameraBearing="0.0"
-           app:mapbox_cameraPitch="0.0"
-           app:mapbox_cameraTargetLat="39.5"
-           app:mapbox_cameraTargetLng="-98.0"
-           app:mapbox_cameraZoom="2.0" />
+           app:layout_constraintTop_toBottomOf="@+id/event_description" />
+           -->
 
 
        <Button
@@ -203,25 +200,25 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="18dp"
-           android:layout_marginTop="15dp"
+           android:layout_marginBottom="10dp"
            android:drawableStart="@drawable/baseline_check_24"
            android:drawableTint="#FFFFFF"
            android:text="@string/event_detail_join"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/active_mapView" />
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintStart_toStartOf="parent" />
 
        <Button
            android:id="@+id/button_do_not_join"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="164dp"
-           android:layout_marginTop="15dp"
+           android:layout_marginBottom="10dp"
            android:backgroundTint="@color/md_theme_dark_error"
            android:drawableStart="@drawable/baseline_close_24"
            android:drawableTint="#FFFFFF"
            android:text="@string/event_detail_do_not_join"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/active_mapView" />
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintStart_toStartOf="parent" />
 
        <androidx.constraintlayout.widget.Guideline
            android:id="@+id/guideline3"

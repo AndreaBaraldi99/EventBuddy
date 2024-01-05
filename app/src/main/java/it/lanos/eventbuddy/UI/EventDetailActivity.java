@@ -15,10 +15,6 @@ import androidx.core.app.NavUtils;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
-import com.mapbox.geojson.Point;
-import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.MapView;
-import com.mapbox.maps.Style;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -112,20 +108,8 @@ public class EventDetailActivity extends AppCompatActivity {
         String location = event.getEvent().getLocation();
         String showLocation = Parser.formatLocation(location);
         double[] cord = Parser.getCord(location);
-        MapView map = findViewById(R.id.active_mapView);
 
 
-        map.getMapboxMap().loadStyleUri(
-                Style.STANDARD,
-                new Style.OnStyleLoaded() {
-                    @Override
-                    public void onStyleLoaded(@NonNull Style style) {
-                        CameraOptions camera = new CameraOptions.Builder().center(Point.fromLngLat(cord[1], cord[0]))
-                                .zoom(15.5).build();
-                        map.getMapboxMap().setCamera(camera);
-                    }
-                }
-        );
 
 
 

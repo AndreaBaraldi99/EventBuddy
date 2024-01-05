@@ -106,6 +106,4 @@
     <string name="no_active_event_found">Join an Event first!</string>
 
 
-    <string name="mapbox_access_token" translatable="false"
-        tools:ignore="UnusedResources">pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXRkMzNzbDBubHIzcG1zZG04aTMyaWcifQ.Eyuo1vPibhoYHHJpEtcU4w</string>
 </resources>

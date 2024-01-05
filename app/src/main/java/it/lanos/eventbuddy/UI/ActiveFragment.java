@@ -1,15 +1,22 @@
 package it.lanos.eventbuddy.UI;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
-
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,14 +28,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
-import com.mapbox.geojson.Point;
-import com.mapbox.maps.CameraOptions;
-import com.mapbox.maps.MapView;
-import com.mapbox.maps.Style;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,10 +46,12 @@ import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
+import it.lanos.eventbuddy.data.source.models.mapbox.Geometry;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
+import androidx.core.app.ActivityCompat;
 
 
 public class ActiveFragment extends Fragment {
@@ -55,7 +62,9 @@ public class ActiveFragment extends Fragment {
 
     private EventWithUsers selected;
 
+
     private User user;
+    
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -78,6 +87,7 @@ public class ActiveFragment extends Fragment {
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
         eventList = new ArrayList<>();
+
 
     }
 
@@ -135,7 +145,6 @@ public class ActiveFragment extends Fragment {
             TextView address = view.findViewById(R.id.active_event_address);
             TextView time = view.findViewById(R.id.active_event_time);
             MaterialButton googleMapsButton = view.findViewById(R.id.googleMapsButton);
-            MapView map = view.findViewById(R.id.active_mapView);
             ImageView mapIcon = view.findViewById(R.id.event_map_icon);
             ImageView sfondo = view.findViewById(R.id.sfondo);
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
@@ -170,20 +179,8 @@ public class ActiveFragment extends Fragment {
 
 
 
-                map.getMapboxMap().loadStyleUri(
-                        Style.STANDARD,
-                        new Style.OnStyleLoaded() {
-                            @Override
-                            public void onStyleLoaded(@NonNull Style style) {
-                                CameraOptions camera = new CameraOptions.Builder().center(Point.fromLngLat(cord[1], cord[0]))
-                                        .zoom(15.5).build();
-                                map.getMapboxMap().setCamera(camera);
-                            }
-                        }
-                );
             }
             else{
-                map.setVisibility(View.GONE);
                 googleMapsButton.setVisibility(View.GONE);
                 mapIcon.setVisibility(View.GONE);
                 sfondo.setVisibility(View.GONE);
@@ -199,6 +196,8 @@ public class ActiveFragment extends Fragment {
             return WindowInsetsCompat.CONSUMED;
         });
     }
+
+
 
     private EventWithUsers pickRightEvent(List<EventWithUsers> eventList) {
         readUser(new DataEncryptionUtil(requireActivity().getApplication()));
