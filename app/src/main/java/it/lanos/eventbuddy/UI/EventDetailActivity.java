@@ -13,6 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
@@ -29,7 +36,7 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private EventWithUsers event;
     private User user;
     private boolean somethingChange = false;
@@ -72,6 +79,8 @@ public class EventDetailActivity extends AppCompatActivity {
         TextView eventDescription = findViewById(R.id.event_description);
         TextView detailPartecipants = findViewById(R.id.event_participants_info);
         TextView numberPartecipants = findViewById(R.id.event_number_partecipants);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         numberPartecipants.setText("+"+joinedUsers.size());
         if(joinedUsers.size() == 0)
@@ -108,15 +117,6 @@ public class EventDetailActivity extends AppCompatActivity {
         String location = event.getEvent().getLocation();
         String showLocation = Parser.formatLocation(location);
         double[] cord = Parser.getCord(location);
-
-
-
-
-
-
-
-
-
 
         eventDate.setText(formatted_date);
         eventHour.setText(formatted_time); //TODO: Dividere la data dall'ora
@@ -175,6 +175,17 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        String location = event.getEvent().getLocation();
+        String showLocation = Parser.formatLocation(location);
+        double[] cord = Parser.getCord(location);
+        LatLng place = new LatLng(cord[0], cord[1]);
+        googleMap.addMarker(new MarkerOptions()
+                .position(place)
+                .title(event.getEvent().getName()));
+        // [START_EXCLUDE silent]
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place));
+    }
 }
 

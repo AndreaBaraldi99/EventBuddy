@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -183,16 +183,16 @@
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
-       <!-- Sostituendo con googleMaps
-       <MapView
-           android:id="@+id/active_mapView"
+       <androidx.fragment.app.FragmentContainerView
+           android:id="@+id/map"
+           android:name="com.google.android.gms.maps.SupportMapFragment"
            android:layout_width="372dp"
            android:layout_height="220dp"
-           android:layout_marginTop="12dp"
+           android:layout_marginTop="10dp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/event_description" />
-           -->
+           app:layout_constraintTop_toBottomOf="@+id/event_description"
+           map:cameraZoom="15"/>
 
 
        <Button
