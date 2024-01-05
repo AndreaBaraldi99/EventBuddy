@@ -85,4 +85,10 @@ public class Parser {
         return cord;
 
     }
+
+    public static String formatSortDate(String date) {
+        String[] splitDate = date.split("/");
+        String formattedDate = "20"+splitDate[2]+"-"+splitDate[1]+"-"+splitDate[0]+" "+splitDate[3];
+        return formattedDate;
+    }
 }

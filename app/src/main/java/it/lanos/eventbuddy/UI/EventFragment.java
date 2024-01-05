@@ -25,12 +25,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventFragment extends Fragment {
@@ -175,6 +177,7 @@ public class EventFragment extends Fragment {
             if (result.isSuccess()) {
                 this.eventList.clear();
                 this.eventList.addAll(((Result.Success) result).getData());
+                Collections.sort(eventList, new DateTimeComparator());
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});

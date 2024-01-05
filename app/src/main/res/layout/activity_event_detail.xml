@@ -12,7 +12,7 @@
 
 
        <ImageView
-           android:id="@+id/imageView2"
+           android:id="@+id/sfondo"
            android:layout_width="match_parent"
            android:layout_height="730dp"
            android:background="@drawable/sfondo"

@@ -101,4 +101,7 @@
         <item>English</item>
         <item>Italiano</item>
     </string-array>
+
+    <!-- Strings used for ActiveFragment -->
+    <string name="no_active_event_found">Partecipa ad un Evento prima!</string>
 </resources>
