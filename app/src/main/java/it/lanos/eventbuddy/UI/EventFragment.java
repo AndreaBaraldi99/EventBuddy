@@ -153,7 +153,7 @@ public class EventFragment extends Fragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventList,
+        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventViewModel, eventList,
                 requireActivity().getApplication(),
                 new EventRecyclerViewAdapter.OnItemClickListener(){
                     @Override

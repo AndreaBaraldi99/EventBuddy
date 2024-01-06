@@ -34,6 +34,7 @@
     <color name="md_theme_dark_background">#191C1A</color>
     <color name="md_theme_dark_outline">#8A938C</color>
     <color name="md_theme_dark_inverseOnSurface">#191C1A</color>
+    <color name="md_theme_light_outlineVariant">#C0C9C1</color>
     <color name="md_theme_dark_outlineVariant">#404943</color>
     <color name="divisor">#CAC4D0</color>
     <color name="white">#FFFFFF</color>

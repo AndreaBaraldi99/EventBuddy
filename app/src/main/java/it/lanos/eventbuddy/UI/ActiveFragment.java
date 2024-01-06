@@ -30,6 +30,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
@@ -54,7 +60,7 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 import androidx.core.app.ActivityCompat;
 
 
-public class ActiveFragment extends Fragment {
+public class ActiveFragment extends Fragment implements OnMapReadyCallback {
 
     private EventViewModel eventViewModel;
 
@@ -148,7 +154,10 @@ public class ActiveFragment extends Fragment {
             ImageView mapIcon = view.findViewById(R.id.event_map_icon);
             ImageView sfondo = view.findViewById(R.id.sfondo);
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.active_map);
             if(selected != null) {
+                //mapFragment.getView().setVisibility(View.VISIBLE);
+                mapFragment.getMapAsync(this);
                 toolbar.setTitle(selected.getEvent().getName());
                 String formattedAddress = Parser.formatLocation(selected.getEvent().getLocation());
                 address.setText(formattedAddress);
@@ -185,6 +194,7 @@ public class ActiveFragment extends Fragment {
                 mapIcon.setVisibility(View.GONE);
                 sfondo.setVisibility(View.GONE);
                 noEvent.setVisibility(View.VISIBLE);
+                mapFragment.getView().setVisibility(View.GONE);
             }
 
 
@@ -225,4 +235,17 @@ public class ActiveFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        String location = selected.getEvent().getLocation();
+        String showLocation = Parser.formatLocation(location);
+        double[] cord = Parser.getCord(location);
+        LatLng place = new LatLng(cord[0], cord[1]);
+        googleMap.addMarker(new MarkerOptions()
+                .position(place)
+                .title(selected.getEvent().getName()));
+        // [START_EXCLUDE silent]
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15));
+
+    }
 }

@@ -36,4 +36,12 @@ public class EventViewModel extends ViewModel {
         return eventListLiveData;
     }
 
+    public void joinEvent(EventWithUsers event){
+        iEventsRepository.joinEvent(event.getEvent().getEventId());
+    }
+
+    public void leaveEvent(EventWithUsers event){
+        iEventsRepository.leaveEvent(event.getEvent().getEventId());
+    }
+
 }

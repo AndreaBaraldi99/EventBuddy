@@ -15,7 +15,6 @@ import androidx.core.app.NavUtils;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -79,7 +78,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         TextView eventDescription = findViewById(R.id.event_description);
         TextView detailPartecipants = findViewById(R.id.event_participants_info);
         TextView numberPartecipants = findViewById(R.id.event_number_partecipants);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.active_map);
         mapFragment.getMapAsync(this);
 
         numberPartecipants.setText("+"+joinedUsers.size());
