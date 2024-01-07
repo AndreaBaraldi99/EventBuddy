@@ -15,7 +15,7 @@ import it.lanos.eventbuddy.data.source.models.mapbox.SuggestionsApiResponse;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class SuggestionsRepository implements SuggestionsCallback, ISuggestionsRepository {
-    private static final String TAG = "SuggestionsRepository";
+    private static final String TAG = SuggestionsRepository.class.getSimpleName();
     private final MutableLiveData<Result> suggestionsLiveData;
     private final MutableLiveData<Result> featureLiveData;
     private final BaseAutocompleteMapboxDataSource mapboxDataSource;
@@ -67,7 +67,7 @@ public class SuggestionsRepository implements SuggestionsCallback, ISuggestionsR
 
     @Override
     public MutableLiveData<Result> getFeature(String id) {
-        mapboxDataSource.getFeature(id);
+        mapboxDataSource.getFeature(id, user.getUserId());
         return featureLiveData;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsRemoteDataSource;
 import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.models.User;
@@ -24,9 +24,9 @@ public class EventRepository implements IEventsRepository, EventsCallback{
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
     private User user;
-    private final BaseEventsCloudDBDataSource cloudDBDataSource;
+    private final BaseEventsRemoteDataSource cloudDBDataSource;
 
-    public EventRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsCloudDBDataSource cloudDBDataSource, DataEncryptionUtil dataEncryptionUtil) {
+    public EventRepository(BaseEventsLocalDataSource eventsLocalDataSource, BaseEventsRemoteDataSource cloudDBDataSource, DataEncryptionUtil dataEncryptionUtil) {
         allEventsMutableLiveData = new MutableLiveData<>();
         this.eventsLocalDataSource = eventsLocalDataSource;
         this.cloudDBDataSource = cloudDBDataSource;

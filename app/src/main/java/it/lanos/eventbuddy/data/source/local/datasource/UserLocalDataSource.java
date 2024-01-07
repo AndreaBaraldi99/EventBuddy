@@ -2,6 +2,7 @@ package it.lanos.eventbuddy.data.source.local.datasource;
 
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.USER_NOT_FOUND;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
             if(userDao.updateUsers(user) != 0){
                 userCallback.onUpdatedFriendFromLocal(user);
             } else {
-                userCallback.onFailureFromLocal(new Exception("User not found"));
+                userCallback.onFailureFromLocal(new Exception(USER_NOT_FOUND));
             }
         });
     }

@@ -18,12 +18,12 @@ import it.lanos.eventbuddy.data.ILocationRepository;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.bucket.BaseImageRemoteDataSource;
 import it.lanos.eventbuddy.data.source.firebase.bucket.ImageRemoteDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRealtimeDBDataSource;
-import it.lanos.eventbuddy.data.source.firebase.realtimeDB.LocationRealtimeDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.realtimeDB.LocationRemoteDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
@@ -57,7 +57,7 @@ public class ServiceLocator {
         eventsLocalDataSource = new EventsLocalDataSource(getDatabase(application), sharedPreferencesUtil);
 
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
-        BaseEventsCloudDBDataSource cloudDBDataSource = new EventsCloudDBDataSource(cloudDBService);
+        BaseEventsRemoteDataSource cloudDBDataSource = new EventsRemoteDataSource(cloudDBService);
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
@@ -69,7 +69,7 @@ public class ServiceLocator {
         UserDataSource userDataSource = new UserDataSource(authService);
 
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
-        BaseUserCloudDBDataSource cloudDBDataSource = new UserCloudDBDataSource(cloudDBService);
+        BaseUserRemoteDataSource cloudDBDataSource = new UserRemoteDataSource(cloudDBService);
 
         SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
 
@@ -95,7 +95,7 @@ public class ServiceLocator {
     }
 
     public ILocationRepository getLocationRepository(Application application) {
-        BaseLocationRealtimeDBDataSource locationRealtimeDBDataSource = new LocationRealtimeDBDataSource();
+        BaseLocationRemoteDataSource locationRealtimeDBDataSource = new LocationRemoteDataSource();
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 

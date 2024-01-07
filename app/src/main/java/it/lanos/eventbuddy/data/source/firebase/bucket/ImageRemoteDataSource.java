@@ -1,5 +1,8 @@
 package it.lanos.eventbuddy.data.source.firebase.bucket;
 
+import static it.lanos.eventbuddy.util.Constants.ON_UPLOAD_SUCCESS;
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -7,10 +10,10 @@ import com.google.firebase.storage.UploadTask;
 import it.lanos.eventbuddy.data.source.models.User;
 
 public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
-    private StorageReference storageReference;
+    private final StorageReference storageReference;
 
     public ImageRemoteDataSource() {
-        storageReference = FirebaseStorage.getInstance().getReference().child("images");
+        storageReference = FirebaseStorage.getInstance().getReference().child(PROFILE_PICTURES_BUCKET_REFERENCE);
     }
 
     @Override
@@ -18,7 +21,7 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
         StorageReference imageRef = storageReference.child(user.getUserId());
         UploadTask uploadTask = imageRef.putBytes(image);
         uploadTask.addOnSuccessListener(taskSnapshot -> {
-            userCallback.onImageUploaded("Upload Success");
+            userCallback.onImageUploaded(ON_UPLOAD_SUCCESS);
         }).addOnFailureListener(e -> {
             userCallback.onImageUploadFailed(e);
         });

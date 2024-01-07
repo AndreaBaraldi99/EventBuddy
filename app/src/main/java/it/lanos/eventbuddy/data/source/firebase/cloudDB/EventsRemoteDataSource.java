@@ -15,9 +15,9 @@ import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
 import it.lanos.eventbuddy.data.source.models.EventsWithUsersFromCloudResponse;
 import it.lanos.eventbuddy.data.source.models.User;
 
-public class EventsCloudDBDataSource extends BaseEventsCloudDBDataSource {
+public class EventsRemoteDataSource extends BaseEventsRemoteDataSource {
     private final CloudDBService service;
-    public EventsCloudDBDataSource(CloudDBService service) {
+    public EventsRemoteDataSource(CloudDBService service) {
         this.service = service;
     }
     @Override

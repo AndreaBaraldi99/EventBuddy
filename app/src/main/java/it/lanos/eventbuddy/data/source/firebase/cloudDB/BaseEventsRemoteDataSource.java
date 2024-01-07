@@ -2,9 +2,8 @@ package it.lanos.eventbuddy.data.source.firebase.cloudDB;
 
 import it.lanos.eventbuddy.data.source.EventsCallback;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
-import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
 
-public abstract class BaseEventsCloudDBDataSource {
+public abstract class BaseEventsRemoteDataSource {
     protected EventsCallback eventsCallback;
     public void setEventsCallback(EventsCallback eventsCallback) {
         this.eventsCallback = eventsCallback;

@@ -4,7 +4,7 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.UserCallback;
 import it.lanos.eventbuddy.data.source.models.UserFromRemote;
 
-public abstract class BaseUserCloudDBDataSource {
+public abstract class BaseUserRemoteDataSource {
     protected UserCallback userCallback;
     public void setUserCallback(UserCallback userCallback) {
         this.userCallback = userCallback;

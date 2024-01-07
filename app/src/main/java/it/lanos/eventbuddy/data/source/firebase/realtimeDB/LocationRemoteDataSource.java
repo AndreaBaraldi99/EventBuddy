@@ -14,12 +14,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import it.lanos.eventbuddy.data.source.models.Location;
 
-public class LocationRealtimeDBDataSource extends BaseLocationRealtimeDBDataSource{
-    private static final String TAG = LocationRealtimeDBDataSource.class.getSimpleName();
+public class LocationRemoteDataSource extends BaseLocationRemoteDataSource {
+    private static final String TAG = LocationRemoteDataSource.class.getSimpleName();
     private final DatabaseReference locationReference;
     private ChildEventListener locationValueEventListener;
 
-    public LocationRealtimeDBDataSource(){
+    public LocationRemoteDataSource(){
         this.locationReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
     }
 

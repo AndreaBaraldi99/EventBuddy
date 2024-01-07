@@ -9,10 +9,10 @@ import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserFromRemote;
 
-public class UserCloudDBDataSource extends BaseUserCloudDBDataSource {
+public class UserRemoteDataSource extends BaseUserRemoteDataSource {
 
     private final CloudDBService service;
-    public UserCloudDBDataSource(CloudDBService service) {
+    public UserRemoteDataSource(CloudDBService service) {
         this.service = service;
 
     }

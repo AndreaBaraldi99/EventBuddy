@@ -2,6 +2,7 @@ package it.lanos.eventbuddy.data.source.mapbox;
 
 import static it.lanos.eventbuddy.util.Constants.ACCESS_KEY;
 import static it.lanos.eventbuddy.util.Constants.API_KEY_ERROR;
+import static it.lanos.eventbuddy.util.Constants.MAPBOX_ERROR;
 import static it.lanos.eventbuddy.util.Constants.SESSION_KEY;
 
 import androidx.annotation.NonNull;
@@ -36,13 +37,13 @@ public class AutoCompleteMapboxDataSource extends BaseAutocompleteMapboxDataSour
             }
         });
     }
-
-    public void getFeature(String id) {
-        Call<FeatureApiResponse> suggestionsResponseCall = mapboxService.getFeature(id, ACCESS_KEY, SESSION_KEY);
+    @Override
+    public void getFeature(String id, String sessionKey) {
+        Call<FeatureApiResponse> suggestionsResponseCall = mapboxService.getFeature(id, ACCESS_KEY, sessionKey);
         suggestionsResponseCall.enqueue(new Callback<FeatureApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<FeatureApiResponse> call, @NonNull Response<FeatureApiResponse> response) {
-               if(response.body() != null && response.isSuccessful() && !response.body().attribution.equals("error")) {
+               if(response.body() != null && response.isSuccessful() && !response.body().attribution.equals(MAPBOX_ERROR)) {
                    suggestionsCallback.onFeatureFromRemote(response.body());
                } else {
                    suggestionsCallback.onFailureFromRemote(new Exception(API_KEY_ERROR));

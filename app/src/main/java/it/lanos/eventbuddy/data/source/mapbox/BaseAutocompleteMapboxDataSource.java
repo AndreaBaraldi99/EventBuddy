@@ -9,5 +9,5 @@ public abstract class BaseAutocompleteMapboxDataSource {
     }
     public abstract void getSuggestions(String query, String sessionKey);
 
-    public abstract void getFeature(String id);
+    public abstract void getFeature(String id, String sessionKey);
 }

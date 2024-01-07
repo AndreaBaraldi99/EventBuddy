@@ -4,7 +4,6 @@ import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -17,14 +16,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.UserCallback;
 import it.lanos.eventbuddy.data.source.firebase.bucket.BaseImageRemoteDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.firebase.auth.BaseUserDataSource;
-import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserRemoteDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.models.UserFromRemote;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
@@ -32,7 +30,7 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 public class UserRepository implements IUserRepository, UserCallback {
 
     private final BaseUserDataSource userDataSource;
-    private final BaseUserCloudDBDataSource userCloudDBDataSource;
+    private final BaseUserRemoteDataSource userCloudDBDataSource;
     private final BaseUserLocalDataSource userLocalDataSource;
     private final BaseImageRemoteDataSource imageRemoteDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
@@ -42,7 +40,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final MutableLiveData<Result> uploadProfileImageMutableLiveData;
     private User user;
 
-    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
+    public UserRepository(BaseUserDataSource userDataSource, BaseUserRemoteDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 
 import it.lanos.eventbuddy.data.source.LocationCallback;
-import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRealtimeDBDataSource;
+import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRemoteDataSource;
 import it.lanos.eventbuddy.data.source.models.Location;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
@@ -15,10 +15,10 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class LocationRepository implements ILocationRepository, LocationCallback {
     private static final String TAG = LocationRepository.class.getSimpleName();
-    private final BaseLocationRealtimeDBDataSource locationRealtimeDBDataSource;
+    private final BaseLocationRemoteDataSource locationRealtimeDBDataSource;
     private final MutableLiveData<Result> locationLiveData;
     private User user;
-    public LocationRepository(BaseLocationRealtimeDBDataSource locationRealtimeDBDataSource, DataEncryptionUtil dataEncryptionUtil) {
+    public LocationRepository(BaseLocationRemoteDataSource locationRealtimeDBDataSource, DataEncryptionUtil dataEncryptionUtil) {
         this.locationRealtimeDBDataSource = locationRealtimeDBDataSource;
         this.locationRealtimeDBDataSource.setLocationCallback(this);
         locationLiveData = new MutableLiveData<>();
