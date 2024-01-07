@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "65cb623c88ae3a1bc49e07b27060ed55",
+    "identityHash": "f10d27c14632ac142198c2fbf9a4b120",
     "entities": [
       {
         "tableName": "Event",
@@ -78,7 +78,7 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `username` TEXT NOT NULL, `full_name` TEXT NOT NULL, `isFriend` INTEGER NOT NULL, PRIMARY KEY(`userId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT NOT NULL, `username` TEXT NOT NULL, `full_name` TEXT NOT NULL, `isFriend` INTEGER NOT NULL, `profilePictureUrl` TEXT, PRIMARY KEY(`userId`))",
         "fields": [
           {
             "fieldPath": "userId",
@@ -103,6 +103,12 @@
             "columnName": "isFriend",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "profilePictureUrl",
+            "columnName": "profilePictureUrl",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -161,7 +167,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '65cb623c88ae3a1bc49e07b27060ed55')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f10d27c14632ac142198c2fbf9a4b120')"
     ]
   }
 }

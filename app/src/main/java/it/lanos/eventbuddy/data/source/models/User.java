@@ -10,7 +10,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "User")
-public class User implements Parcelable {
+public class User{
     @PrimaryKey
     @NonNull
     private String userId;
@@ -22,6 +22,7 @@ public class User implements Parcelable {
     private String fullName;
     // If the user is a friend of the current user, this value is 1, otherwise 0
     private int isFriend = 0;
+    private String profilePictureUrl;
     @Ignore
     public User(){}
     public User(@NonNull String userId, @NonNull String username, @NonNull String fullName) {
@@ -56,43 +57,12 @@ public class User implements Parcelable {
     public void setIsFriend(int isFriend) {
         this.isFriend = isFriend;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.userId);
-        dest.writeString(this.username);
-        dest.writeString(this.fullName);
-        dest.writeInt(this.isFriend);
-    }
 
-    public void readFromParcel(Parcel source) {
-        this.userId = source.readString();
-        this.username = source.readString();
-        this.fullName = source.readString();
-        this.isFriend = (short) source.readInt();
-    }
-
-    protected User(Parcel in) {
-        this.userId = in.readString();
-        this.username = in.readString();
-        this.fullName = in.readString();
-        this.isFriend = (short) in.readInt();
-    }
-
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 }

@@ -123,7 +123,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         } else {
             //register
             Log.d("Debug", "Register success");
-            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>());
+            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>(), "");
             userCloudDBDataSource.addUser(userFromRemote);
         }
     }
