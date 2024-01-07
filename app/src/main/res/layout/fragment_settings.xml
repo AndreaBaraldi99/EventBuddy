@@ -47,182 +47,230 @@
             app:shapeAppearanceOverlay="@style/circular"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/accountConstraint"
-            android:layout_width="360dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="36dp"
-            android:background="@drawable/round_rectangle"
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_account"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="340dp"
+            android:layout_height="59dp"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/md_theme_light_surface"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profilePic">
+            app:layout_constraintTop_toTopOf="@+id/guideline8">
 
-            <ImageView
-                android:id="@+id/accountIcon"
-                android:contentDescription="@string/null_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/baseline_person_outline_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="61dp">
 
-            <TextView
-                android:id="@+id/accountText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/settings_account"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/accountIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/accountIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/null_text"
+                    android:src="@drawable/baseline_person_outline_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/adviceAccountText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/settings_advice_account"
-                app:layout_constraintStart_toEndOf="@+id/accountIcon"
-                app:layout_constraintTop_toBottomOf="@+id/accountText" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textViewAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:text="@string/settings_account"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.128" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/preferencesConstraint"
-            android:layout_width="360dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/round_rectangle"
+                <TextView
+                    android:id="@+id/textViewManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
+                    android:text="@string/settings_advice_account"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.642" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="255dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_preferences"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="340dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/md_theme_light_surface"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/accountConstraint">
+            app:layout_constraintTop_toBottomOf="@+id/card_account">
 
-            <ImageView
-                android:id="@+id/preferencesIcon"
-                android:contentDescription="@string/null_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/baseline_person_outline_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="61dp">
 
-            <TextView
-                android:id="@+id/preferencesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/settings_preferences"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/preferencesIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/preferencesIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/null_text"
+                    android:src="@drawable/baseline_person_outline_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/advicePreferencesText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/settings_advice_preferences"
-                app:layout_constraintStart_toEndOf="@+id/preferencesIcon"
-                app:layout_constraintTop_toBottomOf="@+id/preferencesText" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textViewPreferences"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_preferences"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.128" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/notificationsConstraint"
-            android:layout_width="360dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/round_rectangle"
+                <TextView
+                    android:id="@+id/textViewTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_advice_preferences"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.642" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_notifications"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="340dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/md_theme_light_surface"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preferencesConstraint">
+            app:layout_constraintTop_toBottomOf="@+id/card_preferences">
 
-            <ImageView
-                android:id="@+id/notificationsIcon"
-                android:contentDescription="@string/null_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/baseline_person_outline_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="61dp">
 
-            <TextView
-                android:id="@+id/notificationsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/settings_notification"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/notificationsIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/notificationsIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/null_text"
+                    android:src="@drawable/baseline_person_outline_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/adviceNotificationsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/settings_advice_notifications"
-                app:layout_constraintStart_toEndOf="@+id/notificationsIcon"
-                app:layout_constraintTop_toBottomOf="@+id/notificationsText" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textViewNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_notification"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.128" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/permissionsConstraint"
-            android:layout_width="360dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="13dp"
-            android:background="@drawable/round_rectangle"
+                <TextView
+                    android:id="@+id/textViewConfig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_advice_notifications"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.642" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_privacy"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="340dp"
+            android:layout_height="59dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/md_theme_light_surface"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/notificationsConstraint">
+            app:layout_constraintTop_toBottomOf="@+id/card_notifications">
 
-            <ImageView
-                android:id="@+id/privacyIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:contentDescription="@string/null_text"
-                android:src="@drawable/baseline_person_outline_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="61dp">
 
-            <TextView
-                android:id="@+id/privacyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/settings_privacy"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/privacyIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/privacyIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/null_text"
+                    android:src="@drawable/baseline_person_outline_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/advicePrivacyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/settings_advice_privacy"
-                app:layout_constraintStart_toEndOf="@+id/privacyIcon"
-                app:layout_constraintTop_toBottomOf="@+id/privacyText" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/textViewPrivacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_privacy"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.102" />
 
+                <TextView
+                    android:id="@+id/textViewPermissions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:text="@string/settings_advice_privacy"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.619" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
