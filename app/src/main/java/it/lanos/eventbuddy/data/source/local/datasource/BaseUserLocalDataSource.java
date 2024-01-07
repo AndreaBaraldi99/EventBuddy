@@ -10,6 +10,7 @@ public abstract class BaseUserLocalDataSource {
     public void setUserCallback(UserCallback userCallback) {
         this.userCallback = userCallback;
     }
+    public abstract void getFriends();
     public abstract void addFriends(List<User> user);
     public abstract void updateFriend(User user);
 }

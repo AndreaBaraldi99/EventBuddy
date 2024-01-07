@@ -16,7 +16,7 @@ import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 public interface UserDao {
     @Transaction
     @Query("SELECT * FROM User WHERE isFriend = 1")
-    List<User> getUserWithFriends();
+    List<User> getFriends();
     @Update
     int updateUsers(User... users);
     @Insert(onConflict = OnConflictStrategy.REPLACE)

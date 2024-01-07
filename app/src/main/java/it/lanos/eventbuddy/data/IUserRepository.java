@@ -1,5 +1,7 @@
 package it.lanos.eventbuddy.data;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,6 +23,7 @@ public interface IUserRepository {
     MutableLiveData<Result> searchUsers(@NonNull String query);
     void addFriend(@NonNull User friend);
     void removeFriend(@NonNull User friend);
-    MutableLiveData<Result> getFriends();
+    MutableLiveData<Result> getFriends(long lastUpdate);
+    MutableLiveData<Result> uploadProfileImage(Bitmap bitmap);
 
 }

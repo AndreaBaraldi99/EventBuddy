@@ -1,7 +1,10 @@
 package it.lanos.eventbuddy.data;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,10 +13,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.UserCallback;
+import it.lanos.eventbuddy.data.source.firebase.bucket.BaseImageRemoteDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
@@ -28,13 +34,15 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final BaseUserDataSource userDataSource;
     private final BaseUserCloudDBDataSource userCloudDBDataSource;
     private final BaseUserLocalDataSource userLocalDataSource;
+    private final BaseImageRemoteDataSource imageRemoteDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
     private final DataEncryptionUtil dataEncryptionUtil;
     private final MutableLiveData<Result> friendsSearchedMutableLiveData;
+    private final MutableLiveData<Result> uploadProfileImageMutableLiveData;
     private User user;
 
-    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, DataEncryptionUtil dataEncryptionUtil){
+    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
@@ -42,10 +50,13 @@ public class UserRepository implements IUserRepository, UserCallback {
         this.userLocalDataSource = baseUserLocalDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
         this.userLocalDataSource.setUserCallback(this);
+        this.imageRemoteDataSource = baseImageRemoteDataSource;
+        this.imageRemoteDataSource.setUserCallback(this);
         readUser(dataEncryptionUtil);
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
         friendsSearchedMutableLiveData = new MutableLiveData<>();
+        uploadProfileImageMutableLiveData = new MutableLiveData<>();
     }
     @Override
     public MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password) {
@@ -107,11 +118,24 @@ public class UserRepository implements IUserRepository, UserCallback {
         userCloudDBDataSource.removeFriend(user.getUserId(), friend);
     }
 
+    @Override
+    public MutableLiveData<Result> getFriends(long lastUpdate) {
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastUpdate > FRESH_TIMEOUT) {
+            userCloudDBDataSource.getFriends(user.getUserId());
+        } else {
+            userLocalDataSource.getFriends();
+        }
+        return friendsSearchedMutableLiveData;
+    }
 
     @Override
-    public MutableLiveData<Result> getFriends() {
-        userCloudDBDataSource.getFriends(user.getUserId());
-        return friendsSearchedMutableLiveData;
+    public MutableLiveData<Result> uploadProfileImage(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        imageRemoteDataSource.uploadImage(this.user, baos.toByteArray());
+        return uploadProfileImageMutableLiveData;
     }
 
 
@@ -124,7 +148,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         } else {
             //register
             Log.d("Debug", "Register success");
-            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>(), "");
+            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>());
             userCloudDBDataSource.addUser(userFromRemote);
         }
     }
@@ -201,6 +225,18 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onFailureFromLocal(Exception userNotFound) {
         Result.Error resultError = new Result.Error(userNotFound.getLocalizedMessage());
         friendsSearchedMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public void onImageUploaded(String result) {
+        Result.AuthSuccess resultSuccess = new Result.AuthSuccess(result);
+        uploadProfileImageMutableLiveData.postValue(resultSuccess);
+    }
+
+    @Override
+    public void onImageUploadFailed(Exception e) {
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
+        uploadProfileImageMutableLiveData.postValue(resultError);
     }
 
     @Override

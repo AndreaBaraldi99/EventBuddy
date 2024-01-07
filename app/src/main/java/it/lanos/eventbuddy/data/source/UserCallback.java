@@ -15,7 +15,8 @@ public interface UserCallback {
     void onFailureFromRemote(Exception e);
     void onFriendUpdatedToRemote(User user);
     void onFriendFromRemoteSuccess(List<User> friendsList);
-
     void onUpdatedFriendFromLocal(User user);
     void onFailureFromLocal(Exception userNotFound);
+    void onImageUploaded(String result);
+    void onImageUploadFailed(Exception e);
 }

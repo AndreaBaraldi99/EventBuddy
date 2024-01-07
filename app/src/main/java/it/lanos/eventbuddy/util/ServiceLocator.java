@@ -16,6 +16,8 @@ import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.services.MapboxService;
 import it.lanos.eventbuddy.data.ILocationRepository;
 import it.lanos.eventbuddy.data.source.firebase.auth.UserDataSource;
+import it.lanos.eventbuddy.data.source.firebase.bucket.BaseImageRemoteDataSource;
+import it.lanos.eventbuddy.data.source.firebase.bucket.ImageRemoteDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseEventsCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.EventsCloudDBDataSource;
@@ -69,12 +71,16 @@ public class ServiceLocator {
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseUserCloudDBDataSource cloudDBDataSource = new UserCloudDBDataSource(cloudDBService);
 
-        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application));
+        SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(application);
+
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application), sharedPreferencesUtil);
+
+        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource();
 
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
-        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource, dataEncryptionUtil);
+        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource, imageRemoteDataSource, dataEncryptionUtil);
     }
 
     public ISuggestionsRepository getSuggestionsRepository(Application application) {
