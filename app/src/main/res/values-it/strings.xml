@@ -85,6 +85,9 @@
     <string name="settings_button_change_password">Cambia password</string>
     <string name="settings_preferences_language">Lingua</string>
     <string name="settings_preferences_theme">Tema scuro</string>
+    <string name="change_nickname">Cambia Nickname</string>
+    <string name="insert_new_nickname">Inserisci il nuovo Nickname:</string>
+    <string name="nickname_not_empty">Il Nickname non può essere vuoto</string>
 
     <!-- Strings used for AccountSettingsActivity -->
     <string name="settings_button_change_logout">Logout</string>

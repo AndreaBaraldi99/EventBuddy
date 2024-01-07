@@ -1,5 +1,7 @@
 package it.lanos.eventbuddy.UI.authentication;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -28,6 +30,10 @@ public class UserViewModel extends ViewModel {
         return userLiveData = userRepository.changePassword(oldPassword, newPassword);
     }
 
+    public MutableLiveData<Result> uploadProfileImage(Bitmap bitmap) {
+        return userLiveData = userRepository.uploadProfileImage(bitmap);
+    }
+
     public MutableLiveData<Result> resetPassword(String email) {
         return userLiveData = userRepository.resetPassword(email);
     }
@@ -38,6 +44,10 @@ public class UserViewModel extends ViewModel {
 
     public MutableLiveData<Result> deleteUser() {
         return userLiveData = userRepository.deleteUser();
+    }
+
+    public void changeUsername(String newUsername) {
+        userRepository.changeUsername(newUsername);
     }
 
     public FirebaseUser getCurrentUser() {

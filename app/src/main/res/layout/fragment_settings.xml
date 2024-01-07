@@ -19,27 +19,21 @@
             app:title="@string/settings_text"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/filledTextField"
-            style="?attr/textInputFilledStyle"
+        <Button
+            android:id="@+id/nicknameTextButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="28dp"
-            app:boxBackgroundColor="@color/surface_settings"
+            android:textSize="25sp"
             android:textColorHint="@color/md_theme_dark_outline"
             android:hint="@string/nickname_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profilePic"
             app:layout_constraintTop_toTopOf="@+id/profilePic">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Giulio246"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+        </Button>
 
 
         <com.google.android.material.imageview.ShapeableImageView

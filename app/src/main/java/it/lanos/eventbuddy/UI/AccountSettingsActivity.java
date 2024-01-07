@@ -155,7 +155,9 @@ public class AccountSettingsActivity extends AppCompatActivity {
                     .setView(input)
                     .setPositiveButton(getString(R.string.confirm_text), (dialog, whichButton) -> {
                         String password = input.getText().toString();
-                        checkPassword(password);
+                        if(!password.isEmpty()) {
+                            checkPassword(password);
+                        }
                     })
                     .setNegativeButton(getString(R.string.cancel_text), (dialog, whichButton) -> dialog.cancel())
                     .show();

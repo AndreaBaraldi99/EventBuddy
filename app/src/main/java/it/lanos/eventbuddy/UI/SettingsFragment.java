@@ -1,26 +1,57 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.authentication.UserViewModel;
+import it.lanos.eventbuddy.UI.authentication.UserViewModelFactory;
+import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.DataEncryptionUtil;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,10 +64,15 @@ public class SettingsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private User user;
+    private UserViewModel userViewModel;
+    private Button nicknameTextButton;
+    private ImageView userImage;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -94,13 +130,41 @@ public class SettingsFragment extends Fragment {
             // Return CONSUMED if you don't want want the window insets to keep passing
             // down to descendant views.
             return WindowInsetsCompat.CONSUMED;
+
         });
 
-        ConstraintLayout accountConstraint = view.findViewById(R.id.accountConstraint);
-        accountConstraint.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity));
+        // Initialize the ViewModel
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
+        //Download user profile pic and set it into the imageview
+        userImage = view.findViewById(R.id.profilePic);
+        downloadUserImage();
+
+        // The user selects a new image from the gallery
+        userImage.setOnClickListener(view1 -> {
+            setUserImage();
+        });
+        initializeImagePickerLauncher();
+
+        // Handle the button that sets user nickname
+        nicknameTextButton = view.findViewById(R.id.nicknameTextButton);
+        setUserNickname();
+        nicknameTextButton.setOnClickListener(view1 -> changeNicknameAlert());
+
+        // Navigate the user to Account Settings
+        ConstraintLayout accountConstraint = view.findViewById(R.id.accountConstraint);
+        accountConstraint.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity));
+
+        // Navigate the user to Preference Settings
         ConstraintLayout preferencesConstraint = view.findViewById(R.id.preferencesConstraint);
-        preferencesConstraint.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity));
+        preferencesConstraint.setOnClickListener(v ->
+                Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity));
 
         // Navigate the user to notification settings
         ConstraintLayout notificationsConstraint = view.findViewById(R.id.notificationsConstraint);
@@ -142,5 +206,106 @@ public class SettingsFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void readUser(DataEncryptionUtil dataEncryptionUtil){
+        try {
+            this.user = new Gson().fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Set the user nickname into the text-field
+    private void setUserNickname() {
+        readUser(new DataEncryptionUtil(requireActivity().getApplication()));
+        String nickname = user.getUsername();
+        nicknameTextButton.setText(nickname);
+    }
+
+    private void changeNicknameAlert() {
+        Context context = requireContext();
+        final EditText input = new EditText(context);
+        new AlertDialog.Builder(context)
+                .setTitle(getString(R.string.change_nickname))
+                .setMessage(getString(R.string.insert_new_nickname))
+                .setView(input)
+                .setPositiveButton(getString(R.string.confirm_text), (dialog, whichButton) -> {
+                    String newNickname = input.getText().toString();
+                    if(!newNickname.isEmpty()) {
+                        changeNickname(newNickname);
+                    } else {
+                        Snackbar snackbar = Snackbar.make(
+                                requireView(),
+                                getString(R.string.nickname_not_empty),
+                                Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel_text), (dialog, whichButton) -> dialog.cancel())
+                .show();
+    }
+
+    private void changeNickname(@NonNull String newNickname) {
+        // TODO: 07/01/2024 changeUsername ritorna un live data
+        userViewModel.changeUsername(newNickname);
+        readUser(new DataEncryptionUtil(requireActivity().getApplication()));
+        user.setUsername(newNickname);
+        setUserNickname();
+    }
+
+    // Download the user image from Cloud Storage and set it into imageview
+    private void downloadUserImage() {
+        readUser(new DataEncryptionUtil(requireActivity().getApplication()));
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
+
+        Glide.with(requireContext())
+                .load(storageReference)
+                .into(userImage);
+    }
+
+    // The user selects a profile pic in the gallery
+    private void setUserImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imagePickerLauncher.launch(intent);
+    }
+
+    private void initializeImagePickerLauncher() {
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            Uri selectedImageUri = data.getData();
+                            uploadUserImage(selectedImageUri);
+                        }
+                    }
+                }
+        );
+    }
+
+    // Upload user image to database
+    private void uploadUserImage(Uri imageUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            userViewModel.uploadProfileImage(bitmap).observe(getViewLifecycleOwner(), result -> {
+                if(result.isSuccess()) {
+                    downloadUserImage();
+                } else {
+                    Snackbar snackbar = Snackbar.make(
+                            requireView(),
+                            "Failed",
+                            Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

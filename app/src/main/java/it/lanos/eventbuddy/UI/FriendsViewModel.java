@@ -19,7 +19,7 @@ public class FriendsViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getFriends() {
-        friendsListLiveData = iUserRepository.getFriends();
+        friendsListLiveData = iUserRepository.getFriends(0);
         return friendsListLiveData;
     }
 
