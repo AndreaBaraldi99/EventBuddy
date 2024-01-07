@@ -3,12 +3,14 @@ package it.lanos.eventbuddy.data.services;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.EventsCloudResponse;
+import it.lanos.eventbuddy.data.source.models.UserFromRemote;
 
 public class CloudDBService {
     private final CollectionReference usersRef;
@@ -26,7 +28,7 @@ public class CloudDBService {
     public Task<QuerySnapshot> getEvents(String uid){
         return eventsRef.orderBy("invited." + uid).get();
     }
-    public Task<Void> addUser(User user){
+    public Task<Void> addUser(UserFromRemote user){
         return usersRef.document(user.getUserId()).set(user);
     }
     public Task<Void> addEvent(EventsCloudResponse event){
@@ -41,5 +43,11 @@ public class CloudDBService {
     }
     public Task<Void> changeUsername(User user){
         return usersRef.document(user.getUserId()).update("username", user.getUsername());
+    }
+    public Task<Void> addFriend(String uid, String friendId){
+        return usersRef.document(uid).update("friends", FieldValue.arrayUnion(friendId));
+    }
+    public Task<Void> removeFriend(String uid, String friendId){
+        return usersRef.document(uid).update("friends", FieldValue.arrayRemove(friendId));
     }
 }

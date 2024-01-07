@@ -5,18 +5,20 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
-import it.lanos.eventbuddy.data.source.models.UserWithEvents;
 
 @Dao
 public interface UserDao {
     @Transaction
-    @Query("SELECT * FROM User")
-    List<UserWithEvents> getUsersWithEvents();
+    @Query("SELECT * FROM User WHERE isFriend = 1")
+    List<User> getUserWithFriends();
+    @Update
+    int updateUsers(User... users);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(User user);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
