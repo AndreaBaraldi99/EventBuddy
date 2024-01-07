@@ -18,7 +18,7 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE isFriend = 1")
     List<User> getFriends();
     @Update
-    int updateUsers(User... users);
+    void updateUsers(User... users);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(User user);
     @Insert(onConflict = OnConflictStrategy.REPLACE)

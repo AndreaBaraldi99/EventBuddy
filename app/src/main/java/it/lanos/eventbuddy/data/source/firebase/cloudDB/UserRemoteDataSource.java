@@ -34,7 +34,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
     public void searchUsers(String query) {
         service.getUsersByName(query).addOnSuccessListener(queryDocumentSnapshots -> {
             userCallback.onUserSearchedSuccess(queryDocumentSnapshots.toObjects(User.class));
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        }).addOnFailureListener(e -> userCallback.onFailureUserSearch(e));
     }
 
     @Override
@@ -59,8 +59,8 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
             }
             Tasks.whenAll(tasks)
                     .addOnSuccessListener(result -> userCallback.onFriendFromRemoteSuccess(friendsList))
-                    .addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+                    .addOnFailureListener(e -> userCallback.onFailureUserSearch(e));
+        }).addOnFailureListener(e -> userCallback.onFailureUserSearch(e));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
         service.addFriend(uid, friend.getUserId()).addOnSuccessListener(aVoid -> {
             friend.setIsFriend(1);
             userCallback.onFriendUpdatedToRemote(friend);
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        }).addOnFailureListener(e -> userCallback.onFailureFriendSearched(e));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
         service.removeFriend(uid, friend.getUserId()).addOnSuccessListener(aVoid -> {
             friend.setIsFriend(0);
             userCallback.onFriendUpdatedToRemote(friend);
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        }).addOnFailureListener(e -> userCallback.onFailureFriendSearched(e));
     }
 
 

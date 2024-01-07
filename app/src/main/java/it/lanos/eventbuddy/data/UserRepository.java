@@ -178,6 +178,12 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
+    public void onFailureUserSearch(Exception e) {
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
+        usersSearchedMutableLiveData.postValue(resultError);
+    }
+
+    @Override
     public void onDeleteSuccess() {
         EventsRoomDatabase.nukeTables();
         Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Account deleted");
@@ -221,8 +227,8 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public void onFailureFromLocal(Exception userNotFound) {
-        Result.Error resultError = new Result.Error(userNotFound.getLocalizedMessage());
+    public void onFailureFriendSearched(Exception e) {
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
         friendsSearchedMutableLiveData.postValue(resultError);
     }
 
@@ -241,6 +247,12 @@ public class UserRepository implements IUserRepository, UserCallback {
     @Override
     public void onFriendUpdatedToRemote(User user) {
         userLocalDataSource.updateFriend(user);
+    }
+
+    @Override
+    public void onFailureToUpdateFriend(Exception e) {
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
+        friendsSearchedMutableLiveData.postValue(resultError);
     }
 
 
