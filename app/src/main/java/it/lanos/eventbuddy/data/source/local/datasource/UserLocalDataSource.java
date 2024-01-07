@@ -45,11 +45,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     @Override
     public void updateFriend(User user) {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            if(userDao.updateUsers(user) != 0){
-                userCallback.onUpdatedFriendFromLocal(user);
-            } else {
-                userCallback.onFailureFromLocal(new Exception(USER_NOT_FOUND));
-            }
+            userCallback.onUpdatedFriendFromLocal(user);
         });
     }
 
