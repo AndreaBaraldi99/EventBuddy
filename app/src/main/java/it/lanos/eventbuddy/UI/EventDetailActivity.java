@@ -3,23 +3,22 @@ package it.lanos.eventbuddy.UI;
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 
@@ -29,8 +28,6 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.EventRepository;
-import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
@@ -38,10 +35,10 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private EventWithUsers event;
     private User user;
-    private boolean somethingChange = false;
+    private int somethingChange = 0;
     Button join;
     Button doNotJoin;
 
@@ -81,6 +78,8 @@ public class EventDetailActivity extends AppCompatActivity {
         TextView eventDescription = findViewById(R.id.event_description);
         TextView detailPartecipants = findViewById(R.id.event_participants_info);
         TextView numberPartecipants = findViewById(R.id.event_number_partecipants);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.active_map);
+        mapFragment.getMapAsync(this);
 
         numberPartecipants.setText("+"+joinedUsers.size());
         if(joinedUsers.size() == 0)
@@ -95,8 +94,7 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
-                iEventsRepository.joinEvent(event.getEvent().getEventId());
-                somethingChange = true;
+                somethingChange = 1;
             }
         });
 
@@ -105,8 +103,7 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
                 join.setBackgroundColor(getResources().getColor(R.color.divisor));
-                iEventsRepository.leaveEvent(event.getEvent().getEventId());
-                somethingChange = true;
+                somethingChange = 2;
             }
         });
 
@@ -114,15 +111,14 @@ public class EventDetailActivity extends AppCompatActivity {
         String date_time = event.getEvent().getDate();
         String formatted_date = Parser.formatDate(date_time);
         String formatted_time = Parser.formatTime(date_time);
-
-
-
-
+        String location = event.getEvent().getLocation();
+        String showLocation = Parser.formatLocation(location);
+        double[] cord = Parser.getCord(location);
 
         eventDate.setText(formatted_date);
         eventHour.setText(formatted_time); //TODO: Dividere la data dall'ora
         eventName.setText(event.getEvent().getName());
-        eventAddress.setText(event.getEvent().getLocation());
+        eventAddress.setText(showLocation);
         eventDescription.setText(event.getEvent().getDescription());
 
     }
@@ -163,17 +159,31 @@ public class EventDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    private void returnResultToCallingActivity(boolean change) {
+    private void returnResultToCallingActivity(int change, String eventId) {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("change", change);
+        resultIntent.putExtra("id", eventId);
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
     @Override
     public void onBackPressed() {
-        returnResultToCallingActivity(somethingChange);
+        returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
         super.onBackPressed();
     }
 
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        String location = event.getEvent().getLocation();
+        String showLocation = Parser.formatLocation(location);
+        double[] cord = Parser.getCord(location);
+        LatLng place = new LatLng(cord[0], cord[1]);
+        googleMap.addMarker(new MarkerOptions()
+                .position(place)
+                .title(event.getEvent().getName()));
+        // [START_EXCLUDE silent]
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place));
+    }
 }
 

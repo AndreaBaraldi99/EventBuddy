@@ -42,6 +42,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         this.userLocalDataSource = baseUserLocalDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
         this.userLocalDataSource.setUserCallback(this);
+        readUser(dataEncryptionUtil);
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
         friendsSearchedMutableLiveData = new MutableLiveData<>();
@@ -98,12 +99,12 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void addFriend(@NonNull User friend) {
-        userCloudDBDataSource.addFriend(user.getUserId(), user);
+        userCloudDBDataSource.addFriend(user.getUserId(), friend);
     }
 
     @Override
     public void removeFriend(@NonNull User friend) {
-        userCloudDBDataSource.removeFriend(user.getUserId(), user);
+        userCloudDBDataSource.removeFriend(user.getUserId(), friend);
     }
 
 
@@ -212,4 +213,14 @@ public class UserRepository implements IUserRepository, UserCallback {
     public FirebaseUser getCurrentUser() {
         return userDataSource.getCurrentUser();
     }
+
+    private void readUser(DataEncryptionUtil dataEncryptionUtil){
+        try {
+            this.user = new Gson().fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+

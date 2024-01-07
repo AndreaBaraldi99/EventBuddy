@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EventBuddy</string>
 
     <string name="null_text">null</string>
@@ -101,4 +101,9 @@
         <item>English</item>
         <item>Italiano</item>
     </string-array>
+
+    <!-- Strings used for ActiveFragment -->
+    <string name="no_active_event_found">Join an Event first!</string>
+
+
 </resources>

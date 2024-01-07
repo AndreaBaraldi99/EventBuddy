@@ -67,4 +67,86 @@ public class Parser {
         String[] dateTime = date.split("/");
         return dateTime[3];
     }
+
+    public static String formatLocation(String location) {
+        String firstSplit = location.split("/")[0];
+        String[] secondSplit = firstSplit.split(",");
+        String showLocation = secondSplit[0]+",\n"+secondSplit[1];
+        return showLocation;
+    }
+
+    public static double[] getCord(String location) {
+        String firstSplit = location.split("/")[1];
+        String[] secondSplit = firstSplit.split("_");
+        double[] cord = new double[2];
+        cord[0] = Double.parseDouble(secondSplit[0]);
+        cord[1] = Double.parseDouble(secondSplit[1]);
+
+        return cord;
+
+    }
+
+    public static String formatSortDate(String date) {
+        String[] splitDate = date.split("/");
+        String formattedDate = "20"+splitDate[2]+"-"+splitDate[1]+"-"+splitDate[0]+" "+splitDate[3];
+        return formattedDate;
+    }
+
+    public static String formatDateForEventList(String date){
+        String[] dateTime =date.split("/");
+        String month;
+        switch(dateTime[1]){
+            case "01": {
+                month = "Jan";
+                break;
+            }
+            case "02": {
+                month = "Feb";
+                break;
+            }
+            case "03": {
+                month = "Mar";
+                break;
+            }
+            case "04": {
+                month = "Apr";
+                break;
+            }
+            case "05": {
+                month = "May";
+                break;
+            }
+            case "06": {
+                month = "Jun";
+                break;
+            }
+            case "07": {
+                month = "July";
+                break;
+            }
+            case "08": {
+                month = "Aug";
+                break;
+            }
+            case "09": {
+                month = "Sept";
+                break;
+            }
+            case "10": {
+                month = "Oct";
+                break;
+            }
+            case "11": {
+                month = "Nov";
+                break;
+            }
+            case "12": {
+                month = "Dec";
+                break;
+            }
+            default:
+                month = "";
+        }
+        return dateTime[0]+"\n"+month;
+    }
 }

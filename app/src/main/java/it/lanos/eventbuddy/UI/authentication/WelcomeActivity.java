@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.UI.authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
+import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class WelcomeActivity extends AppCompatActivity {
     Button signup_button, login_button;
@@ -19,8 +22,14 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        // Initialize the view model
-        userViewModel = UserHelper.initializeAndGetViewModel(this);
+        // Initialize the ViewModel
+        IUserRepository userRepository =
+                ServiceLocator.getInstance().getUserRepository(getApplication());
+
+        userViewModel = new ViewModelProvider(
+                this,
+                new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+
         alreadyLoggedUser();
 
         signup_button = findViewById(R.id.signup_button);

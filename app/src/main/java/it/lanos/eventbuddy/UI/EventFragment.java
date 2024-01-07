@@ -25,12 +25,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventFragment extends Fragment {
@@ -67,14 +69,14 @@ public class EventFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null) {
                         // Estrarre l'oggetto EventWithUsers dal risultato
-                        boolean change = data.getBooleanExtra("change", false);
-                        if(change) {
-                            eventViewModel.fetchEvents(0);
+                        int change = data.getIntExtra("change", 0);
+                        String id = data.getStringExtra("id");
+                        if(change == 1) {
+                            eventViewModel.joinEvent(id);
                         }
-
-                        // Ora puoi utilizzare l'oggetto eventWithUsers come necessario
-                        // ad esempio, aggiornare l'UI con il nuovo evento
-
+                        else if(change == 2){
+                            eventViewModel.leaveEvent(id);
+                        }
                     }
                 }
             }
@@ -100,8 +102,11 @@ public class EventFragment extends Fragment {
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(requireActivity().getApplication());
 
-        eventViewModel = new ViewModelProvider(
+        /*eventViewModel = new ViewModelProvider(
                 this,
+                new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);*/
+        eventViewModel = new ViewModelProvider(
+                requireActivity(),
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
         eventList = new ArrayList<>();
@@ -148,7 +153,7 @@ public class EventFragment extends Fragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventList,
+        eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventViewModel, eventList,
                 requireActivity().getApplication(),
                 new EventRecyclerViewAdapter.OnItemClickListener(){
                     @Override
@@ -172,6 +177,7 @@ public class EventFragment extends Fragment {
             if (result.isSuccess()) {
                 this.eventList.clear();
                 this.eventList.addAll(((Result.Success) result).getData());
+                Collections.sort(eventList, new DateTimeComparator());
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});

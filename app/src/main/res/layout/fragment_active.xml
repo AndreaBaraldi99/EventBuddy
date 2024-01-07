@@ -1,14 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.ActiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+
+
+        <ImageView
+            android:id="@+id/sfondo"
+            android:layout_width="match_parent"
+            android:layout_height="730dp"
+            android:background="@drawable/sfondo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/active_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="372dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appbar_active_frag"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="34dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/event_fragment_top_app_bar_menu"
+            app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
+
+        <!-- Sostituendo con googleMaps
+        <MapView
+            android:id="@+id/active_mapView"
+            android:layout_width="372dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
+            />
+            -->
+
+        <ImageView
+            android:id="@+id/event_map_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="340dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
+            app:srcCompat="@drawable/outline_location_on_24" />
+
+        <TextView
+            android:id="@+id/active_event_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="-10dp"
+            android:fontFamily="@font/robotoslab_regular"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/event_map_icon"
+            app:layout_constraintTop_toTopOf="@+id/event_map_icon" />
+
+        <TextView
+            android:id="@+id/active_event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/robotoslab_regular"
+            android:textSize="22sp"
+            app:layout_constraintStart_toEndOf="@+id/event_map_icon"
+            app:layout_constraintTop_toBottomOf="@+id/active_event_address" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/googleMapsButton"
+            style="?attr/materialIconButtonFilledStyle"
+            android:backgroundTint="@color/md_theme_light_inverseSurface"
+            app:icon="@drawable/baseline_directions_car_24"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/event_map_icon" />
+
+        <TextView
+            android:id="@+id/noActiveEventFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_active_event_found"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

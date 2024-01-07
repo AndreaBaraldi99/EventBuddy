@@ -5,25 +5,30 @@ import androidx.lifecycle.ViewModel;
 
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
+import it.lanos.eventbuddy.data.source.models.Result;
+import it.lanos.eventbuddy.data.source.models.User;
 
 
 public class FriendsViewModel extends ViewModel {
     private final IUserRepository iUserRepository;
     //TODO: Gestire logica Result per Friends
-    //private MutableLiveData<> friendsListLiveData;
+    private MutableLiveData<Result> friendsListLiveData;
 
     public FriendsViewModel(IUserRepository iUserRepository) {
         this.iUserRepository = iUserRepository;
     }
 
-    public void fetchFriends(long lastUpdate) {
-        //TODO:Unire logica per prendere lista amici
+    public MutableLiveData<Result> getFriends() {
+        friendsListLiveData = iUserRepository.getFriends();
+        return friendsListLiveData;
     }
 
-    /*public MutableLiveData<Result> getFriends(long lastUpdate) {
-        if (friendsListLiveData == null) {
-            fetchFriends(lastUpdate);
-        }
-        return friendsListLiveData;
-    }*/ //TODO: Togliere commento una volta implementata logica Result
+    public void addFriend(User friend){
+        iUserRepository.addFriend(friend);
+    }
+
+    public void removeFriend(User friend){
+        iUserRepository.removeFriend(friend);
+    }
+
 }

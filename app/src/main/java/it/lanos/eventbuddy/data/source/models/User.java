@@ -64,5 +64,12 @@ public class User{
         this.profilePictureUrl = profilePictureUrl;
     }
 
-
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof User){
+            User user = (User) obj;
+            return this.getUserId().equals(user.getUserId());
+        }
+        return false;
+    }
 }

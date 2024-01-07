@@ -10,7 +10,12 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
+
+import it.lanos.eventbuddy.util.Parser;
 
 
 @Entity(tableName = "Event", foreignKeys = @ForeignKey(entity = User.class,
@@ -93,6 +98,20 @@ public class Event implements Parcelable {
     public String getDescription() {
         return description;
     }
+
+    public Date getDateObject() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+           String formattedDate = Parser.formatSortDate(getDate());
+
+            return dateFormat.parse(formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
     /**
      * Static method to create an event from a cloud response
