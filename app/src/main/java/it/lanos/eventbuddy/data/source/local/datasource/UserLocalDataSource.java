@@ -20,7 +20,6 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
         this.sharedPreferencesUtil = sharedPreferencesUtil;
     }
 
-
     @Override
     public void getFriends() {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
@@ -50,6 +49,13 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
             } else {
                 userCallback.onFailureFromLocal(new Exception(USER_NOT_FOUND));
             }
+        });
+    }
+
+    @Override
+    public void updateUser(User user) {
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.updateUsers(user);
         });
     }
 

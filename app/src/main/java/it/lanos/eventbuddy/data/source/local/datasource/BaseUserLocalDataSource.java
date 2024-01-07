@@ -13,4 +13,5 @@ public abstract class BaseUserLocalDataSource {
     public abstract void getFriends();
     public abstract void addFriends(List<User> user);
     public abstract void updateFriend(User user);
+    public abstract void updateUser(User user);
 }

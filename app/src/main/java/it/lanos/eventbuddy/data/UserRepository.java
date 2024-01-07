@@ -160,6 +160,7 @@ public class UserRepository implements IUserRepository, UserCallback {
             e.printStackTrace();
         }
         this.user = user;
+        userLocalDataSource.updateUser(user);
         Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
         userMutableLiveData.postValue(resultSuccess);
     }
