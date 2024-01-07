@@ -139,12 +139,12 @@ public class EventRecyclerViewAdapter extends
         private void configureButtonJoin(EventWithUsers event){
             if(joined == true){
                 joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_onPrimary));
-                eventViewModel.leaveEvent(event);
+                eventViewModel.leaveEvent(event.getEvent().getEventId());
                 joined = false;
             }
             else{
                 joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_secondaryContainer));
-                eventViewModel.joinEvent(event);
+                eventViewModel.joinEvent(event.getEvent().getEventId());
                 joined = true;
             }
 

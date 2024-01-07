@@ -69,14 +69,14 @@ public class EventFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null) {
                         // Estrarre l'oggetto EventWithUsers dal risultato
-                        boolean change = data.getBooleanExtra("change", false);
-                        if(change) {
-                            eventViewModel.fetchEvents(0);
+                        int change = data.getIntExtra("change", 0);
+                        String id = data.getStringExtra("id");
+                        if(change == 1) {
+                            eventViewModel.joinEvent(id);
                         }
-
-                        // Ora puoi utilizzare l'oggetto eventWithUsers come necessario
-                        // ad esempio, aggiornare l'UI con il nuovo evento
-
+                        else if(change == 2){
+                            eventViewModel.leaveEvent(id);
+                        }
                     }
                 }
             }

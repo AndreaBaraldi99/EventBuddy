@@ -84,6 +84,15 @@ public class User implements Parcelable {
         this.isFriend = (short) in.readInt();
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof User){
+            User user = (User) obj;
+            return this.getUserId().equals(user.getUserId());
+        }
+        return false;
+    }
+
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {

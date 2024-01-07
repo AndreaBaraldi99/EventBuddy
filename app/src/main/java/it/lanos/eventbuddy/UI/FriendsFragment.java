@@ -22,6 +22,7 @@ import android.widget.ListView;
 import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class FriendsFragment extends Fragment {
@@ -55,19 +57,12 @@ public class FriendsFragment extends Fragment {
     }
 
     public void onAddClick(User user){
-        this.user.add(user);
+        friendsViewModel.addFriend(user);
         friendsAdapter.notifyDataSetChanged();
     }
 
     public void onRemoveClick(User user){
-        Iterator it = this.user.iterator();
-        while(it.hasNext()){
-            User iter = (User) it.next();
-            if(iter.getUsername().equals(user.getUsername())) {
-                this.user.remove(iter);
-                break;
-            }
-        }
+        friendsViewModel.removeFriend(user);
         friendsAdapter.notifyDataSetChanged();
     }
 
@@ -113,6 +108,14 @@ public class FriendsFragment extends Fragment {
             return WindowInsetsCompat.CONSUMED;
         });
 
+        friendsViewModel.getFriends().observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                this.user.clear();
+                this.user.addAll(((Result.UserSuccess) result).getData());
+                friendsAdapter.notifyDataSetChanged();
+                //TODO: gestire eccezione
+            }});
+
         SearchView searchView = view.findViewById(R.id.searchBar);
         ListView listViewFriendsSearch = view.findViewById(R.id.listViewSearch);
         searchAdapter = new SearchFriendsAdapter(getContext(), R.layout.add_guest_item, searchingUsers, this);
@@ -138,6 +141,7 @@ public class FriendsFragment extends Fragment {
         recyclerViewFriends.setLayoutManager(layoutManager);
         friendsAdapter = new FriendsRecyclerViewAdapter(user);
         recyclerViewFriends.setAdapter(friendsAdapter);
+
     }
 
     private boolean handleSearch(String text) {

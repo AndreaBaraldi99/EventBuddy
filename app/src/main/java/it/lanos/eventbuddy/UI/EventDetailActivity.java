@@ -38,7 +38,7 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private EventWithUsers event;
     private User user;
-    private boolean somethingChange = false;
+    private int somethingChange = 0;
     Button join;
     Button doNotJoin;
 
@@ -94,8 +94,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             public void onClick(View v) {
                 join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
-                iEventsRepository.joinEvent(event.getEvent().getEventId());
-                somethingChange = true;
+                somethingChange = 1;
             }
         });
 
@@ -104,8 +103,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             public void onClick(View v) {
                 doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
                 join.setBackgroundColor(getResources().getColor(R.color.divisor));
-                iEventsRepository.leaveEvent(event.getEvent().getEventId());
-                somethingChange = true;
+                somethingChange = 2;
             }
         });
 
@@ -161,15 +159,16 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             e.printStackTrace();
         }
     }
-    private void returnResultToCallingActivity(boolean change) {
+    private void returnResultToCallingActivity(int change, String eventId) {
         Intent resultIntent = new Intent();
         resultIntent.putExtra("change", change);
+        resultIntent.putExtra("id", eventId);
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
     @Override
     public void onBackPressed() {
-        returnResultToCallingActivity(somethingChange);
+        returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
         super.onBackPressed();
     }
 
