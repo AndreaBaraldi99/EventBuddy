@@ -10,33 +10,41 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.lanos.eventbuddy.data.source.UserCallback;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.firebase.auth.BaseUserDataSource;
 import it.lanos.eventbuddy.data.source.firebase.cloudDB.BaseUserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
+import it.lanos.eventbuddy.data.source.models.UserFromRemote;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class UserRepository implements IUserRepository, UserCallback {
 
     private final BaseUserDataSource userDataSource;
     private final BaseUserCloudDBDataSource userCloudDBDataSource;
+    private final BaseUserLocalDataSource userLocalDataSource;
     private final MutableLiveData<Result> userMutableLiveData;
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
     private final DataEncryptionUtil dataEncryptionUtil;
+    private final MutableLiveData<Result> friendsSearchedMutableLiveData;
     private User user;
 
-    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, DataEncryptionUtil dataEncryptionUtil){
+    public UserRepository(BaseUserDataSource userDataSource, BaseUserCloudDBDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
         this.userCloudDBDataSource = userCloudDBDataSource;
+        this.userLocalDataSource = baseUserLocalDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
+        this.userLocalDataSource.setUserCallback(this);
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
+        friendsSearchedMutableLiveData = new MutableLiveData<>();
     }
     @Override
     public MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password) {
@@ -88,7 +96,22 @@ public class UserRepository implements IUserRepository, UserCallback {
         return usersSearchedMutableLiveData;
     }
 
+    @Override
+    public void addFriend(@NonNull User friend) {
+        userCloudDBDataSource.addFriend(user.getUserId(), user);
+    }
 
+    @Override
+    public void removeFriend(@NonNull User friend) {
+        userCloudDBDataSource.removeFriend(user.getUserId(), user);
+    }
+
+
+    @Override
+    public MutableLiveData<Result> getFriends() {
+        userCloudDBDataSource.getFriends(user.getUserId());
+        return friendsSearchedMutableLiveData;
+    }
 
 
     @Override
@@ -100,7 +123,8 @@ public class UserRepository implements IUserRepository, UserCallback {
         } else {
             //register
             Log.d("Debug", "Register success");
-            userCloudDBDataSource.addUser(user);
+            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>());
+            userCloudDBDataSource.addUser(userFromRemote);
         }
     }
 
@@ -112,15 +136,15 @@ public class UserRepository implements IUserRepository, UserCallback {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //userLocalDataSource.addUser(user);
         this.user = user;
         Result.AuthSuccess resultSuccess = new Result.AuthSuccess("Success");
         userMutableLiveData.postValue(resultSuccess);
     }
 
     @Override
-    public void onSuccessFromLocalDB(User user) {
-
+    public void onSuccessFromLocalDB(List<User> user) {
+        Result.UserSuccess resultSuccess = new Result.UserSuccess(user);
+        friendsSearchedMutableLiveData.postValue(resultSuccess);
     }
 
     @Override
@@ -152,6 +176,37 @@ public class UserRepository implements IUserRepository, UserCallback {
         Result.Error resultError = new Result.Error(e.getLocalizedMessage());
         userMutableLiveData.postValue(resultError);
     }
+
+    @Override
+    public void onFriendFromRemoteSuccess(List<User> users) {
+        userLocalDataSource.addFriends(users);
+    }
+
+    @Override
+    public void onUpdatedFriendFromLocal(User user) {
+        Result allFriends = friendsSearchedMutableLiveData.getValue();
+        if(allFriends != null && allFriends.isSuccess()){
+            List<User> friends = ((Result.UserSuccess) allFriends).getData();
+            if(user.getIsFriend() == 0){
+                friends.remove(user);
+            } else {
+                friends.add(user);
+            }
+            friendsSearchedMutableLiveData.postValue(allFriends);
+        }
+    }
+
+    @Override
+    public void onFailureFromLocal(Exception userNotFound) {
+        Result.Error resultError = new Result.Error(userNotFound.getLocalizedMessage());
+        friendsSearchedMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public void onFriendUpdatedToRemote(User user) {
+        userLocalDataSource.updateFriend(user);
+    }
+
 
     @Override
     public FirebaseUser getCurrentUser() {

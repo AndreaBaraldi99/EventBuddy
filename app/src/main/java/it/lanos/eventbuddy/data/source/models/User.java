@@ -20,6 +20,8 @@ public class User implements Parcelable {
     @ColumnInfo(name = "full_name")
     @NonNull
     private String fullName;
+    // If the user is a friend of the current user, this value is 1, otherwise 0
+    private int isFriend = 0;
     @Ignore
     public User(){}
     public User(@NonNull String userId, @NonNull String username, @NonNull String fullName) {
@@ -39,11 +41,20 @@ public class User implements Parcelable {
     public String getFullName() {
         return fullName;
     }
+    public int getIsFriend() {
+        return isFriend;
+    }
     public void setUsername(@NonNull String username) {
         this.username = username;
     }
     public void setFullName(@NonNull String fullName) {
         this.fullName = fullName;
+    }
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
+    }
+    public void setIsFriend(int isFriend) {
+        this.isFriend = isFriend;
     }
 
     @Override
@@ -56,18 +67,21 @@ public class User implements Parcelable {
         dest.writeString(this.userId);
         dest.writeString(this.username);
         dest.writeString(this.fullName);
+        dest.writeInt(this.isFriend);
     }
 
     public void readFromParcel(Parcel source) {
         this.userId = source.readString();
         this.username = source.readString();
         this.fullName = source.readString();
+        this.isFriend = (short) source.readInt();
     }
 
     protected User(Parcel in) {
         this.userId = in.readString();
         this.username = in.readString();
         this.fullName = in.readString();
+        this.isFriend = (short) in.readInt();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {

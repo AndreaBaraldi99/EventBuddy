@@ -23,8 +23,10 @@ import it.lanos.eventbuddy.data.source.firebase.cloudDB.UserCloudDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.realtimeDB.BaseLocationRealtimeDBDataSource;
 import it.lanos.eventbuddy.data.source.firebase.realtimeDB.LocationRealtimeDBDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.BaseEventsLocalDataSource;
+import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
+import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
 import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteMapboxDataSource;
 import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteMapboxDataSource;
 import retrofit2.Retrofit;
@@ -67,10 +69,12 @@ public class ServiceLocator {
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseUserCloudDBDataSource cloudDBDataSource = new UserCloudDBDataSource(cloudDBService);
 
+        BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application));
+
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 
-        return new UserRepository(userDataSource, cloudDBDataSource, dataEncryptionUtil);
+        return new UserRepository(userDataSource, cloudDBDataSource, userLocalDataSource, dataEncryptionUtil);
     }
 
     public ISuggestionsRepository getSuggestionsRepository(Application application) {
