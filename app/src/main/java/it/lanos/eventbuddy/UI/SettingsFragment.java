@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -53,22 +54,8 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SettingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SettingsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private User user;
     private UserViewModel userViewModel;
     private Button nicknameTextButton;
@@ -78,31 +65,10 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SettingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SettingsFragment newInstance(String param1, String param2) {
-        SettingsFragment fragment = new SettingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -157,17 +123,17 @@ public class SettingsFragment extends Fragment {
         nicknameTextButton.setOnClickListener(view1 -> changeNicknameAlert());
 
         // Navigate the user to Account Settings
-        ConstraintLayout accountConstraint = view.findViewById(R.id.accountConstraint);
+        MaterialCardView accountConstraint = view.findViewById(R.id.card_account);
         accountConstraint.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_accountSettingsActivity));
 
         // Navigate the user to Preference Settings
-        ConstraintLayout preferencesConstraint = view.findViewById(R.id.preferencesConstraint);
+        MaterialCardView preferencesConstraint = view.findViewById(R.id.card_preferences);
         preferencesConstraint.setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.action_settingsFragment_to_preferencesSettingsActivity));
 
         // Navigate the user to notification settings
-        ConstraintLayout notificationsConstraint = view.findViewById(R.id.notificationsConstraint);
+        MaterialCardView notificationsConstraint = view.findViewById(R.id.card_notifications);
         notificationsConstraint.setOnClickListener(v -> {
             // Intent to open the specific App Info page:
             Intent intent = new Intent();
@@ -191,7 +157,7 @@ public class SettingsFragment extends Fragment {
         });
 
         // Navigate the user to permission settings
-        ConstraintLayout permissionsConstraint = view.findViewById(R.id.permissionsConstraint);
+        MaterialCardView permissionsConstraint = view.findViewById(R.id.card_privacy);
         permissionsConstraint.setOnClickListener(v -> {
             // Intent to open the App Info page of your app
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
