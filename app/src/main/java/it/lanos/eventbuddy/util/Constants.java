@@ -32,5 +32,6 @@ public class Constants {
     public static final String FEATURE_URL = "search/searchbox/v1/retrieve/{id}";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String MAPBOX_ERROR = "error";
+    public static final String LAST_UPDATE_FRIENDS = "last_update_friends";
 
 }

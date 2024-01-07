@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
+import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE_FRIENDS;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 import static it.lanos.eventbuddy.util.Constants.USER_NOT_FOUND;
 
@@ -25,7 +26,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<User> friends = userDao.getFriends();
             sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
-                    LAST_UPDATE, String.valueOf(System.currentTimeMillis()));
+                    LAST_UPDATE_FRIENDS, String.valueOf(System.currentTimeMillis()));
             userCallback.onSuccessFromLocalDB(friends);
         });
     }
