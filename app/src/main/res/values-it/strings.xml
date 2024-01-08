@@ -18,6 +18,7 @@
     <string name="event_fragment_title">Eventi in programma</string>
     <string name="title_activity_create_event">CreateEventActivity</string>
     <string name="item_date">Data </string>
+
     <!-- Strings used for CreateEventActivity -->
     <string name="create_event_title">Crea evento</string>
     <string name="event_name_text">Nome dell\'evento</string>
@@ -30,6 +31,8 @@
     <string name="add_guests_text">Aggiungi invitati</string>
     <string name="add_text">Aggiungi</string>
     <string name="remove_text">Rimuovi</string>
+    <string name="date_picker_title">Seleziona la data</string>
+    <string name="time_picker_title">Seleziona l\'orario</string>
 
     <!-- Strings used for EventDetailActivity -->
     <string name="event_detail_join">Partecipa</string>

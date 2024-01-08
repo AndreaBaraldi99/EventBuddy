@@ -4,7 +4,6 @@ package it.lanos.eventbuddy.UI;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.NavUtils;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,17 +26,19 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.ISuggestionsRepository;
 import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.source.models.Event;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
@@ -61,6 +62,10 @@ public class CreateEventActivity extends AppCompatActivity{
     private CreateEventViewModel createEventViewModel;
 
     private String description;
+
+    private String date;
+
+    private String time;
 
     private List<User> userList;
 
@@ -114,6 +119,9 @@ public class CreateEventActivity extends AppCompatActivity{
         return description;
     }
 
+    public String getDate() {return date;}
+    public String getTime() {return time;}
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -140,6 +148,49 @@ public class CreateEventActivity extends AppCompatActivity{
                 NavUtils.navigateUpFromSameTask(CreateEventActivity.this);
             }
         });
+        dateTextInputLayout = findViewById(R.id.DateTextInputLayout);
+        dateTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+                    builder.setTitleText(R.string.date_picker_title);
+                    builder.build();
+                    builder.setTheme(R.style.MyDatePicker);
+                    MaterialDatePicker<Long> picker = builder.build();
+                    builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
+                    picker.show(getSupportFragmentManager(), "date_picker");
+                    picker.addOnPositiveButtonClickListener(selection -> {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        date = simpleDateFormat.format(selection);
+                        dateTextInputLayout.getEditText().setText(date);
+                    });
+                }
+            }
+        });
+
+        timeTextInputLayout = findViewById(R.id.TimeTextInputLayout);
+        timeTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    MaterialTimePicker.Builder builder = new MaterialTimePicker.Builder();
+                    builder.setTitleText(R.string.time_picker_title)
+                            .setTimeFormat(TimeFormat.CLOCK_24H)
+                            .setHour(12)
+                            .setMinute(10)
+                            .build();
+                    builder.setTheme(R.style.MyTimePicker);
+                    MaterialTimePicker picker = builder.build();
+                    picker.show(getSupportFragmentManager(), "time_picker");
+                    picker.addOnPositiveButtonClickListener(selection -> {
+                        time = picker.getHour() + ":" + picker.getMinute();
+                        timeTextInputLayout.getEditText().setText(time);
+                    });
+                }
+            }
+        });
+
 
         iSuggestionsRepository = (SuggestionsRepository)
                 ServiceLocator.getInstance().getSuggestionsRepository(getApplication());
@@ -234,11 +285,8 @@ public class CreateEventActivity extends AppCompatActivity{
 
 
         eventNameTextInputLayout = findViewById(R.id.EventNameTextInputLayout);
-        eventNameTextInputLayout.getEditText().getCurrentHintTextColor();
-        dateTextInputLayout = findViewById(R.id.DateTextInputLayout);
-        timeTextInputLayout = findViewById(R.id.TimeTextInputLayout);
+        Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getCurrentHintTextColor();
 
-        //locationTextInputLayout = findViewById(R.id.LocationTextInputLayout);
 
         addDescrButton.setOnClickListener(v -> openAddDescriptionDialog());
         addGuestButton.setOnClickListener(v -> openAddGuestDialog());
@@ -246,15 +294,12 @@ public class CreateEventActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String event_name = Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getText().toString();
-                String date_time = Objects.requireNonNull(dateTextInputLayout.getEditText()).getText().toString()+"/"+timeTextInputLayout.getEditText().getText().toString();
+                String date_time = date + "/"+ time;
                 Event event = new Event(event_name, date_time, address, description);
                 EventWithUsers finalEvent = new EventWithUsers(event, userList);
                 returnResultToCallingActivity(finalEvent);
             }
         });
-
-
-
     }
     private void returnResultToCallingActivity(EventWithUsers eventWithUsers) {
         Intent resultIntent = new Intent();

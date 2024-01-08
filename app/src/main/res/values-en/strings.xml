@@ -31,6 +31,8 @@
     <string name="add_guests_text">Add guests</string>
     <string name="add_text">Add </string>
     <string name="remove_text">Remove </string>
+    <string name="date_picker_title">Select date</string>
+    <string name="time_picker_title">Select time</string>
 
     <!-- Strings used for EventDetailActivity -->
     <string name="event_detail_join">Join</string>

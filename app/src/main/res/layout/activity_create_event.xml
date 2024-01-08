@@ -67,6 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/md_theme_light_background"
+            android:clickable="false"
+            android:contextClickable="true"
             android:drawableEnd="@drawable/outline_calendar_today_24"
             android:hint="@string/event_date_text"
             android:inputType="datetime" />
