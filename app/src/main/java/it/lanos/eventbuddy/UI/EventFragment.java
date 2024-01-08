@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
@@ -222,7 +223,11 @@ public class EventFragment extends Fragment {
 
         workInfoObserver = workInfo -> {
             if (workInfo != null && workInfo.getState().isFinished()) {
-                Log.d("WORKMANAGER", "successo");
+
+                Data outputData = workInfo.getOutputData();
+                String lastUpdate = outputData.getString("lastUpdate");
+                eventViewModel.getEvents(Long.parseLong(lastUpdate));
+
                 scheduleNextWork();
             }
         };
@@ -267,7 +272,5 @@ public class EventFragment extends Fragment {
         intent.putExtra("event", event);
         detailEventLauncher.launch(intent);
     }
-
-
 }
 
