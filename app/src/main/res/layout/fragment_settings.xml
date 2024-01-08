@@ -19,6 +19,17 @@
             app:title="@string/settings_text"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
+        <TextView
+            android:id="@+id/nickNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Nickname:"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/nicknameTextButton"
+            app:layout_constraintEnd_toEndOf="@+id/nicknameTextButton"
+            app:layout_constraintStart_toStartOf="@+id/nicknameTextButton" />
+
         <Button
             android:id="@+id/nicknameTextButton"
             style="@style/Widget.Material3.Button.TextButton"
@@ -28,6 +39,7 @@
             android:layout_marginTop="48dp"
             android:layout_marginEnd="28dp"
             android:textSize="25sp"
+            android:textColor="@color/black"
             android:textColorHint="@color/md_theme_dark_outline"
             android:hint="@string/nickname_text"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +65,7 @@
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
             android:layout_height="59dp"
-            android:layout_margin="8dp"
+            android:layout_margin="20dp"
             android:backgroundTint="@color/md_theme_light_surface"
             android:clickable="true"
             android:focusable="true"
@@ -115,7 +127,7 @@
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
             android:layout_height="59dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/md_theme_light_surface"
             android:clickable="true"
             android:focusable="true"
@@ -169,7 +181,7 @@
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
             android:layout_height="59dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/md_theme_light_surface"
             android:clickable="true"
             android:focusable="true"
@@ -223,7 +235,7 @@
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
             android:layout_height="59dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/md_theme_light_surface"
             android:clickable="true"
             android:focusable="true"

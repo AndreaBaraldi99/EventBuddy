@@ -18,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
@@ -49,7 +47,6 @@ import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.authentication.UserViewModel;
 import it.lanos.eventbuddy.UI.authentication.UserViewModelFactory;
 import it.lanos.eventbuddy.data.IUserRepository;
-import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.ServiceLocator;
@@ -112,9 +109,7 @@ public class SettingsFragment extends Fragment {
         downloadUserImage();
 
         // The user selects a new image from the gallery
-        userImage.setOnClickListener(view1 -> {
-            setUserImage();
-        });
+        userImage.setOnClickListener(view1 -> setUserImage());
         initializeImagePickerLauncher();
 
         // Handle the button that sets user nickname
@@ -217,7 +212,7 @@ public class SettingsFragment extends Fragment {
         userViewModel.changeUsername(newNickname);
         readUser(new DataEncryptionUtil(requireActivity().getApplication()));
         user.setUsername(newNickname);
-        setUserNickname();
+        nicknameTextButton.setText(newNickname);
     }
 
     // Download the user image from Cloud Storage and set it into imageview
@@ -229,6 +224,7 @@ public class SettingsFragment extends Fragment {
 
         Glide.with(requireContext())
                 .load(storageReference)
+                .placeholder(R.drawable.logo)
                 .into(userImage);
     }
 
@@ -261,11 +257,18 @@ public class SettingsFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
             userViewModel.uploadProfileImage(bitmap).observe(getViewLifecycleOwner(), result -> {
                 if(result.isSuccess()) {
-                    downloadUserImage();
+
+                    new Thread(() -> Glide.get(requireContext()).clearDiskCache()).start();
+                    Glide.get(requireContext()).clearMemory();
+
+                    Glide.with(requireContext())
+                            .load(imageUri)
+                            .into(userImage);
+
                 } else {
                     Snackbar snackbar = Snackbar.make(
                             requireView(),
-                            "Failed",
+                            getString(R.string.image_upload_failed),
                             Snackbar.LENGTH_SHORT);
                     snackbar.show();
                 }

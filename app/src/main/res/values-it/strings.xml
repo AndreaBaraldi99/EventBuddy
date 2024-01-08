@@ -91,6 +91,7 @@
     <string name="change_nickname">Cambia Nickname</string>
     <string name="insert_new_nickname">Inserisci il nuovo Nickname:</string>
     <string name="nickname_not_empty">Il Nickname non può essere vuoto</string>
+    <string name="image_upload_failed">Caricamento non riuscito</string>
 
     <!-- Strings used for AccountSettingsActivity -->
     <string name="settings_button_change_logout">Logout</string>
