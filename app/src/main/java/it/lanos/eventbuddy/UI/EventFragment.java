@@ -226,7 +226,10 @@ public class EventFragment extends Fragment {
 
                 Data outputData = workInfo.getOutputData();
                 String lastUpdate = outputData.getString("lastUpdate");
+                Log.d("UPDATEINEVENT", lastUpdate);
+
                 eventViewModel.getEvents(Long.parseLong(lastUpdate));
+                //eventViewModel.getEvents(0);
 
                 scheduleNextWork();
             }
@@ -241,7 +244,7 @@ public class EventFragment extends Fragment {
     private void scheduleNextWork() {
         OneTimeWorkRequest newWorkRequest =
                 new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
-                        .setInitialDelay(60, TimeUnit.SECONDS)
+                        .setInitialDelay(20, TimeUnit.SECONDS)
                         .build();
 
         lastWorkId = newWorkRequest.getId();

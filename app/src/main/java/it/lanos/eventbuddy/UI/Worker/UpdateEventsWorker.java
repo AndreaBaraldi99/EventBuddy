@@ -14,7 +14,6 @@ import androidx.work.WorkerParameters;
 import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class UpdateEventsWorker extends Worker {
-    private Context context;
     private SharedPreferencesUtil sharedPreferencesUtil;
 
 

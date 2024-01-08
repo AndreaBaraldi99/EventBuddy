@@ -30,9 +30,7 @@ public class EventViewModel extends ViewModel {
 
 
     public MutableLiveData<Result> getEvents(long lastUpdate) {
-        if (eventListLiveData == null) {
             fetchEvents(lastUpdate);
-        }
         return eventListLiveData;
     }
 
