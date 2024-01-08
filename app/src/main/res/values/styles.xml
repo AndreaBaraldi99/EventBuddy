@@ -13,7 +13,9 @@
     </style>
 
     <style name="MyDatePicker" parent="ThemeOverlay.Material3.MaterialCalendar">
-        <item name="android:backgroundTint"> @color/md_theme_light_background</item>
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_primary</item>
+        <item name="android:backgroundTint"> @color/md_theme_light_surface</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 

@@ -66,7 +66,7 @@
             android:layout_width="340dp"
             android:layout_height="59dp"
             android:layout_margin="20dp"
-            android:backgroundTint="@color/md_theme_light_surface"
+            android:backgroundTint="@color/md_theme_light_surfaceVariant"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +128,7 @@
             android:layout_width="340dp"
             android:layout_height="59dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surface"
+            android:backgroundTint="@color/md_theme_light_surfaceVariant"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +137,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="61dp">
+                android:layout_height="61dp"
+                android:backgroundTint="@color/md_theme_light_surfaceVariant">
 
                 <ImageView
                     android:id="@+id/preferencesIcon"
@@ -182,7 +183,7 @@
             android:layout_width="340dp"
             android:layout_height="59dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surface"
+            android:backgroundTint="@color/md_theme_light_surfaceVariant"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -236,7 +237,7 @@
             android:layout_width="340dp"
             android:layout_height="59dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surface"
+            android:backgroundTint="@color/md_theme_light_surfaceVariant"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"

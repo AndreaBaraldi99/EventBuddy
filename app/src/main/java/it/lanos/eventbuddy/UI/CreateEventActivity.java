@@ -13,6 +13,8 @@ import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -32,8 +35,12 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -148,49 +155,68 @@ public class CreateEventActivity extends AppCompatActivity{
                 NavUtils.navigateUpFromSameTask(CreateEventActivity.this);
             }
         });
+
         dateTextInputLayout = findViewById(R.id.DateTextInputLayout);
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText(R.string.date_picker_title);
+        builder.build();
+        builder.setTheme(R.style.MyDatePicker);
+        MaterialDatePicker<Long> picker = builder.build();
+        builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
         dateTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-                    builder.setTitleText(R.string.date_picker_title);
-                    builder.build();
-                    builder.setTheme(R.style.MyDatePicker);
-                    MaterialDatePicker<Long> picker = builder.build();
-                    builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
                     picker.show(getSupportFragmentManager(), "date_picker");
-                    picker.addOnPositiveButtonClickListener(selection -> {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        date = simpleDateFormat.format(selection);
-                        dateTextInputLayout.getEditText().setText(date);
-                    });
                 }
             }
         });
+        picker.addOnPositiveButtonClickListener(selection -> {
+            DateTimeFormatter formatter = null;
+            String dateString = dateTextInputLayout.getEditText().getText().toString();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                date = simpleDateFormat.format(selection);
+                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate localDate = LocalDate.parse(date, formatter);
+                if (localDate.isBefore(LocalDate.now())) {
+                    Toast.makeText(CreateEventActivity.this, R.string.date_picker_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    dateTextInputLayout.getEditText().setText(date);
+                }
+            } else {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                date = simpleDateFormat.format(selection);
+
+                dateTextInputLayout.getEditText().setText(date);
+            }
+
+
+
+
+        });
 
         timeTextInputLayout = findViewById(R.id.TimeTextInputLayout);
+        MaterialTimePicker.Builder builderTime = new MaterialTimePicker.Builder();
+        builderTime.setTitleText(R.string.time_picker_title)
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .setHour(12)
+                .setMinute(10)
+                .build();
+        builderTime.setTheme(R.style.MyTimePicker);
+        MaterialTimePicker pickerTime = builderTime.build();
         timeTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    MaterialTimePicker.Builder builder = new MaterialTimePicker.Builder();
-                    builder.setTitleText(R.string.time_picker_title)
-                            .setTimeFormat(TimeFormat.CLOCK_24H)
-                            .setHour(12)
-                            .setMinute(10)
-                            .build();
-                    builder.setTheme(R.style.MyTimePicker);
-                    MaterialTimePicker picker = builder.build();
-                    picker.show(getSupportFragmentManager(), "time_picker");
-                    picker.addOnPositiveButtonClickListener(selection -> {
-                        time = picker.getHour() + ":" + picker.getMinute();
-                        timeTextInputLayout.getEditText().setText(time);
-                    });
+                    pickerTime.show(getSupportFragmentManager(), "time_picker");
                 }
             }
         });
-
+        pickerTime.addOnPositiveButtonClickListener(selection -> {
+            time = pickerTime.getHour() + ":" + pickerTime.getMinute();
+            timeTextInputLayout.getEditText().setText(time);
+        });
 
         iSuggestionsRepository = (SuggestionsRepository)
                 ServiceLocator.getInstance().getSuggestionsRepository(getApplication());
@@ -233,8 +259,7 @@ public class CreateEventActivity extends AppCompatActivity{
         });
         SearchView mySearchView = findViewById(R.id.locationSearch);
         EditText searchEditText = mySearchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        //TODO: Sostituire metodo deprecato
-        searchEditText.setHintTextColor(getResources().getColor(R.color.md_theme_light_onSurfaceVariant));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.md_theme_light_onSurfaceVariant, null));
         searchEditText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 
         suggestionList = new ArrayList<>();
@@ -295,6 +320,10 @@ public class CreateEventActivity extends AppCompatActivity{
             public void onClick(View v) {
                 String event_name = Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getText().toString();
                 String date_time = date + "/"+ time;
+                if (event_name.isEmpty() || address.isEmpty() || description.isEmpty() || date.isEmpty() || time.isEmpty()) {
+                    Toast.makeText(CreateEventActivity.this, R.string.fill_fields_error, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Event event = new Event(event_name, date_time, address, description);
                 EventWithUsers finalEvent = new EventWithUsers(event, userList);
                 returnResultToCallingActivity(finalEvent);

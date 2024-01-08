@@ -32,15 +32,15 @@
     <string name="add_text">Aggiungi</string>
     <string name="remove_text">Rimuovi</string>
     <string name="date_picker_title">Seleziona la data</string>
+    <string name="date_picker_error">Non puoi scegliere una data precedente a quella odierna</string>
     <string name="time_picker_title">Seleziona l\'orario</string>
+    <string name="fill_fields_error">Compila tutti i campi richiesti</string>
 
     <!-- Strings used for EventDetailActivity -->
     <string name="event_detail_join">Partecipa</string>
     <string name="event_detail_do_not_join">Non partecipare</string>
     <string name="event_detail_manager">Manager</string>
     <string name="noone_partecipating">Non partecipa ancora nessuno, sarai tu il primo?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Strings used for AddDescriptionFragment -->
     <string name="confirm_text">Conferma</string>
