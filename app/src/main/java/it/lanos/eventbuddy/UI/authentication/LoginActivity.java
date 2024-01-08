@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,11 +23,11 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button login_button, forgot_password_button, signup_textButton;
-    TextInputLayout emailTextInputLayout, passwordTextInputLayout;
-    CheckBox rememberMe_checkbox;
-    UserViewModel userViewModel;
-    static boolean rememberMeBoolean = true;
+    private Button login_button, forgot_password_button, signup_textButton;
+    private TextInputLayout emailTextInputLayout, passwordTextInputLayout;
+    private CheckBox rememberMe_checkbox;
+    private UserViewModel userViewModel;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Find the views by ID
         setViewsUp();
+
+        sharedPreferences = getSharedPreferences("RememberMeBoolean", MODE_PRIVATE);
+        // Retrieve and set the "remember me" preference
+        boolean rememberMeChecked = sharedPreferences.getBoolean("rememberMe", true);
+        rememberMe_checkbox.setChecked(rememberMeChecked);
 
         setTextFieldsListeners();
 
@@ -84,13 +90,12 @@ public class LoginActivity extends AppCompatActivity {
     private void handleLoginButton() {
         login_button.setOnClickListener(view -> {
 
-            rememberMeBoolean = isRememberMeChecked();
-
             String email = Objects.requireNonNull(emailTextInputLayout.getEditText()).getText().toString().trim();
             String password = Objects.requireNonNull(passwordTextInputLayout.getEditText()).getText().toString().trim();
 
             if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 if(!password.isEmpty()) {
+                    rememberMe();
                     userViewModel.signIn(email, password).observe(this, result -> {
                         if (result.isSuccess()) {
                             navigateToHomeScreen();
@@ -115,10 +120,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegistrationActivity.class);
             startActivity(intent);
         });
-    }
-
-    private boolean isRememberMeChecked() {
-        return rememberMe_checkbox.isChecked();
     }
 
     // Set required listeners for the text fields
@@ -152,7 +153,11 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         }
     }
-    public static boolean getRememberMeBoolean() {
-        return rememberMeBoolean;
+
+    private void rememberMe() {
+        boolean rememberMeChecked = rememberMe_checkbox.isChecked();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("rememberMe", rememberMeChecked);
+        editor.apply();
     }
 }

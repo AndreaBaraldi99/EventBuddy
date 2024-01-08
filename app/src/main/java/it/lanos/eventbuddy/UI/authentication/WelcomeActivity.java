@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -11,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
+import it.lanos.eventbuddy.UI.PreferencesSettingsActivity;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
@@ -29,6 +31,9 @@ public class WelcomeActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(
                 this,
                 new UserViewModelFactory(userRepository)).get(UserViewModel.class);
+        rememberMe();
+
+        setAppTheme();
 
         alreadyLoggedUser();
 
@@ -56,6 +61,22 @@ public class WelcomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, BottomNavigationBarActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+
+    private void setAppTheme() {
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        boolean isDarkThemeEnabled = sharedPreferences.getBoolean("isDarkThemeEnabled", false);
+
+        PreferencesSettingsActivity.setAppTheme(isDarkThemeEnabled);
+    }
+
+    private void rememberMe() {
+        SharedPreferences sharedPreferences = getSharedPreferences("RememberMeBoolean", MODE_PRIVATE);
+        boolean rememberMeChecked = sharedPreferences.getBoolean("rememberMe", true);
+
+        if(!rememberMeChecked) {
+            userViewModel.signOut();
         }
     }
 }
