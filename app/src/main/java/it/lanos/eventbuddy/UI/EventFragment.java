@@ -13,28 +13,27 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Data;
-import androidx.work.PeriodicWorkRequest;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Firebase;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import it.lanos.eventbuddy.R;
@@ -51,12 +50,12 @@ public class EventFragment extends Fragment {
     private List<EventWithUsers> eventList;
     private EventRecyclerViewAdapter eventRecyclerViewAdapter;
     private EventViewModel eventViewModel;
-
     private WorkManager workManager;
     private SharedPreferencesUtil sharedPreferencesUtil;
-
     private String lastUpdate;
-
+    private UUID lastWorkId;
+    private LiveData<WorkInfo> currentWorkInfoLiveData;
+    private Observer<WorkInfo> workInfoObserver;
 
     private final ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -99,9 +98,6 @@ public class EventFragment extends Fragment {
             }
     );
 
-
-
-
     public EventFragment() {
         // Required empty public constructor
     }
@@ -143,12 +139,9 @@ public class EventFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
-                startCreateEventActivity();
-            }
+        fab.setOnClickListener(v -> {
+            //Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
+            startCreateEventActivity();
         });
 
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
@@ -210,7 +203,7 @@ public class EventFragment extends Fragment {
 
 
 
-        //TODO: Eliminare in caso non funzioni
+        /*//TODO: Eliminare in caso non funzioni
         PeriodicWorkRequest updateRequest =
                 new PeriodicWorkRequest.Builder(UpdateEventsWorker.class, 15, TimeUnit.SECONDS).build();
 
@@ -224,11 +217,45 @@ public class EventFragment extends Fragment {
                 lastUpdate = output.getString("update");
                 eventViewModel.getEvents(Long.parseLong(lastUpdate));
             }
-        });
+        }); */
 
 
+        workInfoObserver = workInfo -> {
+            if (workInfo != null && workInfo.getState().isFinished()) {
+                Log.d("WORKMANAGER", "successo");
+                scheduleNextWork();
+            }
+        };
+
+        // Plans first work
+        if (lastWorkId == null) {
+            scheduleNextWork();
+        }
     }
 
+    private void scheduleNextWork() {
+        OneTimeWorkRequest newWorkRequest =
+                new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
+                        .setInitialDelay(60, TimeUnit.SECONDS)
+                        .build();
+
+        lastWorkId = newWorkRequest.getId();
+        workManager.enqueue(newWorkRequest);
+
+        observeWorkInfo(lastWorkId);
+    }
+    private void observeWorkInfo(UUID workId) {
+        removeOldObserver();
+
+        currentWorkInfoLiveData = workManager.getWorkInfoByIdLiveData(workId);
+        currentWorkInfoLiveData.observe(getViewLifecycleOwner(), workInfoObserver);
+    }
+
+    private void removeOldObserver() {
+        if (currentWorkInfoLiveData != null) {
+            currentWorkInfoLiveData.removeObserver(workInfoObserver);
+        }
+    }
 
     private void startCreateEventActivity() {
         Intent intent = new Intent(requireContext(), CreateEventActivity.class);
