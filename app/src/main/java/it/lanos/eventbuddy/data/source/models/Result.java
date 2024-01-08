@@ -10,7 +10,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        return this instanceof Success || this instanceof UserSuccess ||this instanceof AuthSuccess || this instanceof SuggestionsSuccess || this instanceof FeatureSuccess;
+        return this instanceof Success || this instanceof UserSuccess ||this instanceof AuthSuccess || this instanceof SuggestionsSuccess || this instanceof LocationSuccess ||this instanceof FeatureSuccess;
     }
     public boolean isSuggestionSuccess(){return this instanceof SuggestionsSuccess;}
     public boolean isFeatureSuccess(){return this instanceof FeatureSuccess;}

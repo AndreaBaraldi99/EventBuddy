@@ -18,8 +18,8 @@ public class FriendsViewModel extends ViewModel {
         this.iUserRepository = iUserRepository;
     }
 
-    public MutableLiveData<Result> getFriends() {
-        friendsListLiveData = iUserRepository.getFriends(0);
+    public MutableLiveData<Result> getFriends(long lastUpdate) {
+        friendsListLiveData = iUserRepository.getFriends(lastUpdate);
         return friendsListLiveData;
     }
 

@@ -18,6 +18,10 @@ public class SharedPreferencesUtil {
         this.context = application.getApplicationContext();
     }
 
+    public SharedPreferencesUtil(Context context) {
+        this.context = context;
+    }
+
     /**
      * Writes a String value using SharedPreferences API.
      * @param sharedPreferencesFileName The name of file where to write data.

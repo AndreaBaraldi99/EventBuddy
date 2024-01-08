@@ -1,5 +1,8 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
+import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +36,7 @@ import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.ServiceLocator;
+import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class FriendsFragment extends Fragment {
     private List<User> user;
@@ -42,6 +46,8 @@ public class FriendsFragment extends Fragment {
     private FriendsRecyclerViewAdapter friendsAdapter;
 
     private SearchFriendsAdapter searchAdapter;
+
+    private SharedPreferencesUtil sharedPreferencesUtil;
 
     public List<User> getUser() {
         return user;
@@ -78,6 +84,7 @@ public class FriendsFragment extends Fragment {
 
         user = new ArrayList<>();
         searchingUsers = new ArrayList<>();
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
     }
 
     @Override
@@ -108,7 +115,15 @@ public class FriendsFragment extends Fragment {
             return WindowInsetsCompat.CONSUMED;
         });
 
-        friendsViewModel.getFriends().observe(getViewLifecycleOwner(), result -> {
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
+
+        //TODO: non funziona lastUpdate con sharedPreferences
+        friendsViewModel.getFriends(0).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
                 this.user.clear();
                 this.user.addAll(((Result.UserSuccess) result).getData());

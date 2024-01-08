@@ -48,7 +48,9 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.ILocationRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
+import it.lanos.eventbuddy.data.source.models.Location;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
@@ -64,7 +66,11 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
 
     private EventViewModel eventViewModel;
 
+    private LocationViewModel locationViewModel;
+
     private List<EventWithUsers> eventList;
+
+    private List<Location> locationList;
 
     private EventWithUsers selected;
 
@@ -92,7 +98,18 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 requireActivity(),
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 
+        ILocationRepository iLocationRepository =
+                ServiceLocator.getInstance().getLocationRepository(requireActivity().getApplication());
+
+        locationViewModel = new ViewModelProvider(
+                requireActivity(),
+                new LocationViewModelFactory(iLocationRepository)).get(LocationViewModel.class);
+
+
+
         eventList = new ArrayList<>();
+
+        locationList = new ArrayList<>();
 
 
     }
@@ -146,6 +163,14 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     this.selected = pickRightEvent(eventList);
                     //TODO: gestire eccezione
                 }});
+
+            locationViewModel.getLocation(selected.getEvent().getEventId()).observe(getViewLifecycleOwner(), result -> {
+                if (result.isSuccess()) {
+                    this.locationList.clear();
+                    this.locationList.add(((Result.LocationSuccess) result).getLocation());
+                }});
+
+
 
             MaterialToolbar toolbar = view.findViewById(R.id.appbar_active_frag);
             TextView address = view.findViewById(R.id.active_event_address);

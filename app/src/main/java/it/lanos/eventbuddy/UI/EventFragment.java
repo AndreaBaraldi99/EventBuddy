@@ -1,5 +1,8 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
+import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +18,10 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,24 +29,34 @@ import android.view.ViewGroup;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Firebase;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.ServiceLocator;
+import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class EventFragment extends Fragment {
 
     private List<EventWithUsers> eventList;
     private EventRecyclerViewAdapter eventRecyclerViewAdapter;
     private EventViewModel eventViewModel;
+
+    private WorkManager workManager;
+    private SharedPreferencesUtil sharedPreferencesUtil;
+
+    private String lastUpdate;
+
 
     private final ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -111,6 +128,9 @@ public class EventFragment extends Fragment {
 
         eventList = new ArrayList<>();
 
+        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
+
+        workManager = WorkManager.getInstance(getContext());
     }
 
     @Override
@@ -171,7 +191,13 @@ public class EventFragment extends Fragment {
 
         recyclerViewEvent.setLayoutManager(layoutManager);
         recyclerViewEvent.setAdapter(eventRecyclerViewAdapter);
-        String lastUpdate = "0";
+        lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
+        }
+
 
         eventViewModel.getEvents(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
@@ -181,7 +207,28 @@ public class EventFragment extends Fragment {
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});
+
+
+
+        //TODO: Eliminare in caso non funzioni
+        PeriodicWorkRequest updateRequest =
+                new PeriodicWorkRequest.Builder(UpdateEventsWorker.class, 15, TimeUnit.SECONDS).build();
+
+        workManager.enqueue(updateRequest);
+
+
+        //Questo è da rivedere
+        workManager.getWorkInfoByIdLiveData(updateRequest.getId()).observe(getViewLifecycleOwner(), info ->{
+            if(info.getState() == WorkInfo.State.SUCCEEDED) {
+                Data output = info.getOutputData();
+                lastUpdate = output.getString("update");
+                eventViewModel.getEvents(Long.parseLong(lastUpdate));
+            }
+        });
+
+
     }
+
 
     private void startCreateEventActivity() {
         Intent intent = new Intent(requireContext(), CreateEventActivity.class);
