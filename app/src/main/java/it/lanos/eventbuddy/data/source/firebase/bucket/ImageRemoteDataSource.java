@@ -27,4 +27,14 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
         });
     }
 
+    @Override
+    public void downloadImage(String userID) {
+        StorageReference imageRef = storageReference.child(userID);
+        imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
+            userCallback.onImageDownloaded(bytes);
+        }).addOnFailureListener(e -> {
+            userCallback.onImageDownloadFailed(e);
+        });
+    }
+
 }

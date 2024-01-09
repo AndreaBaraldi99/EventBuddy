@@ -38,6 +38,7 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final DataEncryptionUtil dataEncryptionUtil;
     private final MutableLiveData<Result> friendsSearchedMutableLiveData;
     private final MutableLiveData<Result> uploadProfileImageMutableLiveData;
+    private final MutableLiveData<Result> downloadProfileImageMutableLiveData;
     private User user;
 
     public UserRepository(BaseUserDataSource userDataSource, BaseUserRemoteDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
@@ -55,6 +56,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         usersSearchedMutableLiveData = new MutableLiveData<>();
         friendsSearchedMutableLiveData = new MutableLiveData<>();
         uploadProfileImageMutableLiveData = new MutableLiveData<>();
+        downloadProfileImageMutableLiveData = new MutableLiveData<>();
     }
     @Override
     public MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password) {
@@ -134,6 +136,12 @@ public class UserRepository implements IUserRepository, UserCallback {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         imageRemoteDataSource.uploadImage(this.user, baos.toByteArray());
         return uploadProfileImageMutableLiveData;
+    }
+
+    @Override
+    public MutableLiveData<Result> downloadProfileImage(String userId) {
+        imageRemoteDataSource.downloadImage(userId);
+        return downloadProfileImageMutableLiveData;
     }
 
 
@@ -242,6 +250,18 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onImageUploadFailed(Exception e) {
         Result.Error resultError = new Result.Error(e.getLocalizedMessage());
         uploadProfileImageMutableLiveData.postValue(resultError);
+    }
+
+    @Override
+    public void onImageDownloaded(byte[] image) {
+        Result.ImageSuccess resultSuccess = new Result.ImageSuccess(image);
+        downloadProfileImageMutableLiveData.postValue(resultSuccess);
+    }
+
+    @Override
+    public void onImageDownloadFailed(Exception e) {
+        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
+        downloadProfileImageMutableLiveData.postValue(resultError);
     }
 
     @Override

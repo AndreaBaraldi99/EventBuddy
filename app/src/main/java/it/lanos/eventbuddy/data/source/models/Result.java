@@ -10,7 +10,7 @@ public abstract class Result {
     private Result() {}
 
     public boolean isSuccess() {
-        return this instanceof Success || this instanceof UserSuccess ||this instanceof AuthSuccess || this instanceof SuggestionsSuccess || this instanceof LocationSuccess ||this instanceof FeatureSuccess;
+        return this instanceof Success || this instanceof UserSuccess ||this instanceof AuthSuccess || this instanceof SuggestionsSuccess || this instanceof LocationSuccess ||this instanceof FeatureSuccess || this instanceof ImageSuccess;
     }
     public boolean isSuggestionSuccess(){return this instanceof SuggestionsSuccess;}
     public boolean isFeatureSuccess(){return this instanceof FeatureSuccess;}
@@ -79,6 +79,16 @@ public abstract class Result {
         }
         public ArrayList<Feature> getData() {
             return features;
+        }
+    }
+
+    public static final class ImageSuccess extends Result {
+        private final byte[] image;
+        public ImageSuccess(byte[] image) {
+            this.image = image;
+        }
+        public byte[] getData() {
+            return image;
         }
     }
 

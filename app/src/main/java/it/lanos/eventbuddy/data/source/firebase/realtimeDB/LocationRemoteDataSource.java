@@ -25,7 +25,7 @@ public class LocationRemoteDataSource extends BaseLocationRemoteDataSource {
 
     @Override
     public void setLocation(Location location) {
-        locationReference.child(FIREBASE_LOCATION_COLLECTION).child(location.getEventId()).push().setValue(location)
+        locationReference.child(FIREBASE_LOCATION_COLLECTION).child(location.getEventId()).child(location.getUserId()).setValue(location)
                 .addOnFailureListener(e -> locationCallback.onFailureFromRemoteDatabase(e));
     }
 
