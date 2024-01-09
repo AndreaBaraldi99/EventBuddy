@@ -21,4 +21,6 @@ public interface UserCallback {
     void onFailureFriendSearched(Exception userNotFound);
     void onImageUploaded(String result);
     void onImageUploadFailed(Exception e);
+    void onImageDownloaded(byte[] image);
+    void onImageDownloadFailed(Exception e);
 }

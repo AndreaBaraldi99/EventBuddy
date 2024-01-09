@@ -9,4 +9,5 @@ public abstract class BaseImageRemoteDataSource {
         this.userCallback = userCallback;
     }
     public abstract void uploadImage(User user, byte[] image);
+    public abstract void downloadImage(String userID);
 }
