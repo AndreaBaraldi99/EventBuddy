@@ -83,6 +83,7 @@
 
         <activity
             android:name=".UI.BottomNavigationBarActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false">
         </activity>
 

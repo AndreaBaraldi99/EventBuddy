@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".UI.FriendsFragment">
 
 
@@ -33,21 +34,23 @@
             app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 
         <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="26dp"
-                android:background="@drawable/search_view_background"
-                android:hint="@string/friends_search_bar_hint"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
-                app:queryHint="@string/friends_search_bar_hint"
-                app:queryBackground="@null"
-                app:iconifiedByDefault="false">
-            </androidx.appcompat.widget.SearchView>
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="26dp"
+            android:background="@drawable/search_view_background"
+            android:contextClickable="true"
+            android:hint="@string/friends_search_bar_hint"
+            app:closeIcon="@drawable/baseline_close_24"
+            app:iconifiedByDefault="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
+            app:queryBackground="@null"
+            app:queryHint="@string/friends_search_bar_hint">
+        </androidx.appcompat.widget.SearchView>
 
 
         <TextView
@@ -66,7 +69,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,9 +79,9 @@
             android:id="@+id/listViewSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar" />

@@ -1,5 +1,8 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -17,11 +23,12 @@ import it.lanos.eventbuddy.data.source.models.User;
 
 public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.FriendViewHolder>{
 
-
+    private final Context context;
     private final List<User> friends;
 
-    public FriendsRecyclerViewAdapter(List<User> friends) {
+    public FriendsRecyclerViewAdapter(List<User> friends, Context context) {
         this.friends = friends;
+        this.context = context;
     }
 
     @NonNull
@@ -58,7 +65,15 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
 
         public void bind(User user) {
             nickname.setText(user.getUsername());
-            //TODO: Trovare il modo per settare anche l'immagine di profilo utente
+            profilePic = itemView.findViewById(R.id.profilePic);
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                    .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
+
+            Glide.with(context)
+                    .load(storageReference)
+                    .placeholder(R.drawable.logo)
+                    .into(profilePic);
         }
     }
 }

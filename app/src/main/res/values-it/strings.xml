@@ -50,6 +50,7 @@
     <!-- Strings used for AddGuestFragment -->
     <string name="add_guest_searchbar_hint">Inserisci il tuo username</string>
     <string name="search_bar_menu_title">Invita partecipanti</string>
+    <string name="add_guest">Invita</string>
 
     <!-- String used for RegistrationActivity -->
     <string name="already_have_account">Hai già un account?</string>

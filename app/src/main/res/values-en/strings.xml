@@ -51,6 +51,7 @@
     <!-- Strings used for AddGuestFragment -->
     <string name="add_guest_searchbar_hint">Insert user name here</string>
     <string name="search_bar_menu_title">Invite guests</string>
+    <string name="add_guest">Add</string>
 
     <!-- String used for RegistrationActivity -->
     <string name="already_have_account">Already have an account?</string>

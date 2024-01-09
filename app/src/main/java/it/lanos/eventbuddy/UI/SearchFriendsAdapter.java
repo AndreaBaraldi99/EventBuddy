@@ -1,5 +1,7 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -7,11 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +29,7 @@ import it.lanos.eventbuddy.data.source.models.User;
 public class SearchFriendsAdapter extends ArrayAdapter<User> {
     private final List<User> searchingUsers;
     private final int layout;
+    private final Context context;
 
     private final FriendsFragment callback;
 
@@ -32,6 +40,7 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
         this.searchingUsers = searchingUsers;
         this.layout = layout;
         this.callback = frag;
+        this.context = context;
     }
 
     @NonNull
@@ -44,38 +53,44 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
 
         TextView text = convertView.findViewById(R.id.usernameTextView);
         Button add = convertView.findViewById(R.id.add_guest_button);
+        ImageView userImage = convertView.findViewById(R.id.user_profile_image);
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(searchingUsers.get(position).getUserId());
+
+        Glide.with(context)
+                .load(storageReference)
+                .placeholder(R.drawable.logo)
+                .into(userImage);
 
         //SETUP LIST ITEM FOR CONSISTENCY
-        add.setText("Add");
+        add.setText(R.string.add_text);
         Iterator it = callback.getUser().iterator();
         while(it.hasNext()){
             User iter = (User) it.next();
             if(iter.getUsername().equals(searchingUsers.get(position).getUsername())) {
-                add.setText("Remove");
+                add.setText(R.string.remove_text);
             }
         }
-        //if(callback.getUser().contains(searchingUsers.get(position))){
-            //add.setText("Remove");
 
         text.setText(searchingUsers.get(position).getUsername());
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = searchingUsers.get(position);
-                if(add.getText().toString().equals("Add")) {
-                    add.setText("Remove");
+                String buttonText = add.getText().toString();
+
+                if (buttonText.equals(getContext().getString(R.string.add_text))) {
+                    add.setText(R.string.remove_text);
                     callback.onAddClick(user);
-                }
-                else {
-                    add.setText("Add");
+                } else if (buttonText.equals(getContext().getString(R.string.remove_text))) {
+                    add.setText(R.string.add_text);
                     callback.onRemoveClick(user);
                 }
 
 
             }
         });
-
-
         return convertView;
     }
 }

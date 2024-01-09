@@ -1,17 +1,24 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
 import android.app.Application;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -22,6 +29,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
     private final Application application;
     private final List<User> usersList;
     private SelectionTracker<Long> selectionTracker;
+    private final Context context;
 
     public void setSelectionTracker(SelectionTracker<Long> selectionTracker) {
         this.selectionTracker = selectionTracker;
@@ -57,19 +65,24 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         return 0;
     }
 
-    public AddGuestsRecyclerViewAdapter(List <User> usersList, Application application) {
+    public AddGuestsRecyclerViewAdapter(List <User> usersList, Application application, Context context) {
         this.usersList = usersList;
         this.application = application;
+        this.context = context;
     }
+
+
 
     public class GuestViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView userNameTextView;
         private final Button addButton;
+        private final ImageView userImage;
 
         public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
             userNameTextView = itemView.findViewById(R.id.usernameTextView);
+            userImage = itemView.findViewById(R.id.user_profile_image);
             addButton = itemView.findViewById(R.id.add_guest_button);
             addButton.setOnClickListener(view -> {
                 int position = getAdapterPosition();
@@ -83,7 +96,14 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
         public void bind(User user) {
             userNameTextView.setText(user.getUsername());
-            //TODO: implementare visualizzazione immagine di profilo
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                    .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
+
+            Glide.with(context)
+                    .load(storageReference)
+                    .placeholder(R.drawable.logo)
+                    .into(userImage);
         }
 
         public boolean isItemSelected(int position) {
@@ -106,8 +126,6 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
                 public int getPosition() {
                     return getAdapterPosition();
                 }
-
-                @Nullable
                 @Override
                 public Long getSelectionKey() {
                     return (long) getAdapterPosition();

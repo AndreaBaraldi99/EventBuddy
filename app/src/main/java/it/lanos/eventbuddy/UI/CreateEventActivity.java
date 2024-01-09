@@ -13,8 +13,6 @@ import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -35,12 +33,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -56,11 +52,9 @@ import it.lanos.eventbuddy.data.source.models.mapbox.Suggestion;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class CreateEventActivity extends AppCompatActivity{
-    private EventViewModel eventViewModel;
     private TextInputLayout eventNameTextInputLayout;
     private TextInputLayout dateTextInputLayout;
     private TextInputLayout timeTextInputLayout;
-    private TextInputLayout locationTextInputLayout;
 
     private String address;
 
@@ -83,12 +77,6 @@ public class CreateEventActivity extends AppCompatActivity{
     private Feature selectedFeature;
 
     private ArrayAdapter<Suggestion> addressAdapter;
-
-
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following
-    // methods defined by the NoticeDialogFragment.NoticeDialogListener
-    // interface.
 
 
     public void onDescriptionDialogConfirmClick(String text, AddDescriptionFragment fragment){
@@ -126,9 +114,6 @@ public class CreateEventActivity extends AppCompatActivity{
         return description;
     }
 
-    public String getDate() {return date;}
-    public String getTime() {return time;}
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -163,7 +148,7 @@ public class CreateEventActivity extends AppCompatActivity{
         builder.setTheme(R.style.MyDatePicker);
         MaterialDatePicker<Long> picker = builder.build();
         builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
-        dateTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        Objects.requireNonNull(dateTextInputLayout.getEditText()).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
@@ -173,7 +158,6 @@ public class CreateEventActivity extends AppCompatActivity{
         });
         picker.addOnPositiveButtonClickListener(selection -> {
             DateTimeFormatter formatter = null;
-            String dateString = dateTextInputLayout.getEditText().getText().toString();
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 date = simpleDateFormat.format(selection);
@@ -190,10 +174,6 @@ public class CreateEventActivity extends AppCompatActivity{
 
                 dateTextInputLayout.getEditText().setText(date);
             }
-
-
-
-
         });
 
         timeTextInputLayout = findViewById(R.id.TimeTextInputLayout);

@@ -86,7 +86,8 @@ public class AddGuestsFragment extends DialogFragment {
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication());
+
+        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication(), requireContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(addGuestsRecyclerViewAdapter);
 
