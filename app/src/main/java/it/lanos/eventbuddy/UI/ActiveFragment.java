@@ -1,10 +1,13 @@
 package it.lanos.eventbuddy.UI;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,25 +34,46 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.authentication.UserViewModel;
+import it.lanos.eventbuddy.UI.authentication.UserViewModelFactory;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.ILocationRepository;
+import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Location;
 import it.lanos.eventbuddy.data.source.models.Result;
@@ -59,6 +84,7 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.DateTimeComparator;
 import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
+
 import androidx.core.app.ActivityCompat;
 
 
@@ -68,15 +94,25 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
 
     private LocationViewModel locationViewModel;
 
-    private List<EventWithUsers> eventList;
+    private UserViewModel userViewModel;
 
-    private List<Location> locationList;
+    private List<EventWithUsers> eventList;
 
     private EventWithUsers selected;
 
+    private GoogleMap googleMap;
+
+    private LocationCallback locationCallback;
+
+    private FusedLocationProviderClient fusedLocationClient;
+
+    private Map<String, MarkerOptions> markers;
+
+    private Map<String, BitmapDescriptor> usersPic;
 
     private User user;
-    
+    private Bitmap userPic;
+
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -105,11 +141,39 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 requireActivity(),
                 new LocationViewModelFactory(iLocationRepository)).get(LocationViewModel.class);
 
+        IUserRepository iUserRepository =
+                ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+
+        userViewModel = new ViewModelProvider(
+                requireActivity(),
+                new UserViewModelFactory(iUserRepository)).get(UserViewModel.class);
 
 
         eventList = new ArrayList<>();
 
-        locationList = new ArrayList<>();
+        markers = new HashMap<>();
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (android.location.Location location : locationResult.getLocations()) {
+                    Location loc = new Location(location.getLatitude(), location.getLongitude(), selected.getEvent().getEventId());
+                    locationViewModel.setLocation(loc);
+
+                }
+            }
+        };
+
+        usersPic = new HashMap<>();
+
+
+
+
 
 
     }
@@ -161,15 +225,19 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     this.eventList.addAll(((Result.Success) result).getData());
                     Collections.sort(eventList, new DateTimeComparator());
                     this.selected = pickRightEvent(eventList);
+                    for(User u : selected.getUsers()){
+                        userViewModel.downloadProfileImage(user.getUserId()).observe(getViewLifecycleOwner(), res ->{
+                            if(res.isSuccess()){
+                                byte[] p = ((Result.ImageSuccess) res).getData();
+                                Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(p, 0, p.length), 64, 64, false);
+                                BitmapDescriptor bd = BitmapDescriptorFactory.fromBitmap(bitmap);
+                                usersPic.put(u.getUserId(), bd);
+                            }
+                        });
+                    }
                     //TODO: gestire eccezione
-                }});
-
-            locationViewModel.getLocation(selected.getEvent().getEventId()).observe(getViewLifecycleOwner(), result -> {
-                if (result.isSuccess()) {
-                    this.locationList.clear();
-                    this.locationList.add(((Result.LocationSuccess) result).getLocation());
-                }});
-
+                }
+            });
 
 
             MaterialToolbar toolbar = view.findViewById(R.id.appbar_active_frag);
@@ -180,7 +248,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             ImageView sfondo = view.findViewById(R.id.sfondo);
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
             SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.active_map);
-            if(selected != null) {
+            if (selected != null) {
                 //mapFragment.getView().setVisibility(View.VISIBLE);
                 mapFragment.getMapAsync(this);
                 toolbar.setTitle(selected.getEvent().getName());
@@ -207,14 +275,8 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 });
 
 
-                String location = selected.getEvent().getLocation();
 
-                double[] cord = Parser.getCord(location);
-
-
-
-            }
-            else{
+            } else {
                 googleMapsButton.setVisibility(View.GONE);
                 mapIcon.setVisibility(View.GONE);
                 sfondo.setVisibility(View.GONE);
@@ -223,25 +285,23 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             }
 
 
-
-
-
             // Return CONSUMED if you don't want want the window insets to keep passing
             // down to descendant views.
             return WindowInsetsCompat.CONSUMED;
         });
-    }
 
+        startLocationUpdates();
+    }
 
 
     private EventWithUsers pickRightEvent(List<EventWithUsers> eventList) {
         readUser(new DataEncryptionUtil(requireActivity().getApplication()));
         Iterator itE = eventList.iterator();
-        while(itE.hasNext()) {
+        while (itE.hasNext()) {
             EventWithUsers current = (EventWithUsers) itE.next();
             List<UserEventCrossRef> crossList = current.getUserEventCrossRefs();
             Iterator itC = crossList.iterator();
-            while(itC.hasNext()){
+            while (itC.hasNext()) {
                 UserEventCrossRef currentCross = (UserEventCrossRef) itC.next();
                 if (currentCross.getUserId().equals(this.user.getUserId()) && currentCross.getJoined()) {
                     return current;
@@ -252,7 +312,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
         return null;
     }
 
-    private void readUser(DataEncryptionUtil dataEncryptionUtil){
+    private void readUser(DataEncryptionUtil dataEncryptionUtil) {
         try {
             this.user = new Gson().fromJson(dataEncryptionUtil.readSecretDataOnFile(ENCRYPTED_DATA_FILE_NAME), User.class);
         } catch (Exception e) {
@@ -271,6 +331,65 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 .title(selected.getEvent().getName()));
         // [START_EXCLUDE silent]
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15));
+        this.googleMap = googleMap;
+        setFriendsTracker(googleMap);
 
+    }
+
+    private void setFriendsTracker(GoogleMap googleMap) {
+        locationViewModel.getLocation(selected.getEvent().getEventId()).observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                Location location = ((Result.LocationSuccess) result).getLocation();
+                LatLng place = new LatLng(location.latitude, location.longitude);
+                String userName = null;
+                for (User user : selected.getUsers()) {
+                    if (user.getUserId().equals(location.getUserId())) {
+                        userName = user.getUsername();
+                        break;
+                    }
+                }
+
+
+                MarkerOptions marker = new MarkerOptions()
+                        .position(place)
+                        .icon(usersPic.get(location.getUserId()))
+                        .title(userName);
+
+                googleMap.clear();
+
+                markers.put(location.getUserId(), marker);
+
+                for(MarkerOptions m : markers.values()){
+                    googleMap.addMarker(m);
+                }
+
+
+
+
+
+            }
+        });
+
+    }
+
+    private void startLocationUpdates() {
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+                .setWaitForAccurateLocation(false)
+                .build();
+
+
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+                locationCallback,
+                Looper.getMainLooper());
     }
 }

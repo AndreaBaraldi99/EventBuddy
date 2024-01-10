@@ -13,6 +13,7 @@ import it.lanos.eventbuddy.data.source.models.Result;
 public class UserViewModel extends ViewModel {
     private final IUserRepository userRepository;
     private MutableLiveData<Result> userLiveData;
+    private MutableLiveData<Result> userPicLiveData;
 
     public UserViewModel(IUserRepository iUserRepository) {
         this.userRepository = iUserRepository;
@@ -25,6 +26,12 @@ public class UserViewModel extends ViewModel {
     public MutableLiveData<Result> signIn(String email, String password) {
         return userLiveData = userRepository.signIn(email, password);
     }
+
+    public MutableLiveData<Result> downloadProfileImage(String userId){
+        this.userLiveData = userRepository.downloadProfileImage(userId);
+        return userLiveData;
+    }
+
 
     public MutableLiveData<Result> changePassword(String oldPassword, String newPassword) {
         return userLiveData = userRepository.changePassword(oldPassword, newPassword);
