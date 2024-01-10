@@ -3,40 +3,31 @@ package it.lanos.eventbuddy.UI;
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 
 import android.app.Application;
-import android.util.Log;
-import android.view.Gravity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
-import java.util.Iterator;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.UI.authentication.EventAdapterHelper;
-import it.lanos.eventbuddy.data.EventRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.Parser;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
-/**
- * Custom adapter that extends RecyclerView.Adapter to show an ArrayList of News
- * with a RecyclerView.
- */
 public class EventRecyclerViewAdapter extends
         RecyclerView.Adapter<EventRecyclerViewAdapter.NewViewHolder> {
-
+    private final Context context;
     /**
      * Interface to associate a click listener with
      * a RecyclerView item.
@@ -48,18 +39,18 @@ public class EventRecyclerViewAdapter extends
     private final List<EventWithUsers> eventList;
     private final Application application;
     private final OnItemClickListener onItemClickListener;
-    private EventViewModel eventViewModel;
+    private final EventViewModel eventViewModel;
 
 
 
 
 
-    public EventRecyclerViewAdapter(EventViewModel eventViewModel, List<EventWithUsers> eventList, Application application, OnItemClickListener onItemClickListener) {
+    public EventRecyclerViewAdapter(EventViewModel eventViewModel, List<EventWithUsers> eventList, Application application, OnItemClickListener onItemClickListener, Context context) {
         this.eventList = eventList;
         this.application = application;
         this.onItemClickListener = onItemClickListener;
         this.eventViewModel = eventViewModel;
-
+        this.context = context;
     }
 
     @NonNull
@@ -112,18 +103,13 @@ public class EventRecyclerViewAdapter extends
 
         public void bind(EventWithUsers event) {
             textViewName.setText(event.getEvent().getName());
-            String date_event = Parser.formatDateForEventList(event.getEvent().getDate());
+            String date_event = Parser.formatDateForEventList(context, event.getEvent().getDate());
             textDate.setText(date_event);
             String time = Parser.formatTime(event.getEvent().getDate());
             textViewTime.setText(time);
             handleConfigurationJoinButton(event);
 
-            joinButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    configureButtonJoin(event);
-                }
-            });
+            joinButton.setOnClickListener(v -> configureButtonJoin(event));
             String address = event.getEvent().getLocation();
             String showAddress =  address.split(",")[0];
             textViewLocation.setText(showAddress);
@@ -137,13 +123,13 @@ public class EventRecyclerViewAdapter extends
         }
 
         private void configureButtonJoin(EventWithUsers event){
-            if(joined == true){
-                joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_onPrimary));
+            if(joined){
+                joinButton.setBackgroundColor(ContextCompat.getColor(application, R.color.md_theme_light_onPrimary));
                 eventViewModel.leaveEvent(event.getEvent().getEventId());
                 joined = false;
             }
             else{
-                joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_secondaryContainer));
+                joinButton.setBackgroundColor(ContextCompat.getColor(application, R.color.md_theme_light_secondaryContainer));
                 eventViewModel.joinEvent(event.getEvent().getEventId());
                 joined = true;
             }
@@ -161,16 +147,13 @@ public class EventRecyclerViewAdapter extends
         private void handleConfigurationJoinButton(EventWithUsers event) {
             User user = readUser(new DataEncryptionUtil(application));
             List<UserEventCrossRef> usersInfo = event.getUserEventCrossRefs();
-            Iterator it = usersInfo.iterator();
-            while(it.hasNext()){
-                UserEventCrossRef current = (UserEventCrossRef) it.next();
-                if(current.getUserId().equals(user.getUserId()) && current.getJoined()) {
-                    joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_secondaryContainer));
+            for (UserEventCrossRef current : usersInfo) {
+                if (current.getUserId().equals(user.getUserId()) && current.getJoined()) {
+                    joinButton.setBackgroundColor(ContextCompat.getColor(application, R.color.md_theme_light_secondaryContainer));
                     this.joined = true;
                     break;
-                }
-                else if(current.getUserId().equals(user.getUserId()) && !current.getJoined()) {
-                    joinButton.setBackgroundColor(application.getResources().getColor(R.color.md_theme_light_onPrimary));
+                } else if (current.getUserId().equals(user.getUserId()) && !current.getJoined()) {
+                    joinButton.setBackgroundColor(ContextCompat.getColor(application, R.color.md_theme_light_onPrimary));
                     this.joined = false;
                     break;
                 }

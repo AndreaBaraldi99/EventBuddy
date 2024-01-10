@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.UI;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,29 +14,19 @@ import androidx.navigation.ui.NavigationUI;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Objects;
-
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.IUserRepository;
-import it.lanos.eventbuddy.data.source.models.Event;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class BottomNavigationBarActivity extends AppCompatActivity {
 
-    private EventViewModel eventViewModel;
-
-    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
-        @Override
-        public void onActivityResult(Boolean result) {
-            if (result) {
-                Toast.makeText(BottomNavigationBarActivity.this, "Permission granted!", Toast.LENGTH_SHORT).show();
-            }
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
+        if (result) {
+            Toast.makeText(BottomNavigationBarActivity.this, "Permission granted!", Toast.LENGTH_SHORT).show();
         }
     });
 
@@ -50,7 +39,7 @@ public class BottomNavigationBarActivity extends AppCompatActivity {
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(getApplication());
 
-        eventViewModel = new ViewModelProvider(
+        EventViewModel eventViewModel = new ViewModelProvider(
                 this,
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
 

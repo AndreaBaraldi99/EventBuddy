@@ -3,7 +3,6 @@ package it.lanos.eventbuddy.UI;
 import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Iterator;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
@@ -65,31 +62,26 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
 
         //SETUP LIST ITEM FOR CONSISTENCY
         add.setText(R.string.add_text);
-        Iterator it = callback.getUser().iterator();
-        while(it.hasNext()){
-            User iter = (User) it.next();
-            if(iter.getUsername().equals(searchingUsers.get(position).getUsername())) {
+        for (User iter : callback.getUser()) {
+            if (iter.getUsername().equals(searchingUsers.get(position).getUsername())) {
                 add.setText(R.string.remove_text);
             }
         }
 
         text.setText(searchingUsers.get(position).getUsername());
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User user = searchingUsers.get(position);
-                String buttonText = add.getText().toString();
+        add.setOnClickListener(v -> {
+            User user = searchingUsers.get(position);
+            String buttonText = add.getText().toString();
 
-                if (buttonText.equals(getContext().getString(R.string.add_text))) {
-                    add.setText(R.string.remove_text);
-                    callback.onAddClick(user);
-                } else if (buttonText.equals(getContext().getString(R.string.remove_text))) {
-                    add.setText(R.string.add_text);
-                    callback.onRemoveClick(user);
-                }
-
-
+            if (buttonText.equals(getContext().getString(R.string.add_text))) {
+                add.setText(R.string.remove_text);
+                callback.onAddClick(user);
+            } else if (buttonText.equals(getContext().getString(R.string.remove_text))) {
+                add.setText(R.string.add_text);
+                callback.onRemoveClick(user);
             }
+
+
         });
         return convertView;
     }

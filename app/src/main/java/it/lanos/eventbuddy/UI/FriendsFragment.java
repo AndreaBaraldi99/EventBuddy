@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -184,7 +183,7 @@ public class FriendsFragment extends Fragment {
 
     }
 
-    private boolean handleSearch(String text) {
+    private void handleSearch(String text) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
         if(text.equals("")){
             searchingUsers.clear();
@@ -200,11 +199,8 @@ public class FriendsFragment extends Fragment {
                     }
                 });
             } catch (Exception e) {
-                String stampa = e.toString();
                 e.printStackTrace();
-                return false;
             }
         }
-        return true;
     }
 }

@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Objects;
+
 import it.lanos.eventbuddy.R;
 
 public class AddDescriptionFragment extends DialogFragment {
@@ -19,10 +21,6 @@ public class AddDescriptionFragment extends DialogFragment {
     TextInputLayout textInputLayout;
     public AddDescriptionFragment() {
         // Required empty public constructor
-    }
-
-    public static AddDescriptionFragment newInstance() {
-        return new AddDescriptionFragment();
     }
 
     @Override
@@ -38,17 +36,17 @@ public class AddDescriptionFragment extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_add_description, null);
         textInputLayout = view.findViewById(R.id.AddDescriptionTextInputLayout);
-        String description = ((CreateEventActivity) getActivity()).getDescription();
+        String description = ((CreateEventActivity) requireActivity()).getDescription();
         if(description!=null)
-            textInputLayout.getEditText().setText(description);
+            Objects.requireNonNull(textInputLayout.getEditText()).setText(description);
         // Inflate and set the layout for the dialog.
         // Pass null as the parent view because it's going in the dialog layout.
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton(R.string.confirm_text,
-                        (dialog, id) -> {((CreateEventActivity) getActivity()).onDescriptionDialogConfirmClick(textInputLayout.getEditText().getText().toString(), this);})
+                        (dialog, id) -> ((CreateEventActivity) requireActivity()).onDescriptionDialogConfirmClick(Objects.requireNonNull(textInputLayout.getEditText()).getText().toString(), this))
                 .setNegativeButton(R.string.cancel_text,
-                        (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
+                        (dialog, id) -> ((CreateEventActivity) requireActivity()).onDialogCancelClick(this));
 
         return builder.create();
     }

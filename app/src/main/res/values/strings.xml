@@ -103,6 +103,34 @@
     <string name="insert_password">Insert your password:</string>
     <string name="wrong_delete_password">Wrong password</string>
 
+    <!-- Strings used for Parser -->
+    <string name="jan_abr">Gen</string>
+    <string name="feb_abr">Feb</string>
+    <string name="march_abr">Mar</string>
+    <string name="apr_abr">Apr</string>
+    <string name="may_abr">Mag</string>
+    <string name="june_abr">Giu</string>
+    <string name="july_abr">Lug</string>
+    <string name="aug_abr">Ago</string>
+    <string name="sept_abr">Set</string>
+    <string name="oct_abr">Ott</string>
+    <string name="nov_abr">Nov</string>
+    <string name="dec_abr">Dic</string>
+
+    <string name="december">December</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+
+
     <string name="language_it">Italiano</string>
     <string name="language_en">English</string>
     <string-array name="languages">

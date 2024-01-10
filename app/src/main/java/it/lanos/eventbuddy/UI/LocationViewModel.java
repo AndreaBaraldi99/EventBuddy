@@ -9,8 +9,7 @@ import it.lanos.eventbuddy.data.source.models.Result;
 
 public class LocationViewModel extends ViewModel {
 
-    private ILocationRepository iLocationRepository;
-    private MutableLiveData<Result> locationListLiveData;
+    private final ILocationRepository iLocationRepository;
 
 
     public LocationViewModel(ILocationRepository iLocationRepository) {
@@ -18,8 +17,7 @@ public class LocationViewModel extends ViewModel {
     }
 
     public MutableLiveData<Result> getLocation(String eventId){
-        locationListLiveData = iLocationRepository.getLocation(eventId);
-        return locationListLiveData;
+        return iLocationRepository.getLocation(eventId);
     }
 
     public void setLocation(Location location){

@@ -10,15 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <ImageView
             android:id="@+id/sfondo"
             android:layout_width="match_parent"
             android:layout_height="730dp"
             android:background="@drawable/sfondo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageView>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/active_map"
@@ -38,7 +37,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/event_fragment_top_app_bar_menu"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 
         <!-- Sostituendo con googleMaps
@@ -88,6 +86,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/googleMapsButton"
             style="?attr/materialIconButtonFilledStyle"
+            android:contentDescription="@string/null_text"
             android:backgroundTint="@color/md_theme_light_inverseSurface"
             app:icon="@drawable/baseline_directions_car_24"
             android:layout_width="48dp"

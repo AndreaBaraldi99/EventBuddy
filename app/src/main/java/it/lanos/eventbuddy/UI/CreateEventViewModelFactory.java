@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.ISuggestionsRepository;
 
 public class CreateEventViewModelFactory implements ViewModelProvider.Factory{

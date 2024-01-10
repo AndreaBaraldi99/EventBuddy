@@ -17,9 +17,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +35,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -134,12 +131,7 @@ public class CreateEventActivity extends AppCompatActivity{
         setContentView(R.layout.activity_create_event);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.create_event_toolbar);
-        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavUtils.navigateUpFromSameTask(CreateEventActivity.this);
-            }
-        });
+        createEventToolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(CreateEventActivity.this));
 
         dateTextInputLayout = findViewById(R.id.DateTextInputLayout);
         MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
@@ -148,20 +140,16 @@ public class CreateEventActivity extends AppCompatActivity{
         builder.setTheme(R.style.MyDatePicker);
         MaterialDatePicker<Long> picker = builder.build();
         builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
-        Objects.requireNonNull(dateTextInputLayout.getEditText()).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    picker.show(getSupportFragmentManager(), "date_picker");
-                }
+        Objects.requireNonNull(dateTextInputLayout.getEditText()).setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                picker.show(getSupportFragmentManager(), "date_picker");
             }
         });
         picker.addOnPositiveButtonClickListener(selection -> {
-            DateTimeFormatter formatter = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 date = simpleDateFormat.format(selection);
-                formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate localDate = LocalDate.parse(date, formatter);
                 if (localDate.isBefore(LocalDate.now())) {
                     Toast.makeText(CreateEventActivity.this, R.string.date_picker_error, Toast.LENGTH_SHORT).show();
@@ -185,12 +173,9 @@ public class CreateEventActivity extends AppCompatActivity{
                 .build();
         builderTime.setTheme(R.style.MyTimePicker);
         MaterialTimePicker pickerTime = builderTime.build();
-        timeTextInputLayout.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    pickerTime.show(getSupportFragmentManager(), "time_picker");
-                }
+        Objects.requireNonNull(timeTextInputLayout.getEditText()).setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                pickerTime.show(getSupportFragmentManager(), "time_picker");
             }
         });
         pickerTime.addOnPositiveButtonClickListener(selection -> {
@@ -212,10 +197,8 @@ public class CreateEventActivity extends AppCompatActivity{
             if (result.isSuggestionSuccess()) {
                 this.suggestionList.clear();
                 List<Suggestion> allSuggestion = (((Result.SuggestionsSuccess) result).getData());
-                Iterator it = allSuggestion.iterator();
-                while(it.hasNext()){
-                    Suggestion current = (Suggestion) it.next();
-                    if(current.full_address != null){
+                for (Suggestion current : allSuggestion) {
+                    if (current.full_address != null) {
                         this.suggestionList.add(current);
                     }
                 }
@@ -246,22 +229,19 @@ public class CreateEventActivity extends AppCompatActivity{
         ListView suggestionListView = findViewById(R.id.suggestionListView);
         addressAdapter = new suggestionAdapter(this, R.layout.address_item, suggestionList);
         suggestionListView.setAdapter(addressAdapter);
-        suggestionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                flagHandle = false;
-                String query = suggestionList.get(position).mapbox_id;
-                createEventViewModel.getFeature(query);
-                searchEditText.setText(suggestionList.get(position).context.place.name
-                        +", "
-                        +suggestionList.get(position).address);
-                suggestionList.clear();
-                addressAdapter.notifyDataSetChanged();
-                mySearchView.clearFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                flagHandle = true;
-            }
+        suggestionListView.setOnItemClickListener((parent, view, position, id) -> {
+            flagHandle = false;
+            String query = suggestionList.get(position).mapbox_id;
+            createEventViewModel.getFeature(query);
+            searchEditText.setText(suggestionList.get(position).context.place.name
+                    +", "
+                    +suggestionList.get(position).address);
+            suggestionList.clear();
+            addressAdapter.notifyDataSetChanged();
+            mySearchView.clearFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            flagHandle = true;
         });
         suggestionListView.bringToFront();
 
@@ -295,19 +275,16 @@ public class CreateEventActivity extends AppCompatActivity{
 
         addDescrButton.setOnClickListener(v -> openAddDescriptionDialog());
         addGuestButton.setOnClickListener(v -> openAddGuestDialog());
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String event_name = Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getText().toString();
-                String date_time = date + "/"+ time;
-                if (event_name.isEmpty() || address.isEmpty() || description.isEmpty() || date.isEmpty() || time.isEmpty()) {
-                    Toast.makeText(CreateEventActivity.this, R.string.fill_fields_error, Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Event event = new Event(event_name, date_time, address, description);
-                EventWithUsers finalEvent = new EventWithUsers(event, userList);
-                returnResultToCallingActivity(finalEvent);
+        addButton.setOnClickListener(v -> {
+            String event_name = Objects.requireNonNull(eventNameTextInputLayout.getEditText()).getText().toString();
+            String date_time = date + "/"+ time;
+            if (event_name.isEmpty() || address.isEmpty() || description.isEmpty() || date.isEmpty() || time.isEmpty()) {
+                Toast.makeText(CreateEventActivity.this, R.string.fill_fields_error, Toast.LENGTH_SHORT).show();
+                return;
             }
+            Event event = new Event(event_name, date_time, address, description);
+            EventWithUsers finalEvent = new EventWithUsers(event, userList);
+            returnResultToCallingActivity(finalEvent);
         });
     }
     private void returnResultToCallingActivity(EventWithUsers eventWithUsers) {

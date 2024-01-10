@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,13 +34,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -112,12 +111,6 @@ public class EventFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-    public static EventFragment newInstance() {
-        EventFragment fragment = new EventFragment();
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,7 +137,7 @@ public class EventFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_event, container, false);
     }
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
@@ -176,7 +169,7 @@ public class EventFragment extends Fragment {
 
         eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventViewModel, eventList,
                 requireActivity().getApplication(),
-                this::startDetailEventActivity
+                this::startDetailEventActivity, requireContext()
         );
 
         recyclerViewEvent.setLayoutManager(layoutManager);
@@ -193,7 +186,7 @@ public class EventFragment extends Fragment {
             if (result.isSuccess()) {
                 this.eventList.clear();
                 this.eventList.addAll(((Result.Success) result).getData());
-                Collections.sort(eventList, new DateTimeComparator());
+                eventList.sort(new DateTimeComparator());
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});
@@ -222,6 +215,7 @@ public class EventFragment extends Fragment {
                 Data outputData = workInfo.getOutputData();
                 String lastUpdate = outputData.getString("lastUpdate");
 
+                assert lastUpdate != null;
                 eventViewModel.getEvents(Long.parseLong(lastUpdate));
 
                 scheduleNextWork();

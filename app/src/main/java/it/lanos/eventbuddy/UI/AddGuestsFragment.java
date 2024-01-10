@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -30,11 +29,6 @@ import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddGuestsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddGuestsFragment extends DialogFragment {
 
     private List<User> userList;
@@ -43,11 +37,6 @@ public class AddGuestsFragment extends DialogFragment {
 
     public AddGuestsFragment() {
         // Required empty public constructor
-    }
-
-    public static AddGuestsFragment newInstance() {
-        AddGuestsFragment fragment = new AddGuestsFragment();
-        return fragment;
     }
 
     @Override
@@ -66,9 +55,9 @@ public class AddGuestsFragment extends DialogFragment {
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton(R.string.confirm_text,
-                        (dialog, id) -> {((CreateEventActivity) getActivity()).onGuestDialogConfirmClick();})
+                        (dialog, id) -> ((CreateEventActivity) requireActivity()).onGuestDialogConfirmClick())
                 .setNegativeButton(R.string.cancel_text,
-                        (dialog, id) -> ((CreateEventActivity) getActivity()).onDialogCancelClick(this));
+                        (dialog, id) -> ((CreateEventActivity) requireActivity()).onDialogCancelClick(this));
         return builder.create();
     }
     @Nullable
@@ -109,11 +98,10 @@ public class AddGuestsFragment extends DialogFragment {
             public void onItemStateChanged(@NonNull Long key, boolean selected) {
                 super.onItemStateChanged(key, selected);
                 CreateEventActivity createEventActivity = (CreateEventActivity) getActivity();
+                assert createEventActivity != null;
                 if (selected) {
-                    assert createEventActivity != null;
                     createEventActivity.onGuestAddClick(userList.get(key.intValue()));
                 } else {
-                    assert createEventActivity != null;
                     createEventActivity.onGuestRemoveClick(userList.get(key.intValue()));
                 }
             }
@@ -149,7 +137,6 @@ public class AddGuestsFragment extends DialogFragment {
                     }
                 });
             } catch (Exception e) {
-                String stampa = e.toString();
                 e.printStackTrace();
             }
         }

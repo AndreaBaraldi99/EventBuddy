@@ -15,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/create_event_top_app_bar_menu"
         app:navigationIcon="@drawable/twotone_arrow_back_24"
         app:title="@string/create_event_title"
         app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />

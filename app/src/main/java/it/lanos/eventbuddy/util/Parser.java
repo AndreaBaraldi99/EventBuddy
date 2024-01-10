@@ -1,56 +1,60 @@
 package it.lanos.eventbuddy.util;
 
+import android.content.Context;
+
+import it.lanos.eventbuddy.R;
+
 public class Parser {
-    public static String formatDate(String date){
+    public static String formatDate(String date, Context context){
         String[] dateTime =date.split("/");
         String month;
         switch(dateTime[1]){
             case "01": {
-                month = "January";
+                month = context.getString(R.string.january);
                 break;
             }
             case "02": {
-                month = "February";
+                month = context.getString(R.string.february);
                 break;
             }
             case "03": {
-                month = "March";
+                month = context.getString(R.string.march);
                 break;
             }
             case "04": {
-                month = "April";
+                month = context.getString(R.string.april);
                 break;
             }
             case "05": {
-                month = "May";
+                month = context.getString(R.string.may);
                 break;
             }
             case "06": {
-                month = "June";
+                month = context.getString(R.string.june);
                 break;
             }
             case "07": {
-                month = "July";
+                month = context.getString(R.string.july);
                 break;
             }
             case "08": {
-                month = "August";
+                month = context.getString(R.string.august);
                 break;
             }
             case "09": {
-                month = "September";
+                month = context.getString(R.string.september);
                 break;
             }
             case "10": {
-                month = "October";
+                month = context.getString(R.string.october);
                 break;
             }
             case "11": {
-                month = "November";
+                month = context.getString(R.string.november);
                 break;
             }
             case "12": {
-                month = "December";
+                month = context.getString(R.string.december);
                 break;
             }
             default:
@@ -92,56 +96,56 @@ public class Parser {
         return formattedDate;
     }
 
-    public static String formatDateForEventList(String date){
+    public static String formatDateForEventList(Context context, String date){
         String[] dateTime =date.split("/");
         String month;
         switch(dateTime[1]){
             case "01": {
-                month = "Jan";
+                month = context.getString(R.string.jan_abr);
                 break;
             }
             case "02": {
-                month = "Feb";
+                month = context.getString(R.string.feb_abr);
                 break;
             }
             case "03": {
-                month = "Mar";
+                month = context.getString(R.string.march_abr);
                 break;
             }
             case "04": {
-                month = "Apr";
+                month = context.getString(R.string.apr_abr);
                 break;
             }
             case "05": {
-                month = "May";
+                month = context.getString(R.string.may_abr);
                 break;
             }
             case "06": {
-                month = "Jun";
+                month = context.getString(R.string.june_abr);
                 break;
             }
             case "07": {
-                month = "July";
+                month = context.getString(R.string.july_abr);
                 break;
             }
             case "08": {
-                month = "Aug";
+                month = context.getString(R.string.aug_abr);
                 break;
             }
             case "09": {
-                month = "Sept";
+                month = context.getString(R.string.sept_abr);
                 break;
             }
             case "10": {
-                month = "Oct";
+                month = context.getString(R.string.oct_abr);
                 break;
             }
             case "11": {
-                month = "Nov";
+                month = context.getString(R.string.nov_abr);
                 break;
             }
             case "12": {
-                month = "Dec";
+                month = context.getString(R.string.dec_abr);
                 break;
             }
             default:
