@@ -1,10 +1,9 @@
 package it.lanos.eventbuddy.util;
 
 public class Constants {
-    // Constants for Room database
     public static final String NEWS_DATABASE_NAME = "eventbuddyDB";
     public static final int DATABASE_VERSION = 1;
-    public static final int FRESH_TIMEOUT = 300000;
+    public static final int FRESH_TIMEOUT = 30000;
     public static final String DATASTORE_NAME = "eventbuddyDatastore";
     public static final String LAST_UPDATE = "last_update";
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.lanos.eventbuddy.encrypted_file.txt";
@@ -33,5 +32,6 @@ public class Constants {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String MAPBOX_ERROR = "error";
     public static final String LAST_UPDATE_FRIENDS = "last_update_friends";
+    public static final String PLACEHOLDER_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/eventbuddy-e5fe9.appspot.com/o/images%2FPlaceholder.png?alt=media&token=ff3b43ce-0eec-4215-ac0d-efe485aec329";
 
 }

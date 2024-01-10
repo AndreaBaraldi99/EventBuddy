@@ -7,14 +7,16 @@ public class UserFromRemote{
     private String username;
     private String fullName;
     private List<String> friends;
+    private String profilePictureUrl;
 
     public UserFromRemote() {}
 
-    public UserFromRemote(String userId, String username, String fullName, List<String> friends) {
+    public UserFromRemote(String userId, String username, String fullName, List<String> friends, String profileImage) {
         this.userId = userId;
         this.username = username;
         this.fullName = fullName;
         this.friends = friends;
+        this.profilePictureUrl = profileImage;
     }
 
     public String getUserId() {
@@ -47,6 +49,14 @@ public class UserFromRemote{
 
     public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
 }

@@ -19,7 +19,7 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
     @Override
     public void addUser(UserFromRemote user) {
         service.addUser(user).addOnSuccessListener(documentReference -> {
-            userCallback.onSuccessFromOnlineDB(new User(user.getUserId(), user.getUsername(), user.getFullName()));
+            userCallback.onSuccessFromOnlineDB(new User(user.getUserId(), user.getUsername(), user.getFullName(), 0, user.getProfilePictureUrl()));
         }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 

@@ -25,10 +25,12 @@ public class User implements Parcelable {
     private String profilePictureUrl;
     @Ignore
     public User(){}
-    public User(@NonNull String userId, @NonNull String username, @NonNull String fullName) {
+    public User(@NonNull String userId, @NonNull String username, @NonNull String fullName, int isFriend, String profilePictureUrl) {
         this.userId = userId;
         this.username = username;
         this.fullName = fullName;
+        this.isFriend = isFriend;
+        this.profilePictureUrl = profilePictureUrl;
     }
     @NonNull
     public String getUserId() {

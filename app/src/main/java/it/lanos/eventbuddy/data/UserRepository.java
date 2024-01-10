@@ -99,7 +99,7 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void changeUsername(@NonNull String newUsername) {
-        userCloudDBDataSource.changeUsername(new User(user.getUserId(), newUsername, user.getFullName()));
+        userCloudDBDataSource.changeUsername(new User(user.getUserId(), newUsername, user.getFullName(), user.getIsFriend(), user.getProfilePictureUrl()));
     }
 
     @Override
@@ -154,7 +154,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         } else {
             //register
             Log.d("Debug", "Register success");
-            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>());
+            UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>(), user.getProfilePictureUrl());
             userCloudDBDataSource.addUser(userFromRemote);
         }
     }

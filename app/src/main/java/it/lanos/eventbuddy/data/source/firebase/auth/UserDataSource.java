@@ -1,5 +1,7 @@
 package it.lanos.eventbuddy.data.source.firebase.auth;
 
+import static it.lanos.eventbuddy.util.Constants.PLACEHOLDER_IMAGE_URL;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.AuthCredential;
@@ -29,7 +31,7 @@ public class UserDataSource extends BaseUserDataSource {
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         String currentUserId = authService.getCurrentUser().getUid();
-                        authCallback.onSuccessFromFirebase(new User(currentUserId, userName, fullName));
+                        authCallback.onSuccessFromFirebase(new User(currentUserId, userName, fullName, 0, PLACEHOLDER_IMAGE_URL));
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
                     }

@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -60,6 +61,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -225,16 +229,21 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     Collections.sort(eventList, new DateTimeComparator());
                     this.selected = pickRightEvent(eventList);
                     if(selected != null) {
-                        for (User u : selected.getUsers()) {
-                            userViewModel.downloadProfileImage(u.getUserId()).observe(getViewLifecycleOwner(), res -> {
-                                if (res.isSuccess()) {
-                                    byte[] p = ((Result.ImageSuccess) res).getData();
-                                    Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(p, 0, p.length), 64, 64, false);
+                        Thread thread = new Thread(() -> {
+                            for (User u : selected.getUsers()) {
+                                try {
+                                    InputStream is = (InputStream) new URL(u.getProfilePictureUrl()).getContent();
+                                    Drawable d = Drawable.createFromStream(is, "src name");
+                                    Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) d).getBitmap(), 64, 64, false);
                                     BitmapDescriptor bd = BitmapDescriptorFactory.fromBitmap(bitmap);
                                     usersPic.put(u.getUserId(), bd);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
                                 }
-                            });
+                            }
                         }
+                        );
+                        thread.start();
                     }
                     //TODO: gestire eccezione
                 }
