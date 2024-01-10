@@ -4,11 +4,15 @@ import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,7 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -27,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,6 +45,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.Worker.DummyWorker;
 import it.lanos.eventbuddy.UI.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
@@ -57,6 +65,7 @@ public class EventFragment extends Fragment {
     private UUID lastWorkId;
     private LiveData<WorkInfo> currentWorkInfoLiveData;
     private Observer<WorkInfo> workInfoObserver;
+    Observer<WorkInfo> periodicWorkInfoObserver;
 
     private final ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -116,9 +125,6 @@ public class EventFragment extends Fragment {
         IEventsRepository iEventsRepository =
                 ServiceLocator.getInstance().getEventsRepository(requireActivity().getApplication());
 
-        /*eventViewModel = new ViewModelProvider(
-                this,
-                new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);*/
         eventViewModel = new ViewModelProvider(
                 requireActivity(),
                 new EventViewModelFactory(iEventsRepository)).get(EventViewModel.class);
@@ -127,7 +133,8 @@ public class EventFragment extends Fragment {
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
-        workManager = WorkManager.getInstance(getContext());
+        workManager = WorkManager.getInstance(requireContext());
+
     }
 
     @Override
@@ -169,18 +176,7 @@ public class EventFragment extends Fragment {
 
         eventRecyclerViewAdapter = new EventRecyclerViewAdapter(eventViewModel, eventList,
                 requireActivity().getApplication(),
-                new EventRecyclerViewAdapter.OnItemClickListener(){
-                    @Override
-                    public void onEventItemClick(EventWithUsers event){
-                        /*EventFragmentDirections.GoToEventDetail action =
-                                EventFragmentDirections.goToEventDetail();
-                        action.setEventClick(event);
-
-                        Navigation.findNavController(view).navigate(action);*/
-                        startDetailEventActivity(event);
-
-                    }
-                }
+                this::startDetailEventActivity
         );
 
         recyclerViewEvent.setLayoutManager(layoutManager);
@@ -202,34 +198,31 @@ public class EventFragment extends Fragment {
                 //TODO: gestire eccezione
         }});
 
+        periodicWorkInfoObserver = workInfo -> {
+            Log.d("UPDATEDUMMY", "entrato nel periodicWorkInfoObserver");
+            if (workInfo != null) {
+                Log.d("UPDATEDUMMY", "entrato nel workInfo");
 
-
-        /*//TODO: Eliminare in caso non funzioni
-        PeriodicWorkRequest updateRequest =
-                new PeriodicWorkRequest.Builder(UpdateEventsWorker.class, 15, TimeUnit.SECONDS).build();
-
-        workManager.enqueue(updateRequest);
-
-
-        //Questo è da rivedere
-        workManager.getWorkInfoByIdLiveData(updateRequest.getId()).observe(getViewLifecycleOwner(), info ->{
-            if(info.getState() == WorkInfo.State.SUCCEEDED) {
-                Data output = info.getOutputData();
-                lastUpdate = output.getString("update");
-                eventViewModel.getEvents(Long.parseLong(lastUpdate));
+                int originalSize = eventList.size();
+                eventViewModel.getEvents(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
+                    if (result.isSuccess() && eventList.size() == originalSize) {
+                        sendNotification("New events have been added!");
+                        Log.d("UPDATEDUMMY", "notifica mandata");
+                    }
+                });
             }
-        }); */
+        };
 
+       // Schedule PeriodicWorkRequest
+        schedulePeriodicWork();
 
+        // Observer for OneTimeRequest
         workInfoObserver = workInfo -> {
             if (workInfo != null && workInfo.getState().isFinished()) {
-
                 Data outputData = workInfo.getOutputData();
                 String lastUpdate = outputData.getString("lastUpdate");
-                Log.d("UPDATEINEVENT", lastUpdate);
 
                 eventViewModel.getEvents(Long.parseLong(lastUpdate));
-                //eventViewModel.getEvents(0);
 
                 scheduleNextWork();
             }
@@ -241,10 +234,21 @@ public class EventFragment extends Fragment {
         }
     }
 
+    private void schedulePeriodicWork() {
+        PeriodicWorkRequest periodicWorkRequest =
+                new PeriodicWorkRequest.Builder(DummyWorker.class, 15, TimeUnit.MINUTES)
+                        .build();
+
+        workManager.enqueueUniquePeriodicWork("periodicWorkRequest", ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
+
+        LiveData<WorkInfo> periodicWorkInfoLiveData = workManager.getWorkInfoByIdLiveData(periodicWorkRequest.getId());
+        periodicWorkInfoLiveData.observe(getViewLifecycleOwner(), periodicWorkInfoObserver);
+    }
+
     private void scheduleNextWork() {
         OneTimeWorkRequest newWorkRequest =
                 new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
-                        .setInitialDelay(20, TimeUnit.SECONDS)
+                        .setInitialDelay(30, TimeUnit.SECONDS)
                         .build();
 
         lastWorkId = newWorkRequest.getId();
@@ -275,5 +279,23 @@ public class EventFragment extends Fragment {
         intent.putExtra("event", event);
         detailEventLauncher.launch(intent);
     }
-}
 
+    private void sendNotification(String message) {
+        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("EventUpdates", "Event Updates", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Notifications for event updates");
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "EventUpdates")
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle("Event Update")
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(1, builder.build());
+    }
+
+}

@@ -62,7 +62,7 @@ public class UserDataSource extends BaseUserDataSource {
     @Override
     public void signOut() {
         authService.signOut();
-        UserRepository.onSignOutSuccess();
+        authCallback.onSignOutSuccess();
     }
 
     /***
@@ -119,6 +119,8 @@ public class UserDataSource extends BaseUserDataSource {
     public FirebaseUser getCurrentUser() {
         return authService.getCurrentUser();
     }
+
+
 
 
 }

@@ -16,25 +16,10 @@ import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 public class UpdateEventsWorker extends Worker {
     private SharedPreferencesUtil sharedPreferencesUtil;
 
-
     public UpdateEventsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         sharedPreferencesUtil = new SharedPreferencesUtil(context);
     }
-    /*
-    @NonNull
-    @Override
-    public Result doWork() {
-
-        String lastUpdate = "0";
-        
-
-        Data outputData = new Data.Builder().putString("update", lastUpdate).build();
-
-        return Result.success(outputData);
-    }
-
-     */
 
     @NonNull
     @Override

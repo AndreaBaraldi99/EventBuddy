@@ -87,7 +87,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         userDataSource.signOut();
     }
 
-    public static void onSignOutSuccess() {
+    public void onSignOutSuccess() {
         EventsRoomDatabase.nukeTables();
     }
 
