@@ -275,7 +275,6 @@ public class UserRepository implements IUserRepository, UserCallback {
         friendsSearchedMutableLiveData.postValue(resultError);
     }
 
-
     @Override
     public FirebaseUser getCurrentUser() {
         return userDataSource.getCurrentUser();

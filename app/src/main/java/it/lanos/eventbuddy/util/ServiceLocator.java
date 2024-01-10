@@ -75,7 +75,7 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application), sharedPreferencesUtil);
 
-        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource();
+        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource(application);
 
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
