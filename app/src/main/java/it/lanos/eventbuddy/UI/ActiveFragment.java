@@ -111,7 +111,6 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
     private Map<String, BitmapDescriptor> usersPic;
 
     private User user;
-    private Bitmap userPic;
 
 
     public ActiveFragment() {
@@ -225,15 +224,17 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     this.eventList.addAll(((Result.Success) result).getData());
                     Collections.sort(eventList, new DateTimeComparator());
                     this.selected = pickRightEvent(eventList);
-                    for(User u : selected.getUsers()){
-                        userViewModel.downloadProfileImage(user.getUserId()).observe(getViewLifecycleOwner(), res ->{
-                            if(res.isSuccess()){
-                                byte[] p = ((Result.ImageSuccess) res).getData();
-                                Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(p, 0, p.length), 64, 64, false);
-                                BitmapDescriptor bd = BitmapDescriptorFactory.fromBitmap(bitmap);
-                                usersPic.put(u.getUserId(), bd);
-                            }
-                        });
+                    if(selected != null) {
+                        for (User u : selected.getUsers()) {
+                            userViewModel.downloadProfileImage(u.getUserId()).observe(getViewLifecycleOwner(), res -> {
+                                if (res.isSuccess()) {
+                                    byte[] p = ((Result.ImageSuccess) res).getData();
+                                    Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(p, 0, p.length), 64, 64, false);
+                                    BitmapDescriptor bd = BitmapDescriptorFactory.fromBitmap(bitmap);
+                                    usersPic.put(u.getUserId(), bd);
+                                }
+                            });
+                        }
                     }
                     //TODO: gestire eccezione
                 }
@@ -273,6 +274,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
 
                     }
                 });
+                startLocationUpdates();
 
 
 
@@ -290,7 +292,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             return WindowInsetsCompat.CONSUMED;
         });
 
-        startLocationUpdates();
+
     }
 
 
