@@ -34,7 +34,6 @@
             android:id="@+id/appbar_active_frag"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="34dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,10 +57,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="340dp"
+            android:layout_marginTop="374dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
             app:srcCompat="@drawable/outline_location_on_24" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/trackMeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="26dp"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="@+id/trackMeText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/trackMeText" />
 
         <TextView
             android:id="@+id/active_event_address"
@@ -107,6 +117,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/trackMeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="270dp"
+            android:text="@string/active_fragment_track_me"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

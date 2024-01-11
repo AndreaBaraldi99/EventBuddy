@@ -112,7 +112,9 @@
 
     <!-- Strings used for ActiveFragment -->
     <string name="no_active_event_found">Join an Event first!</string>
-
+    <string name="notification_title" translatable="false">EventBuddy</string>
+    <string name="notification_description">Background location tracking is active</string>
+    <string name="active_fragment_track_me">Track me</string>
 
 
 </resources>

@@ -112,4 +112,6 @@
 
     <!-- Strings used for ActiveFragment -->
     <string name="no_active_event_found">Partecipa ad un Evento prima!</string>
+    <string name="notification_description">Tracciamento della posizione in background attivo</string>
+    <string name="active_fragment_track_me">Tracciami</string>
 </resources>

@@ -1,26 +1,20 @@
 package it.lanos.eventbuddy.UI;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
-import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
+import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,13 +25,10 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -51,13 +42,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 
 
@@ -83,11 +71,12 @@ import it.lanos.eventbuddy.data.source.models.Location;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
-import it.lanos.eventbuddy.data.source.models.mapbox.Geometry;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.DateTimeComparator;
+import it.lanos.eventbuddy.util.LocationService;
 import it.lanos.eventbuddy.util.Parser;
 import it.lanos.eventbuddy.util.ServiceLocator;
+import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 import androidx.core.app.ActivityCompat;
 
@@ -113,6 +102,8 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
     private Map<String, MarkerOptions> markers;
 
     private Map<String, BitmapDescriptor> usersPic;
+
+    private Intent locIntent;
 
     private User user;
 
@@ -167,16 +158,11 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 for (android.location.Location location : locationResult.getLocations()) {
                     Location loc = new Location(location.getLatitude(), location.getLongitude(), selected.getEvent().getEventId());
                     locationViewModel.setLocation(loc);
-
                 }
             }
         };
 
         usersPic = new HashMap<>();
-
-
-
-
 
 
     }
@@ -204,6 +190,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -228,7 +215,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     this.eventList.addAll(((Result.Success) result).getData());
                     Collections.sort(eventList, new DateTimeComparator());
                     this.selected = pickRightEvent(eventList);
-                    if(selected != null) {
+                    if (selected != null) {
                         Thread thread = new Thread(() -> {
                             for (User u : selected.getUsers()) {
                                 try {
@@ -257,6 +244,10 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             ImageView mapIcon = view.findViewById(R.id.event_map_icon);
             ImageView sfondo = view.findViewById(R.id.sfondo);
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
+            TextView trackMeText = view.findViewById(R.id.trackMeText);
+            MaterialSwitch trackMeSwitch = view.findViewById(R.id.trackMeSwitch);
+            SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+
             SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.active_map);
             if (selected != null) {
                 //mapFragment.getView().setVisibility(View.VISIBLE);
@@ -266,6 +257,35 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 address.setText(formattedAddress);
                 String formattedTime = Parser.formatTime(selected.getEvent().getDate());
                 time.setText(formattedTime);
+                locIntent = new Intent(getContext(), LocationService.class);
+
+                if(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME,"track") != null) {
+                    trackMeSwitch.setChecked(Boolean.parseBoolean(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME, "track")));
+                    if(trackMeSwitch.isChecked()){
+                        locIntent.setAction(LocationService.START_STICKY);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            getContext().startForegroundService(locIntent);
+                        }
+                    }
+                }
+                trackMeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, "track", String.valueOf(trackMeSwitch.isChecked()));
+                        if(isChecked){
+                            locIntent.setAction(LocationService.START_STICKY);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                getContext().startForegroundService(locIntent);
+                            }
+                        }
+                        else{
+                            locIntent.setAction(LocationService.ACTION_STOP);
+                            getContext().stopService(locIntent);
+                        }
+
+                    }
+                });
 
                 googleMapsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -279,11 +299,44 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                         // Crea un intent con l'azione ACTION_VIEW
                         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 
+
                         startActivity(mapIntent);
 
                     }
                 });
-                startLocationUpdates();
+
+
+
+                Thread t = new Thread(() -> {
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    while(true) {
+                        fusedLocationClient.getLastLocation().addOnSuccessListener(result -> {
+                            if (result == null) {
+                                return;
+                            }
+
+                            Location loc = new Location(result.getLatitude(), result.getLongitude(), selected.getEvent().getEventId());
+                            locationViewModel.setLocation(loc);
+
+                        });
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                t.start();
+                //startLocationUpdates();
 
 
 
@@ -293,6 +346,8 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 sfondo.setVisibility(View.GONE);
                 noEvent.setVisibility(View.VISIBLE);
                 mapFragment.getView().setVisibility(View.GONE);
+                trackMeText.setVisibility(View.GONE);
+                trackMeSwitch.setVisibility(View.GONE);
             }
 
 
@@ -314,7 +369,9 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             Iterator itC = crossList.iterator();
             while (itC.hasNext()) {
                 UserEventCrossRef currentCross = (UserEventCrossRef) itC.next();
-                if (currentCross.getUserId().equals(this.user.getUserId()) && currentCross.getJoined()) {
+                if (currentCross.getUserId().equals(this.user.getUserId()) && currentCross.getJoined()
+                        && current.getEvent().getDateObject().getTime() - System.currentTimeMillis() <= 1800000 ) {
+
                     return current;
                 }
 
@@ -367,6 +424,13 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                         .title(userName);
 
                 googleMap.clear();
+                String locationEvent = selected.getEvent().getLocation();
+                String showLocation = Parser.formatLocation(locationEvent);
+                double[] cord = Parser.getCord(locationEvent);
+                LatLng placeEvent = new LatLng(cord[0], cord[1]);
+                googleMap.addMarker(new MarkerOptions()
+                        .position(placeEvent)
+                        .title(selected.getEvent().getName()));
 
                 markers.put(location.getUserId(), marker);
 
@@ -403,4 +467,5 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 locationCallback,
                 Looper.getMainLooper());
     }
+
 }
