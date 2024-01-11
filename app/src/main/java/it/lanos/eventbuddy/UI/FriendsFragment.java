@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,8 +29,10 @@ import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.IUserRepository;
@@ -127,6 +130,8 @@ public class FriendsFragment extends Fragment {
             }
         });
 
+
+
         String lastUpdate = "0";
         if (sharedPreferencesUtil.readStringData(
                 SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_FRIENDS) != null) {
@@ -180,7 +185,53 @@ public class FriendsFragment extends Fragment {
         recyclerViewFriends.setLayoutManager(layoutManager);
         friendsAdapter = new FriendsRecyclerViewAdapter(user, requireContext());
         recyclerViewFriends.setAdapter(friendsAdapter);
+        recyclerViewFriends.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_UP) {
+                    View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                    if (childView != null) {
+                        int position = rv.getChildAdapterPosition(childView);
+                        onGridItemClick(user.get(position));
+                    }
+                }
+                return false;
+            }
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                onGridItemClick(user.get(rv.getChildAdapterPosition(Objects.requireNonNull(rv.findChildViewUnder(e.getX(), e.getY())))));
+            }
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                // Non usato
+            }
+        });
+    }
+    public void onGridItemClick(User user) {
+        Bundle args = new Bundle();
+        args.putParcelable("userToRemove", user);
 
+        CancelFriendFragment dialogFragment = new CancelFriendFragment();
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getChildFragmentManager(), "cancel_friends_dialog");
+    }
+
+    public void refreshFriends() {
+        String lastUpdate = "0";
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_FRIENDS) != null) {
+            lastUpdate = sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_FRIENDS);
+        }
+
+        friendsViewModel.getFriends(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
+            if (result.isSuccess()) {
+                this.user.clear();
+                this.user.addAll(((Result.UserSuccess) result).getData());
+                Log.d("FriendsFragment", "refreshFriends: " + user.size());
+                friendsAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void handleSearch(String text) {

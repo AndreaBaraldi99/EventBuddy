@@ -129,6 +129,10 @@
     <string name="october">Ottobre</string>
     <string name="november">Novembre</string>
 
+    <!-- Strings used for Remove Friends Fragment -->
+    <string name="remove_friends_title">Rimuovi un amico</string>
+    <string name="remove_friends_text">Sei sicuro di voler eliminare questo amico dalla tua lista amici?</string>
+
     <string name="language_it">Italiano</string>
     <string name="language_en">English</string>
 

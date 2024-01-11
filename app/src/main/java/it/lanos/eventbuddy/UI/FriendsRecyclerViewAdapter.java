@@ -25,6 +25,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
 
     private final Context context;
     private final List<User> friends;
+    private OnGridItemClickListener onGridItemClickListener;
 
     public FriendsRecyclerViewAdapter(List<User> friends, Context context) {
         this.friends = friends;
@@ -41,6 +42,13 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
         holder.bind(friends.get(position));
+
+        User user = friends.get(position);
+        holder.profilePic.setOnClickListener(v -> {
+            if (onGridItemClickListener != null) {
+                onGridItemClickListener.onGridItemClick(user);
+            }
+        });
     }
 
     @Override
@@ -49,6 +57,10 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
             return friends.size();
         }
         return 0;
+    }
+
+    public interface OnGridItemClickListener {
+        void onGridItemClick(User user);
     }
 
     public class FriendViewHolder extends RecyclerView.ViewHolder{
@@ -61,6 +73,7 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
             profilePic = itemView.findViewById(R.id.profilePic);
             nickname = itemView.findViewById(R.id.nickname);
         }
+
 
         public void bind(User user) {
             nickname.setText(user.getUsername());

@@ -130,6 +130,10 @@
     <string name="october">October</string>
     <string name="november">November</string>
 
+    <!-- Strings used for Remove Friends Fragment -->
+    <string name="remove_friends_title">Remove friend</string>
+    <string name="remove_friends_text">Are you sure you want to remove this friend from your friend list?</string>
+
 
     <string name="language_it">Italiano</string>
     <string name="language_en">English</string>
