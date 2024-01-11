@@ -1,18 +1,20 @@
 package it.lanos.eventbuddy.UI;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,10 +22,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
@@ -49,12 +53,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_event_detail);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.detail_event_top_appbar);
-        createEventToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavUtils.navigateUpFromSameTask(EventDetailActivity.this);
-            }
-        });
+        createEventToolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(EventDetailActivity.this));
 
         EventRepository iEventsRepository = (EventRepository)
                 ServiceLocator.getInstance().getEventsRepository(this.getApplication());
@@ -67,9 +66,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             // Recupera l'oggetto EventWithUsers dalla Intent
             event = intent.getParcelableExtra("event");
         }
+        assert event != null;
         List<UserEventCrossRef> usersInfo = event.getUserEventCrossRefs();
         List<UserEventCrossRef> joinedUsers = getJoinedUsers(usersInfo);
-
 
         TextView eventDate = findViewById(R.id.event_date);
         TextView eventHour = findViewById(R.id.event_time);
@@ -79,6 +78,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         TextView detailPartecipants = findViewById(R.id.event_participants_info);
         TextView numberPartecipants = findViewById(R.id.event_number_partecipants);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.active_map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         numberPartecipants.setText("+"+joinedUsers.size());
@@ -89,27 +89,32 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         doNotJoin = findViewById(R.id.button_do_not_join);
 
         handleButtonsConfiguration(usersInfo);
-        join.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
-                doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
-                somethingChange = 1;
-            }
+        join.setOnClickListener(v -> {
+            join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_surfaceTint));
+            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+            somethingChange = 1;
         });
 
-        doNotJoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
-                join.setBackgroundColor(getResources().getColor(R.color.divisor));
-                somethingChange = 2;
-            }
+        doNotJoin.setOnClickListener(v -> {
+            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_dark_error));
+            join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+            somethingChange = 2;
         });
+
+        ShapeableImageView eventImage = findViewById(R.id.event_manager_avatar);
+        String manager = event.getEvent().getManager();
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(manager);
+
+        Glide.with(this)
+                .load(storageReference)
+                .placeholder(R.drawable.logo)
+                .into(eventImage);
 
 
         String date_time = event.getEvent().getDate();
-        String formatted_date = Parser.formatDate(date_time);
+        String formatted_date = Parser.formatDate(date_time, this);
         String formatted_time = Parser.formatTime(date_time);
         String location = event.getEvent().getLocation();
         String showLocation = Parser.formatLocation(location);
@@ -125,10 +130,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
     private List<UserEventCrossRef> getJoinedUsers(List<UserEventCrossRef> usersInfo) {
         List<UserEventCrossRef> joinedUsers = new ArrayList<>();
-        Iterator it = usersInfo.iterator();
-        while(it.hasNext()){
-            UserEventCrossRef current = (UserEventCrossRef) it.next();
-            if(current.getJoined())
+        for (UserEventCrossRef current : usersInfo) {
+            if (current.getJoined())
                 joinedUsers.add(current);
         }
         return joinedUsers;
@@ -136,17 +139,14 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
     private void handleButtonsConfiguration(List<UserEventCrossRef> usersInfo) {
         readUser(new DataEncryptionUtil(this.getApplication()));
-        Iterator it = usersInfo.iterator();
-        while(it.hasNext()){
-            UserEventCrossRef current = (UserEventCrossRef) it.next();
-            if(current.getUserId().equals(this.user.getUserId()) && current.getJoined()) {
-                join.setBackgroundColor(getResources().getColor(R.color.md_theme_light_surfaceTint));
-                doNotJoin.setBackgroundColor(getResources().getColor(R.color.divisor));
+        for (UserEventCrossRef current : usersInfo) {
+            if (current.getUserId().equals(this.user.getUserId()) && current.getJoined()) {
+                join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_surfaceTint));
+                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
                 break;
-            }
-            else if(current.getUserId().equals(this.user.getUserId()) && !current.getJoined()) {
-                doNotJoin.setBackgroundColor(getResources().getColor(R.color.md_theme_dark_error));
-                join.setBackgroundColor(getResources().getColor(R.color.divisor));
+            } else if (current.getUserId().equals(this.user.getUserId()) && !current.getJoined()) {
+                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_dark_error));
+                join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
                 break;
             }
         }
@@ -164,12 +164,6 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         resultIntent.putExtra("change", change);
         resultIntent.putExtra("id", eventId);
         setResult(Activity.RESULT_OK, resultIntent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
-        super.onBackPressed();
     }
 
 

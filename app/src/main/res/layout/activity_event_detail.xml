@@ -16,8 +16,10 @@
            android:layout_width="match_parent"
            android:layout_height="730dp"
            android:background="@drawable/sfondo"
+           android:contentDescription="@string/null_text"
            app:layout_constraintTop_toTopOf="parent"
-           tools:layout_editor_absoluteX="0dp"></ImageView>
+           tools:layout_editor_absoluteX="-45dp">
+       </ImageView>
 
        <com.google.android.material.appbar.MaterialToolbar
            android:id="@+id/detail_event_top_appbar"
@@ -27,7 +29,6 @@
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent"
-           app:menu="@menu/event_detail_top_app_bar_menu"
            app:navigationIcon="@drawable/twotone_arrow_back_24" />
 
        <TextView
@@ -35,10 +36,9 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="16dp"
-           android:layout_marginTop="112dp"
-           android:textSize="28sp"
+           android:layout_marginTop="75dp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text=""
+           android:textSize="28sp"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,22 +47,23 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="16dp"
-           android:layout_marginTop="152dp"
-           android:textSize="22sp"
+           android:layout_marginTop="125dp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text=""
+           android:textSize="22sp"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
        <TextView
            android:id="@+id/event_name"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
+           android:layout_width="269dp"
+           android:layout_height="98dp"
            android:layout_marginStart="16dp"
-           android:layout_marginTop="204dp"
-           android:textSize="40sp"
+           android:layout_marginTop="165dp"
+           android:layout_marginEnd="10dp"
            android:fontFamily="@font/robotoslab_regular"
-           android:text=""
+           android:maxLines="2"
+           android:textSize="40sp"
+           app:layout_constraintEnd_toStartOf="@+id/event_manager_text"
            app:layout_constraintStart_toStartOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,6 +81,7 @@
 
        <ImageView
            android:id="@+id/event_map_icon"
+           android:contentDescription="@string/null_text"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginStart="12dp"
@@ -93,10 +95,10 @@
 
        <com.google.android.material.imageview.ShapeableImageView
            android:id="@+id/event_manager_avatar"
-           android:layout_width="43dp"
-           android:layout_height="43dp"
-           android:layout_marginTop="237dp"
-           android:layout_marginEnd="56dp"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_marginTop="205dp"
+           android:layout_marginEnd="51dp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintTop_toTopOf="parent"
            app:shapeAppearanceOverlay="@style/circular"
@@ -106,11 +108,11 @@
            android:id="@+id/event_manager_text"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_marginTop="204dp"
-           android:layout_marginEnd="41dp"
-           android:textSize="16sp"
+           android:layout_marginTop="180dp"
+           android:layout_marginEnd="35dp"
            android:fontFamily="@font/robotoslab_regular"
            android:text="@string/event_detail_manager"
+           android:textSize="16sp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintTop_toTopOf="parent" />
 

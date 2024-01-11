@@ -31,7 +31,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/event_fragment_top_app_bar_menu"
             app:title="@string/event_fragment_title"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
 

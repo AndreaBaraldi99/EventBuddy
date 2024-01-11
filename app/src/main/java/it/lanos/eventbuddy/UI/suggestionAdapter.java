@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.mapbox.Suggestion;
 
 
