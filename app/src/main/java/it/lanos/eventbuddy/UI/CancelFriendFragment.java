@@ -30,8 +30,8 @@ public class CancelFriendFragment extends DialogFragment {
 
         builder.setTitle(R.string.remove_friends_title)
                 .setMessage(R.string.remove_friends_text)
-                .setPositiveButton("OK", (dialog, which) -> removeFriend())
-                .setNegativeButton("Annulla", (dialog, which) -> dialog.dismiss());
+                .setPositiveButton(R.string.confirm_text, (dialog, which) -> removeFriend())
+                .setNegativeButton(R.string.cancel_text, (dialog, which) -> dialog.dismiss());
         return builder.create();
     }
     public View onCreateView(@NonNull LayoutInflater inflater, @androidx.annotation.Nullable ViewGroup container, @androidx.annotation.Nullable Bundle savedInstanceState) {
