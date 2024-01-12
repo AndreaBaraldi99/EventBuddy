@@ -45,6 +45,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
     @Override
     public void updateFriend(User user) {
         EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
+            userDao.updateUsers(user);
             userCallback.onUpdatedFriendFromLocal(user);
         });
     }

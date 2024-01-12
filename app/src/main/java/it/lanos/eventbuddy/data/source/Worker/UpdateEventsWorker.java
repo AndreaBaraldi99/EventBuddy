@@ -77,7 +77,7 @@ public class UpdateEventsWorker extends Worker {
                 lastUpdate = sharedPreferencesUtil.readStringData(
                         SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
             }
-            it.lanos.eventbuddy.data.source.models.Result result = (it.lanos.eventbuddy.data.source.models.Result) eventsRepository.fetchEvents(Long.parseLong(lastUpdate)).getValue();
+            it.lanos.eventbuddy.data.source.models.Result result = eventsRepository.fetchEvents(Long.parseLong(lastUpdate)).getValue();
             if (result != null && result.isSuccess()) {
                 int newEventNum = ((it.lanos.eventbuddy.data.source.models.Result.Success) result).getData().size();
                 Intent intent = new Intent(getApplicationContext(), EventFragment.class);
