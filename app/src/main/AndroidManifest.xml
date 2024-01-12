@@ -41,7 +41,8 @@
             android:name=".util.LocationService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="false"/>
+            android:stopWithTask="false"
+            android:foregroundServiceType="location"/>
 
 
         <activity
