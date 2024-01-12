@@ -104,7 +104,6 @@
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/eventDetail"
             android:parentActivityName=".UI.BottomNavigationBarActivity"/>
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
