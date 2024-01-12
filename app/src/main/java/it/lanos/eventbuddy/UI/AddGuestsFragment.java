@@ -117,10 +117,16 @@ public class AddGuestsFragment extends DialogFragment {
                 super.onItemStateChanged(key, selected);
                 CreateEventActivity createEventActivity = (CreateEventActivity) getActivity();
                 assert createEventActivity != null;
-                if (selected) {
-                    createEventActivity.onGuestAddClick(userList.get(key.intValue()));
+
+                // Ensure the key is within bounds of the userList
+                if (key >= 0 && key < userList.size()) {
+                    if (selected) {
+                        createEventActivity.onGuestAddClick(userList.get(key.intValue()));
+                    } else {
+                        createEventActivity.onGuestRemoveClick(userList.get(key.intValue()));
+                    }
                 } else {
-                    createEventActivity.onGuestRemoveClick(userList.get(key.intValue()));
+                    Log.e("AddGuestsFragment", "Invalid key: " + key);
                 }
             }
         });

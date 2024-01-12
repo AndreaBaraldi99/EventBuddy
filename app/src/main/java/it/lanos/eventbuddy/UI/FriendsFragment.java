@@ -28,6 +28,7 @@ import android.widget.ListView;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -244,8 +245,16 @@ public class FriendsFragment extends Fragment {
             try {
                 iUserRepository.searchUsers(text).observe(getViewLifecycleOwner(), result -> {
                     if (result instanceof Result.UserSuccess) {
+                        List<User> allUsers = ((Result.UserSuccess) result).getData();
+
+                        FirebaseUser currentUser = iUserRepository.getCurrentUser();
+                        if (currentUser != null) {
+                            String currentUserId = currentUser.getUid();
+                            allUsers.removeIf(user -> user.getUserId().equals(currentUserId));
+                        }
+
                         searchingUsers.clear();
-                        searchingUsers.addAll(((Result.UserSuccess) result).getData());
+                        searchingUsers.addAll(allUsers);
                         searchAdapter.notifyDataSetChanged();
                     }
                 });

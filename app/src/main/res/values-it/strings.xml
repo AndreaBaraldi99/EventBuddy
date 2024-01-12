@@ -93,6 +93,7 @@
     <string name="insert_new_nickname">Inserisci il nuovo Nickname:</string>
     <string name="nickname_not_empty">Il Nickname non può essere vuoto</string>
     <string name="image_upload_failed">Caricamento non riuscito</string>
+    <string name="nickname">Nickname:</string>
 
     <!-- Strings used for AccountSettingsActivity -->
     <string name="settings_button_change_logout">Logout</string>
@@ -145,4 +146,7 @@
     <string name="no_active_event_found">Partecipa ad un Evento prima!</string>
     <string name="notification_description">Tracciamento della posizione in background attivo</string>
     <string name="active_fragment_track_me">Tracciami</string>
+
+    <!-- Strings used for UpdateEventsWorker -->
+    <string name="notification_content">Hai nuovi eventi!</string>
 </resources>
