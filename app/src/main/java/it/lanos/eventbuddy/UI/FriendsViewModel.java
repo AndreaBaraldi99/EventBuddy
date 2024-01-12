@@ -14,6 +14,8 @@ public class FriendsViewModel extends ViewModel {
     //TODO: Gestire logica Result per Friends
     private MutableLiveData<Result> friendsListLiveData;
 
+    private MutableLiveData<Result> friendsSearchedListLiveData;
+
     public FriendsViewModel(IUserRepository iUserRepository) {
         this.iUserRepository = iUserRepository;
     }
@@ -21,6 +23,14 @@ public class FriendsViewModel extends ViewModel {
     public MutableLiveData<Result> getFriends(long lastUpdate) {
         friendsListLiveData = iUserRepository.getFriends(lastUpdate);
         return friendsListLiveData;
+    }
+
+    public MutableLiveData<Result> attachSearchUsers(){
+        return this.friendsSearchedListLiveData = iUserRepository.attachSearchUsers();
+    }
+
+    public void searchUsers(String query){
+        iUserRepository.searchUsers(query);
     }
 
     public void addFriend(User friend){

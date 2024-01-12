@@ -46,12 +46,15 @@ public class FriendsFragment extends Fragment {
     private List<User> user;
     private List<User> searchingUsers;
     private FriendsViewModel friendsViewModel;
+    private IUserRepository iUserRepository;
 
     private FriendsRecyclerViewAdapter friendsAdapter;
 
     private SearchFriendsAdapter searchAdapter;
 
     private SharedPreferencesUtil sharedPreferencesUtil;
+
+    private FirebaseUser currentUser;
 
     public List<User> getUser() {
         return user;
@@ -74,7 +77,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IUserRepository iUserRepository =
+        iUserRepository =
                 ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
         friendsViewModel = new ViewModelProvider(
@@ -82,6 +85,8 @@ public class FriendsFragment extends Fragment {
                 new FriendsViewModelFactory(iUserRepository)).get(FriendsViewModel.class);
 
         user = new ArrayList<>();
+
+        currentUser = iUserRepository.getCurrentUser();
         searchingUsers = new ArrayList<>();
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
     }
@@ -145,6 +150,19 @@ public class FriendsFragment extends Fragment {
                 this.user.clear();
                 this.user.addAll(((Result.UserSuccess) result).getData());
                 friendsAdapter.notifyDataSetChanged();
+            }});
+
+        friendsViewModel.attachSearchUsers().observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Result.UserSuccess) {
+
+                searchingUsers.clear();
+                searchingUsers.addAll(((Result.UserSuccess) result).getData());
+                if (currentUser != null) {
+                    String currentUserId = currentUser.getUid();
+                    searchingUsers.removeIf(user -> user.getUserId().equals(currentUserId));
+                }
+                searchAdapter.notifyDataSetChanged();
+
             }});
 
         SearchView searchView = view.findViewById(R.id.searchBar);
@@ -225,14 +243,7 @@ public class FriendsFragment extends Fragment {
                     SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE_FRIENDS);
         }
 
-        friendsViewModel.getFriends(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
-            if (result.isSuccess()) {
-                this.user.clear();
-                this.user.addAll(((Result.UserSuccess) result).getData());
-                Log.d("FriendsFragment", "refreshFriends: " + user.size());
-                friendsAdapter.notifyDataSetChanged();
-            }
-        });
+        friendsViewModel.getFriends(Long.parseLong(lastUpdate));
     }
 
     private void handleSearch(String text) {
@@ -242,25 +253,7 @@ public class FriendsFragment extends Fragment {
             searchAdapter.notifyDataSetChanged();
         }
         else{
-            try {
-                iUserRepository.searchUsers(text).observe(getViewLifecycleOwner(), result -> {
-                    if (result instanceof Result.UserSuccess) {
-                        List<User> allUsers = ((Result.UserSuccess) result).getData();
-
-                        FirebaseUser currentUser = iUserRepository.getCurrentUser();
-                        if (currentUser != null) {
-                            String currentUserId = currentUser.getUid();
-                            allUsers.removeIf(user -> user.getUserId().equals(currentUserId));
-                        }
-
-                        searchingUsers.clear();
-                        searchingUsers.addAll(allUsers);
-                        searchAdapter.notifyDataSetChanged();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            friendsViewModel.searchUsers(text);
         }
     }
 }

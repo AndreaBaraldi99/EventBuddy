@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
@@ -53,7 +53,6 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_event_detail);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.detail_event_top_appbar);
-        createEventToolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(EventDetailActivity.this));
 
         EventRepository iEventsRepository = (EventRepository)
                 ServiceLocator.getInstance().getEventsRepository(this.getApplication());
@@ -166,6 +165,11 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
+    @Override
+    public void onBackPressed() {
+        returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
+        super.onBackPressed();
+    }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
