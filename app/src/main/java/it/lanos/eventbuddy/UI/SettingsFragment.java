@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,7 +43,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.authentication.UserViewModel;
@@ -221,6 +225,17 @@ public class SettingsFragment extends Fragment {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
+
+        Drawable placeholderImage;
+        /*
+        try {
+            InputStream is = (InputStream) new URL(user.getProfilePictureUrl()).getContent();
+            placeholderImage = Drawable.createFromStream(is, "src name");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        */
+
 
         Glide.with(requireContext())
                 .load(storageReference)
