@@ -93,6 +93,7 @@
     <string name="insert_new_nickname">Insert new Nickname:</string>
     <string name="nickname_not_empty">Nickname cannot be empty</string>
     <string name="image_upload_failed">Image upload failed</string>
+    <string name="nickname">Nickname:</string>
 
 
     <!-- Strings used for AccountSettingsActivity -->
@@ -148,5 +149,7 @@
     <string name="notification_description">Background location tracking is active</string>
     <string name="active_fragment_track_me">Track me</string>
 
+    <!-- Strings used for UpdateEventsWorker -->
+    <string name="notification_content">You have new events!</string>
 
 </resources>

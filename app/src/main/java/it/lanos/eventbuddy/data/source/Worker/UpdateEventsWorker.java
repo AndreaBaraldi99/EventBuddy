@@ -28,6 +28,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.UI.EventFragment;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
@@ -80,14 +81,16 @@ public class UpdateEventsWorker extends Worker {
             it.lanos.eventbuddy.data.source.models.Result result = eventsRepository.fetchEvents(Long.parseLong(lastUpdate)).getValue();
             if (result != null && result.isSuccess()) {
                 int newEventNum = ((it.lanos.eventbuddy.data.source.models.Result.Success) result).getData().size();
-                Intent intent = new Intent(getApplicationContext(), EventFragment.class);
+                Intent intent = new Intent(getApplicationContext(), BottomNavigationBarActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
                 if (newEventNum > eventNum) {
+                    String title = getApplicationContext().getString(R.string.app_name);
+                    String content = getApplicationContext().getString(R.string.notification_content);
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "newEvent_channel")
                             .setSmallIcon(R.drawable.logo)
-                            .setContentTitle("Eventbuddy")
-                            .setContentText("You have new events!")
+                            .setContentTitle(title)
+                            .setContentText(content)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true);
