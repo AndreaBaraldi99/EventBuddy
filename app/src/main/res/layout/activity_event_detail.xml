@@ -55,11 +55,11 @@
 
        <TextView
            android:id="@+id/event_name"
-           android:layout_width="269dp"
-           android:layout_height="98dp"
+           android:layout_width="262dp"
+           android:layout_height="101dp"
            android:layout_marginStart="16dp"
            android:layout_marginTop="165dp"
-           android:layout_marginEnd="10dp"
+           android:layout_marginEnd="8dp"
            android:fontFamily="@font/robotoslab_regular"
            android:maxLines="2"
            android:textSize="40sp"
@@ -98,7 +98,7 @@
            android:layout_width="50dp"
            android:layout_height="50dp"
            android:layout_marginTop="205dp"
-           android:layout_marginEnd="51dp"
+           android:layout_marginEnd="44dp"
            app:layout_constraintEnd_toEndOf="parent"
            app:layout_constraintTop_toTopOf="parent"
            app:shapeAppearanceOverlay="@style/circular"
