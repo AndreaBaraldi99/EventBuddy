@@ -1,7 +1,4 @@
 package it.lanos.eventbuddy.util;
-
-import java.util.UUID;
-
 public class Constants {
     public static final String NEWS_DATABASE_NAME = "eventbuddyDB";
     public static final int DATABASE_VERSION = 1;
@@ -13,8 +10,6 @@ public class Constants {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String SESSION_TOKEN = "session_token";
     public static final String ACCESS_KEY = "pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXRkMzNzbDBubHIzcG1zZG04aTMyaWcifQ.Eyuo1vPibhoYHHJpEtcU4w";
-    public static final String SESSION_KEY = "09cb6cf3-8b9c-4ef0-a689-015a3e91912a";
-    public static final String RETROFIT_ERROR = "retrofit_error";
     public static final String API_KEY_ERROR = "api_key_error";
     public static final String TOKEN_PARAMETER = "id";
     public static final String BASE_URL = "https://api.mapbox.com/";

@@ -15,7 +15,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import it.lanos.eventbuddy.data.source.models.Location;
 
 public class LocationRemoteDataSource extends BaseLocationRemoteDataSource {
-    private static final String TAG = LocationRemoteDataSource.class.getSimpleName();
     private final DatabaseReference locationReference;
     private ChildEventListener locationValueEventListener;
 
@@ -47,14 +46,12 @@ public class LocationRemoteDataSource extends BaseLocationRemoteDataSource {
 
                 @Override
                 public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                    /*Location location = snapshot.getValue(Location.class);
-                    locationCallback.onRecivedLocationFromRemoteSuccess(location);*/
+
                 }
 
                 @Override
                 public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    /*Location location = snapshot.getValue(Location.class);
-                    locationCallback.onRecivedLocationFromRemoteSuccess(location);*/
+
                 }
 
                 @Override

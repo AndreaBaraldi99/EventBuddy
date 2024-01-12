@@ -18,30 +18,22 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
     }
     @Override
     public void addUser(UserFromRemote user) {
-        service.addUser(user).addOnSuccessListener(documentReference -> {
-            userCallback.onSuccessFromOnlineDB(new User(user.getUserId(), user.getUsername(), user.getFullName(), 0, user.getProfilePictureUrl()));
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        service.addUser(user).addOnSuccessListener(documentReference -> userCallback.onSuccessFromOnlineDB(new User(user.getUserId(), user.getUsername(), user.getFullName(), 0, user.getProfilePictureUrl()))).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 
     @Override
     public void getUser(String uid){
-        service.getUser(uid).addOnSuccessListener(documentSnapshots -> {
-           userCallback.onSuccessFromOnlineDB(documentSnapshots.toObjects(User.class).get(0));
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        service.getUser(uid).addOnSuccessListener(documentSnapshots -> userCallback.onSuccessFromOnlineDB(documentSnapshots.toObjects(User.class).get(0))).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 
     @Override
     public void searchUsers(String query) {
-        service.getUsersByName(query).addOnSuccessListener(queryDocumentSnapshots -> {
-            userCallback.onUserSearchedSuccess(queryDocumentSnapshots.toObjects(User.class));
-        }).addOnFailureListener(e -> userCallback.onFailureUserSearch(e));
+        service.getUsersByName(query).addOnSuccessListener(queryDocumentSnapshots -> userCallback.onUserSearchedSuccess(queryDocumentSnapshots.toObjects(User.class))).addOnFailureListener(e -> userCallback.onFailureUserSearch(e));
     }
 
     @Override
     public void changeUsername(User newUser) {
-        service.changeUsername(newUser).addOnSuccessListener(aVoid -> {
-            userCallback.onSuccessFromOnlineDB(newUser);
-        }).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
+        service.changeUsername(newUser).addOnSuccessListener(aVoid -> userCallback.onSuccessFromOnlineDB(newUser)).addOnFailureListener(e -> userCallback.onFailureFromRemote(e));
     }
 
     @Override

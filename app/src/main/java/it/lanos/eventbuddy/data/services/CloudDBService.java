@@ -9,7 +9,6 @@ import static it.lanos.eventbuddy.util.Constants.USER_ID_FIREBASE;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,7 +41,6 @@ public class CloudDBService {
         return eventsRef.document(event.getUid()).set(event);
     }
     public Task<Void> joinEvent(String eventId, String uid){
-        DocumentReference a = eventsRef.document(eventId);
         return eventsRef.document(eventId).update(INVITED_FIREBASE + uid, true);
     }
     public Task<Void> leaveEvent(String eventId, String uid){

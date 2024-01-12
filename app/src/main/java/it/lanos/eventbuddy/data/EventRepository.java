@@ -20,7 +20,6 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 
 public class EventRepository implements IEventsRepository, EventsCallback{
-    private static final String TAG = EventRepository.class.getSimpleName();
     private final MutableLiveData<Result> allEventsMutableLiveData;
     private final BaseEventsLocalDataSource eventsLocalDataSource;
     private User user;

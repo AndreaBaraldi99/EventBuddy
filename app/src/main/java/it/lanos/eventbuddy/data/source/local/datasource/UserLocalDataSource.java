@@ -1,9 +1,7 @@
 package it.lanos.eventbuddy.data.source.local.datasource;
 
-import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE_FRIENDS;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
-import static it.lanos.eventbuddy.util.Constants.USER_NOT_FOUND;
 
 import java.util.List;
 
@@ -52,9 +50,7 @@ public class UserLocalDataSource extends BaseUserLocalDataSource {
 
     @Override
     public void updateUser(User user) {
-        EventsRoomDatabase.databaseWriteExecutor.execute(() -> {
-            userDao.updateUsers(user);
-        });
+        EventsRoomDatabase.databaseWriteExecutor.execute(() -> userDao.updateUsers(user));
     }
 
 

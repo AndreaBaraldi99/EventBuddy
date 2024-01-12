@@ -20,11 +20,7 @@ public interface UserDao {
     @Update
     void updateUsers(User... users);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUser(User user);
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUsers(List<User> users);
-    @Insert
-    void insertUserWithEvents(UserEventCrossRef userEventCrossRef);
     @Transaction
     @Query("DELETE FROM User WHERE userId IN (SELECT userId FROM UserEventCrossRef WHERE eventId = :eventId GROUP BY userId HAVING COUNT(*) = 1)")
     void deleteUsersWithNoEvents(String eventId);
