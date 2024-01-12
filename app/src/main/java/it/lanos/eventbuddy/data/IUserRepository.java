@@ -3,7 +3,6 @@ package it.lanos.eventbuddy.data;
 import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseUser;

@@ -23,19 +23,21 @@ public class UserEventCrossRef implements Parcelable {
         this.joined = joined;
     }
 
+    @NonNull
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(@NonNull String userId) {
         this.userId = userId;
     }
 
+    @NonNull
     public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
+    public void setEventId(@NonNull String eventId) {
         this.eventId = eventId;
     }
 

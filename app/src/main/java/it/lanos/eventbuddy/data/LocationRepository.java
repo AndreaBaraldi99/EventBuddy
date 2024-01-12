@@ -14,7 +14,6 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 
 public class LocationRepository implements ILocationRepository, LocationCallback {
-    private static final String TAG = LocationRepository.class.getSimpleName();
     private final BaseLocationRemoteDataSource locationRealtimeDBDataSource;
     private final MutableLiveData<Result> locationLiveData;
     private User user;

@@ -3,7 +3,6 @@ package it.lanos.eventbuddy.data.source.mapbox;
 import static it.lanos.eventbuddy.util.Constants.ACCESS_KEY;
 import static it.lanos.eventbuddy.util.Constants.API_KEY_ERROR;
 import static it.lanos.eventbuddy.util.Constants.MAPBOX_ERROR;
-import static it.lanos.eventbuddy.util.Constants.SESSION_KEY;
 
 import androidx.annotation.NonNull;
 

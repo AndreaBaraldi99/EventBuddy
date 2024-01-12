@@ -15,7 +15,6 @@ import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.dao.EventDao;
 import it.lanos.eventbuddy.data.source.local.dao.UserDao;
-import it.lanos.eventbuddy.util.DatastoreBuilder;
 import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class EventsLocalDataSource extends BaseEventsLocalDataSource {
@@ -50,7 +49,7 @@ public class EventsLocalDataSource extends BaseEventsLocalDataSource {
                 }
                 newEvent.setUserEventCrossRefs(newUserEventCrossRefs);
                 eventWithUsersList.add(newEvent);
-            };
+            }
             deleteOldEvents(eventWithUsersList);
             sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME,
                     LAST_UPDATE, String.valueOf(System.currentTimeMillis()));

@@ -1,6 +1,5 @@
 package it.lanos.eventbuddy.data.source.firebase.bucket;
 
-import static it.lanos.eventbuddy.util.Constants.ON_UPLOAD_SUCCESS;
 import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
 
 import android.app.Application;
@@ -8,12 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,7 +32,7 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
     public void uploadImage(User user, byte[] image) {
         StorageReference imageRef = storageReference.child(user.getUserId());
         UploadTask uploadTask = imageRef.putBytes(image);
-        Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+        uploadTask.continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 throw Objects.requireNonNull(task.getException());
             }
@@ -48,9 +43,6 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
                 Uri downloadUri = task.getResult();
                 user.setProfilePictureUrl(downloadUri.toString());
                 userCallback.onSuccessFromFirebase(user);
-            } else {
-                // Handle failures
-                // ...
             }
         });
     }
@@ -62,15 +54,13 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
             if(bytes.length != 0) {
                 userCallback.onImageDownloaded(bytes);
             }else{
-                Bitmap bitmap = ((BitmapDrawable)AppCompatResources.getDrawable(application, R.drawable.logo)).getBitmap();
+                Bitmap bitmap = ((BitmapDrawable) Objects.requireNonNull(AppCompatResources.getDrawable(application, R.drawable.logo))).getBitmap();
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 byte[] bitmapdata = stream.toByteArray();
                 userCallback.onImageDownloaded(bitmapdata);
             }
-        }).addOnFailureListener(e -> {
-            userCallback.onImageDownloadFailed(e);
-        });
+        }).addOnFailureListener(e -> userCallback.onImageDownloadFailed(e));
     }
 
 }

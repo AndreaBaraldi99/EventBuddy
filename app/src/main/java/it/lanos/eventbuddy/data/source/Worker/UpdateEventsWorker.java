@@ -1,6 +1,5 @@
 package it.lanos.eventbuddy.data.source.Worker;
 
-import static android.provider.Settings.System.getString;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
@@ -14,16 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
+
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -31,7 +26,6 @@ import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
 import it.lanos.eventbuddy.UI.EventFragment;
 import it.lanos.eventbuddy.data.IEventsRepository;
-import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.ServiceLocator;
 import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
@@ -64,6 +58,7 @@ public class UpdateEventsWorker extends Worker {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this.
             NotificationManager notificationManager = getSystemService(getApplicationContext(), NotificationManager.class);
+            assert notificationManager != null;
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -105,7 +100,7 @@ public class UpdateEventsWorker extends Worker {
                 }
             }
             try {
-                Thread.sleep(3000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
