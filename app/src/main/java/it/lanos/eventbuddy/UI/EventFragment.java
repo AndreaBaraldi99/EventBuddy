@@ -110,7 +110,7 @@ public class EventFragment extends Fragment {
         eventList = new ArrayList<>();
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
-
+        stopWork();
     }
 
     @Override
@@ -187,23 +187,15 @@ public class EventFragment extends Fragment {
     }
 
     private void startWork(){
-        UUID workId = UUID.randomUUID();
-        sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID, workId.toString());
         OneTimeWorkRequest newWorkRequest =
                 new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
                         .setInputData(new Data.Builder().putString("eventNum", String.valueOf(eventList.size())).build())
-                        .setId(workId)
                         .build();
-        WorkManager.getInstance(requireContext()).enqueueUniqueWork("eventNotify", ExistingWorkPolicy.KEEP, newWorkRequest);
+        WorkManager.getInstance(requireContext()).enqueueUniqueWork("eventNotify", ExistingWorkPolicy.REPLACE, newWorkRequest);
     }
 
     private void stopWork(){
-        if (sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID) != null) {
-            UUID uuid = UUID.fromString(sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID));
-            WorkManager.getInstance(requireContext()).cancelWorkById(uuid);
-        }
+        WorkManager.getInstance(requireContext()).cancelUniqueWork("eventNotify");
     }
 
     @Override
@@ -221,6 +213,11 @@ public class EventFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        stopWork();
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
         stopWork();
     }
 
