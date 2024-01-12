@@ -1,36 +1,28 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.EVENT_WORKER_ID;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
 import android.app.Activity;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.Data;
-import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +33,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.UI.Worker.DummyWorker;
-import it.lanos.eventbuddy.UI.Worker.UpdateEventsWorker;
+import it.lanos.eventbuddy.data.source.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
@@ -58,13 +48,8 @@ public class EventFragment extends Fragment {
     private List<EventWithUsers> eventList;
     private EventRecyclerViewAdapter eventRecyclerViewAdapter;
     private EventViewModel eventViewModel;
-    private WorkManager workManager;
     private SharedPreferencesUtil sharedPreferencesUtil;
-    private String lastUpdate;
-    private UUID lastWorkId;
-    private LiveData<WorkInfo> currentWorkInfoLiveData;
-    private Observer<WorkInfo> workInfoObserver;
-    Observer<WorkInfo> periodicWorkInfoObserver;
+    private UUID workId;
 
     private final ActivityResultLauncher<Intent> createEventLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -126,8 +111,6 @@ public class EventFragment extends Fragment {
 
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
 
-        workManager = WorkManager.getInstance(requireContext());
-
     }
 
     @Override
@@ -138,7 +121,7 @@ public class EventFragment extends Fragment {
     }
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-
+        stopWork();
         FloatingActionButton fab = requireActivity().findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             //Navigation.findNavController(v).navigate(R.id.action_eventFragment_to_createEventActivity2);
@@ -174,7 +157,7 @@ public class EventFragment extends Fragment {
 
         recyclerViewEvent.setLayoutManager(layoutManager);
         recyclerViewEvent.setAdapter(eventRecyclerViewAdapter);
-        lastUpdate = "0";
+        String lastUpdate = "0";
         if (sharedPreferencesUtil.readStringData(
                 SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
             lastUpdate = sharedPreferencesUtil.readStringData(
@@ -190,77 +173,6 @@ public class EventFragment extends Fragment {
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
         }});
-
-        periodicWorkInfoObserver = workInfo -> {
-            Log.d("UPDATEDUMMY", "entrato nel periodicWorkInfoObserver");
-            if (workInfo != null) {
-                Log.d("UPDATEDUMMY", "entrato nel workInfo");
-
-                int originalSize = eventList.size();
-                eventViewModel.getEvents(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
-                    if (result.isSuccess() && eventList.size() == originalSize) {
-                        sendNotification("New events have been added!");
-                        Log.d("UPDATEDUMMY", "notifica mandata");
-                    }
-                });
-            }
-        };
-
-       // Schedule PeriodicWorkRequest
-        schedulePeriodicWork();
-
-        // Observer for OneTimeRequest
-        workInfoObserver = workInfo -> {
-            if (workInfo != null && workInfo.getState().isFinished()) {
-                Data outputData = workInfo.getOutputData();
-                String lastUpdate = outputData.getString("lastUpdate");
-
-                assert lastUpdate != null;
-                eventViewModel.getEvents(Long.parseLong(lastUpdate));
-
-                scheduleNextWork();
-            }
-        };
-
-        // Plans first work
-        if (lastWorkId == null) {
-            scheduleNextWork();
-        }
-    }
-
-    private void schedulePeriodicWork() {
-        PeriodicWorkRequest periodicWorkRequest =
-                new PeriodicWorkRequest.Builder(DummyWorker.class, 15, TimeUnit.MINUTES)
-                        .build();
-
-        workManager.enqueueUniquePeriodicWork("periodicWorkRequest", ExistingPeriodicWorkPolicy.KEEP, periodicWorkRequest);
-
-        LiveData<WorkInfo> periodicWorkInfoLiveData = workManager.getWorkInfoByIdLiveData(periodicWorkRequest.getId());
-        periodicWorkInfoLiveData.observe(getViewLifecycleOwner(), periodicWorkInfoObserver);
-    }
-
-    private void scheduleNextWork() {
-        OneTimeWorkRequest newWorkRequest =
-                new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
-                        .setInitialDelay(30, TimeUnit.SECONDS)
-                        .build();
-
-        lastWorkId = newWorkRequest.getId();
-        workManager.enqueue(newWorkRequest);
-
-        observeWorkInfo(lastWorkId);
-    }
-    private void observeWorkInfo(UUID workId) {
-        removeOldObserver();
-
-        currentWorkInfoLiveData = workManager.getWorkInfoByIdLiveData(workId);
-        currentWorkInfoLiveData.observe(getViewLifecycleOwner(), workInfoObserver);
-    }
-
-    private void removeOldObserver() {
-        if (currentWorkInfoLiveData != null) {
-            currentWorkInfoLiveData.removeObserver(workInfoObserver);
-        }
     }
 
     private void startCreateEventActivity() {
@@ -274,22 +186,43 @@ public class EventFragment extends Fragment {
         detailEventLauncher.launch(intent);
     }
 
-    private void sendNotification(String message) {
-        NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("EventUpdates", "Event Updates", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("Notifications for event updates");
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "EventUpdates")
-                .setSmallIcon(R.drawable.logo)
-                .setContentTitle("Event Update")
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        notificationManager.notify(1, builder.build());
+    private void startWork(){
+        UUID workId = UUID.randomUUID();
+        sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID, workId.toString());
+        OneTimeWorkRequest newWorkRequest =
+                new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
+                        .setInputData(new Data.Builder().putString("eventNum", String.valueOf(eventList.size())).build())
+                        .setId(workId)
+                        .build();
+        WorkManager.getInstance(requireContext()).enqueueUniqueWork("eventNotify", ExistingWorkPolicy.KEEP, newWorkRequest);
     }
+
+    private void stopWork(){
+        if (sharedPreferencesUtil.readStringData(
+                SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID) != null) {
+            UUID uuid = UUID.fromString(sharedPreferencesUtil.readStringData(
+                    SHARED_PREFERENCES_FILE_NAME, EVENT_WORKER_ID));
+            WorkManager.getInstance(requireContext()).cancelWorkById(uuid);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        startWork();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        startWork();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        stopWork();
+    }
+
 
 }
