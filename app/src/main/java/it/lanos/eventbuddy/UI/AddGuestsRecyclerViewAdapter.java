@@ -24,6 +24,7 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.Constants;
 
 public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuestsRecyclerViewAdapter.GuestViewHolder>{
     private final Application application;
@@ -102,7 +103,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
             Glide.with(context)
                     .load(storageReference)
-                    .placeholder(R.drawable.logo)
+                    .error(Constants.PLACEHOLDER_IMAGE_URL)
                     .into(userImage);
         }
 

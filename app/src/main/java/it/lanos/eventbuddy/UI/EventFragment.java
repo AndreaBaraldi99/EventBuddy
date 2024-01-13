@@ -1,6 +1,5 @@
 package it.lanos.eventbuddy.UI;
 
-import static it.lanos.eventbuddy.util.Constants.EVENT_WORKER_ID;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 

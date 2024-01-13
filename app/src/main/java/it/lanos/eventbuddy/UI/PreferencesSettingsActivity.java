@@ -14,15 +14,12 @@ import android.widget.Spinner;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import java.util.Locale;
-
 import it.lanos.eventbuddy.R;
 
 public class PreferencesSettingsActivity extends AppCompatActivity {
     private Spinner languageSpinner;
     private MaterialSwitch themeSwitch;
     private SharedPreferences sharedPreferences;
-    private Locale myLocale;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -24,12 +24,4 @@ public class LocationViewModel extends ViewModel {
         iLocationRepository.setLocation(location);
     }
 
-    public void stopLocationUpdates(String eventId){
-        iLocationRepository.stopLocationUpdates(eventId);
-    }
-
-
-
-
-
 }

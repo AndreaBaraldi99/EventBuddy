@@ -22,6 +22,7 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.Constants;
 
 public class SearchFriendsAdapter extends ArrayAdapter<User> {
     private final List<User> searchingUsers;
@@ -56,7 +57,7 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
 
         Glide.with(context)
                 .load(storageReference)
-                .placeholder(R.drawable.logo)
+                .error(Constants.PLACEHOLDER_IMAGE_URL)
                 .into(userImage);
 
         //SETUP LIST ITEM FOR CONSISTENCY

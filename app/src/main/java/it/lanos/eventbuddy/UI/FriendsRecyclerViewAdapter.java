@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.Constants;
 
 public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecyclerViewAdapter.FriendViewHolder>{
 
@@ -84,7 +86,8 @@ public class FriendsRecyclerViewAdapter extends RecyclerView.Adapter<FriendsRecy
 
             Glide.with(context)
                     .load(storageReference)
-                    .placeholder(R.drawable.logo)
+                    .error(Constants.PLACEHOLDER_IMAGE_URL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(profilePic);
         }
     }

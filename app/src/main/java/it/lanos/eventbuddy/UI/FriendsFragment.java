@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +29,6 @@ import android.widget.ListView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,14 +44,9 @@ public class FriendsFragment extends Fragment {
     private List<User> user;
     private List<User> searchingUsers;
     private FriendsViewModel friendsViewModel;
-    private IUserRepository iUserRepository;
-
     private FriendsRecyclerViewAdapter friendsAdapter;
-
     private SearchFriendsAdapter searchAdapter;
-
     private SharedPreferencesUtil sharedPreferencesUtil;
-
     private FirebaseUser currentUser;
 
     public List<User> getUser() {
@@ -77,8 +70,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iUserRepository =
-                ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
 
         friendsViewModel = new ViewModelProvider(
                 this,

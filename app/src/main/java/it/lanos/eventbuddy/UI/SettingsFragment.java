@@ -210,7 +210,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void changeNickname(@NonNull String newNickname) {
-        //TODO: 07/01/2024 changeUsername ritorna un live data
         userViewModel.changeUsername(newNickname);
         readUser(new DataEncryptionUtil(requireActivity().getApplication()));
         user.setUsername(newNickname);
@@ -229,7 +228,6 @@ public class SettingsFragment extends Fragment {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error( Glide.with(requireContext())
                         .load(Constants.PLACEHOLDER_IMAGE_URL))
-                .placeholder(R.drawable.logo)
                 .into(userImage);
 
     }

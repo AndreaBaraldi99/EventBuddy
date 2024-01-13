@@ -27,12 +27,6 @@ public class UserViewModel extends ViewModel {
         return userLiveData = userRepository.signIn(email, password);
     }
 
-    public MutableLiveData<Result> downloadProfileImage(String userId){
-        this.userLiveData = userRepository.downloadProfileImage(userId);
-        return userLiveData;
-    }
-
-
     public MutableLiveData<Result> changePassword(String oldPassword, String newPassword) {
         return userLiveData = userRepository.changePassword(oldPassword, newPassword);
     }

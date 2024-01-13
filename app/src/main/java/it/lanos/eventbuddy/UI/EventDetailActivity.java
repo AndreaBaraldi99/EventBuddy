@@ -6,7 +6,6 @@ import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFEREN
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -32,7 +30,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,17 +122,14 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             }
             detailPartecipants.setText(luckyNickname + " & " + (joinedUsers.size() - 1) + " " + getString(R.string.people_partecipating));
 
-            buttonInfoJoined.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle args = new Bundle();
-                    args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
-                    args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
+            buttonInfoJoined.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
+                args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
 
-                    ShowFriendFragment dialogFragment = new ShowFriendFragment();
-                    dialogFragment.setArguments(args);
-                    dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
-                }
+                ShowFriendFragment dialogFragment = new ShowFriendFragment();
+                dialogFragment.setArguments(args);
+                dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
             });
 
             detailPartecipants.setOnClickListener(new View.OnClickListener() {
