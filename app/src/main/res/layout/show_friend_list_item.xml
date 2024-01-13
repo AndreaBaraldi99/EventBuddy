@@ -30,5 +30,15 @@
         app:layout_constraintTop_toTopOf="@+id/picUserPartecipating"
         tools:text="User Name" />
 
+    <ImageView
+        android:id="@+id/checkUserPartecipating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_check_24" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

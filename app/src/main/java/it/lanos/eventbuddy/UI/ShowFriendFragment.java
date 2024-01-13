@@ -28,7 +28,7 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 public class ShowFriendFragment extends DialogFragment {
     private User friendToRemove;
     private View view;
-    private List<User> invatedUsers;
+    private List<User> invitedUsers;
     private List<UserEventCrossRef> joinedUsers;
     private ShowFriendsAdapter showFriendsAdapter;
 
@@ -42,7 +42,7 @@ public class ShowFriendFragment extends DialogFragment {
 
         Bundle args = getArguments();
         if(args != null){
-            invatedUsers = args.getParcelableArrayList("iUsers");
+            invitedUsers = args.getParcelableArrayList("iUsers");
             joinedUsers = args.getParcelableArrayList("pUsers");
         }
 
@@ -56,16 +56,16 @@ public class ShowFriendFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         ListView listViewPartecipatingFriends = view.findViewById(R.id.listFriendsPartecipating);
-        List<User> partecipatingUsersforAdapter = new ArrayList<>();
+        /*List<User> partecipatingUsersforAdapter = new ArrayList<>();
         for(UserEventCrossRef cross : joinedUsers){
             for(User realUser : invatedUsers){
                 if(cross.getUserId().equals(realUser.getUserId()))
                     partecipatingUsersforAdapter.add(realUser);
 
             }
-        }
+        }*/
 
-        showFriendsAdapter = new ShowFriendsAdapter(requireContext(), R.layout.show_friend_list_item, partecipatingUsersforAdapter);
+        showFriendsAdapter = new ShowFriendsAdapter(requireContext(), R.layout.show_friend_list_item, invitedUsers, joinedUsers);
         listViewPartecipatingFriends.setAdapter(showFriendsAdapter);
         super.onViewCreated(view, savedInstanceState);
     }

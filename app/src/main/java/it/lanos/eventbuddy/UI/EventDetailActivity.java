@@ -60,6 +60,10 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         setContentView(R.layout.activity_event_detail);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.detail_event_top_appbar);
+        createEventToolbar.setNavigationOnClickListener(v -> {
+            returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
+            finish();
+        });
 
         EventRepository iEventsRepository = (EventRepository)
                 ServiceLocator.getInstance().getEventsRepository(this.getApplication());

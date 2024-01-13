@@ -1,6 +1,7 @@
 package it.lanos.eventbuddy.data.source.Worker;
 
 import static androidx.core.content.ContextCompat.getSystemService;
+import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 
@@ -24,7 +25,6 @@ import androidx.work.WorkerParameters;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.BottomNavigationBarActivity;
-import it.lanos.eventbuddy.UI.EventFragment;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.util.ServiceLocator;
 import it.lanos.eventbuddy.util.SharedPreferencesUtil;
@@ -50,8 +50,8 @@ public class UpdateEventsWorker extends Worker {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Eventbuddy";
-            String description = "You have new events!";
+            CharSequence name = getApplicationContext().getString(R.string.app_name);
+            String description = getApplicationContext().getString(R.string.notification_content);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("newEvent_channel", name, importance);
             channel.setDescription(description);
@@ -100,7 +100,7 @@ public class UpdateEventsWorker extends Worker {
                 }
             }
             try {
-                Thread.sleep(20000);
+                Thread.sleep(FRESH_TIMEOUT);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
