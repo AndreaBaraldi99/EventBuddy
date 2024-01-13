@@ -1,12 +1,6 @@
 package it.lanos.eventbuddy.UI;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.app.NavUtils;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.Activity;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -23,6 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -194,8 +194,8 @@ public class CreateEventActivity extends AppCompatActivity{
 
         //GESTIONE INDIRIZZO
         //iSuggestionsRepository
-        createEventViewModel.attachSuggestions().observe(this, result -> {
-            if (result.isSuggestionSuccess()) {
+        createEventViewModel.getSuggestions("").observe(this, result -> {
+            if (result instanceof Result.SuggestionsSuccess) {
                 this.suggestionList.clear();
                 List<Suggestion> allSuggestion = (((Result.SuggestionsSuccess) result).getData());
                 for (Suggestion current : allSuggestion) {
@@ -208,8 +208,8 @@ public class CreateEventActivity extends AppCompatActivity{
             }
         });
 
-        createEventViewModel.attachFeature().observe(this, result -> {
-            if(result.isFeatureSuccess()){
+        createEventViewModel.getFeature("").observe(this, result -> {
+            if(result instanceof Result.FeatureSuccess){
                 this.selectedFeature = ((Result.FeatureSuccess) result).getData().get(0);
                 this.address = selectedFeature.properties.context.place.name
                         +", "
@@ -295,13 +295,11 @@ public class CreateEventActivity extends AppCompatActivity{
         finish();
     }
 
-    private void handleSearch(String query){
-        if (query.length() < 3){
+    private void handleSearch(String query) {
+        createEventViewModel.getSuggestions(query);
+        if (query.length() < 3) {
             suggestionList.clear();
             addressAdapter.notifyDataSetChanged();
-        }
-        else{
-            createEventViewModel.getSuggestions(query);
         }
     }
 

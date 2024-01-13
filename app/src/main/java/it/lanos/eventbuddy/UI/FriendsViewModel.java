@@ -10,19 +10,22 @@ import it.lanos.eventbuddy.data.source.models.User;
 
 public class FriendsViewModel extends ViewModel {
     private final IUserRepository iUserRepository;
+    private MutableLiveData<Result> usersListLiveData;
+    private MutableLiveData<Result> usersSearchedListLiveData;
 
     public FriendsViewModel(IUserRepository iUserRepository) {
         this.iUserRepository = iUserRepository;
     }
 
     public MutableLiveData<Result> getFriends(long lastUpdate) {
-        //TODO: Gestire logica Result per Friends
-        return iUserRepository.getFriends(lastUpdate);
+        this.usersListLiveData = iUserRepository.getFriends(lastUpdate);
+        return usersListLiveData;
     }
 
 
     public MutableLiveData<Result> searchUsers(String query){
-        return iUserRepository.searchUsers(query);
+        this.usersSearchedListLiveData = iUserRepository.searchUsers(query);
+        return usersSearchedListLiveData;
     }
 
     public void addFriend(User friend){
