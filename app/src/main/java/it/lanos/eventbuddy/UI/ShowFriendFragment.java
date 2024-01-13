@@ -61,6 +61,7 @@ public class ShowFriendFragment extends DialogFragment {
             for(User realUser : invatedUsers){
                 if(cross.getUserId().equals(realUser.getUserId()))
                     partecipatingUsersforAdapter.add(realUser);
+
             }
         }
 
