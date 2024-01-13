@@ -117,6 +117,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/event_avatar1"
             android:layout_width="43dp"
@@ -167,12 +168,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="188dp"
-            android:layout_marginTop="416dp"
+            android:layout_marginTop="406dp"
             android:fontFamily="@font/robotoslab_semibold"
-            android:text=""
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="partecipating" />
 
         <TextView
             android:id="@+id/event_description"
