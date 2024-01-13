@@ -27,7 +27,6 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
     private final List<User> searchingUsers;
     private final int layout;
     private final Context context;
-
     private final FriendsFragment callback;
 
 
@@ -48,9 +47,9 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
                     inflate(layout, parent, false);
         }
 
-        TextView text = convertView.findViewById(R.id.usernameTextView);
+        TextView text = convertView.findViewById(R.id.nickUserPartecipating);
         Button add = convertView.findViewById(R.id.add_guest_button);
-        ImageView userImage = convertView.findViewById(R.id.user_profile_image);
+        ImageView userImage = convertView.findViewById(R.id.picUserPartecipating);
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(searchingUsers.get(position).getUserId());

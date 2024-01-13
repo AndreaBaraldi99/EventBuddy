@@ -6,12 +6,17 @@ import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFEREN
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +56,15 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_detail);
 
         MaterialToolbar createEventToolbar = findViewById(R.id.detail_event_top_appbar);
-        createEventToolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(EventDetailActivity.this));
 
         EventRepository iEventsRepository = (EventRepository)
                 ServiceLocator.getInstance().getEventsRepository(this.getApplication());
+
+        readUser(new DataEncryptionUtil(this.getApplication()));
 
 
 
@@ -66,9 +74,22 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             // Recupera l'oggetto EventWithUsers dalla Intent
             event = intent.getParcelableExtra("event");
         }
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
+
         assert event != null;
         List<UserEventCrossRef> usersInfo = event.getUserEventCrossRefs();
-        List<UserEventCrossRef> joinedUsers = getJoinedUsers(usersInfo);
+        List<UserEventCrossRef> joinedUsers =  getJoinedUsers(usersInfo);
+
+
 
         TextView eventDate = findViewById(R.id.event_date);
         TextView eventHour = findViewById(R.id.event_time);
@@ -77,6 +98,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         TextView eventDescription = findViewById(R.id.event_description);
         TextView detailPartecipants = findViewById(R.id.event_participants_info);
         TextView numberPartecipants = findViewById(R.id.event_number_partecipants);
+        ImageView firstJoined = findViewById(R.id.event_avatar2);
+        ImageView secondJoined = findViewById(R.id.event_avatar1);
+        View buttonInfoJoined = findViewById(R.id.event_number_participants_layout);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.active_map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
@@ -84,6 +108,65 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         numberPartecipants.setText("+"+joinedUsers.size());
         if(joinedUsers.size() == 0)
             detailPartecipants.setText(getString(R.string.noone_partecipating));
+        else {
+            String luckyNickname = "";
+            for (User u : event.getUsers()) {
+                if (u.getUserId().equals(joinedUsers.get(0).getUserId())) {
+                    luckyNickname = u.getUsername();
+                    if(luckyNickname.equals(user.getUsername())){
+                        luckyNickname = getString(R.string.you);
+                    }
+                    break;
+                }
+            }
+            detailPartecipants.setText(luckyNickname + " & " + (joinedUsers.size() - 1) + " " + getString(R.string.people_partecipating));
+
+            buttonInfoJoined.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args = new Bundle();
+                    args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
+                    args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
+
+                    ShowFriendFragment dialogFragment = new ShowFriendFragment();
+                    dialogFragment.setArguments(args);
+                    dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
+                }
+            });
+
+            detailPartecipants.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle args = new Bundle();
+                    args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
+                    args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
+
+                    ShowFriendFragment dialogFragment = new ShowFriendFragment();
+                    dialogFragment.setArguments(args);
+                    dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
+                }
+            });
+
+            if (joinedUsers.size() >= 1) {
+                StorageReference storageReferenceFirst = FirebaseStorage.getInstance().getReference()
+                        .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(joinedUsers.get(0).getUserId());
+
+                Glide.with(getApplicationContext())
+                        .load(storageReferenceFirst)
+                        .placeholder(R.drawable.logo)
+                        .into(firstJoined);
+            }
+            if (joinedUsers.size() >= 2){
+                StorageReference storageReferenceSecond = FirebaseStorage.getInstance().getReference()
+                        .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(joinedUsers.get(1).getUserId());
+
+                Glide.with(getApplicationContext())
+                        .load(storageReferenceSecond)
+                        .placeholder(R.drawable.logo)
+                        .into(secondJoined);
+            }
+        }
+
 
         join = findViewById(R.id.button_join);
         doNotJoin = findViewById(R.id.button_do_not_join);
@@ -138,7 +221,6 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void handleButtonsConfiguration(List<UserEventCrossRef> usersInfo) {
-        readUser(new DataEncryptionUtil(this.getApplication()));
         for (UserEventCrossRef current : usersInfo) {
             if (current.getUserId().equals(this.user.getUserId()) && current.getJoined()) {
                 join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_surfaceTint));
@@ -165,6 +247,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         resultIntent.putExtra("id", eventId);
         setResult(Activity.RESULT_OK, resultIntent);
     }
+
 
 
     @Override

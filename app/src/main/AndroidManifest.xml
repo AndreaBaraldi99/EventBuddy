@@ -41,7 +41,8 @@
             android:name=".util.LocationService"
             android:enabled="true"
             android:exported="true"
-            android:stopWithTask="false"/>
+            android:stopWithTask="false"
+            android:foregroundServiceType="location"/>
 
 
         <activity
@@ -103,7 +104,6 @@
         <activity
             android:name=".UI.EventDetailActivity"
             android:exported="false"
-            android:theme="@style/eventDetail"
             android:parentActivityName=".UI.BottomNavigationBarActivity"/>
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"

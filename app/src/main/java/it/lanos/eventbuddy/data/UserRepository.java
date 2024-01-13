@@ -97,16 +97,22 @@ public class UserRepository implements IUserRepository, UserCallback {
         return userMutableLiveData;
     }
 
+
     @Override
     public void changeUsername(@NonNull String newUsername) {
         userCloudDBDataSource.changeUsername(new User(user.getUserId(), newUsername, user.getFullName(), user.getIsFriend(), user.getProfilePictureUrl()));
     }
 
     @Override
+    public MutableLiveData<Result> attachSearchUsers() {
+        return usersSearchedMutableLiveData;
+    }
+    @Override
     public MutableLiveData<Result> searchUsers(@NonNull String query) {
         userCloudDBDataSource.searchUsers(query);
         return usersSearchedMutableLiveData;
     }
+
 
     @Override
     public void addFriend(@NonNull User friend) {

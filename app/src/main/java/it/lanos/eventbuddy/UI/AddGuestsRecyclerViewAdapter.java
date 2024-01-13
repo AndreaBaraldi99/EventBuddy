@@ -81,8 +81,8 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
         public GuestViewHolder(@NonNull View itemView) {
             super(itemView);
-            userNameTextView = itemView.findViewById(R.id.usernameTextView);
-            userImage = itemView.findViewById(R.id.user_profile_image);
+            userNameTextView = itemView.findViewById(R.id.nickUserPartecipating);
+            userImage = itemView.findViewById(R.id.picUserPartecipating);
             addButton = itemView.findViewById(R.id.add_guest_button);
             addButton.setOnClickListener(view -> {
                 int position = getAdapterPosition();

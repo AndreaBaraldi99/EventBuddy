@@ -41,6 +41,7 @@
     <string name="event_detail_do_not_join">Don\'t join</string>
     <string name="event_detail_manager">Manager</string>
     <string name="noone_partecipating">No one joined yet,\nyou will be first?</string>
+    <string name="people_partecipating">more are partecipating</string>
 
     <!-- Strings used for AddDescriptionFragment -->
     <string name="confirm_text">Confirm </string>
@@ -144,12 +145,16 @@
     </string-array>
 
     <!-- Strings used for ActiveFragment -->
-    <string name="no_active_event_found">Join an Event first!</string>
     <string name="notification_title" translatable="false">EventBuddy</string>
     <string name="notification_description">Background location tracking is active</string>
     <string name="active_fragment_track_me">Track me</string>
 
     <!-- Strings used for UpdateEventsWorker -->
     <string name="notification_content">You have new events!</string>
+    <string name="you">You</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="partecipating">Partecipating</string>
+    <string name="no_active_event_found">No events in 30 Minutes!</string>
 
 </resources>

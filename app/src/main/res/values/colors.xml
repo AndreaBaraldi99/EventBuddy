@@ -39,6 +39,8 @@
     <color name="divisor">#CAC4D0</color>
     <color name="white">#FFFFFF</color>
     <color name="surface_settings">#F8FAF5</color>
+    <color name="surface_settings_remake">#EDEEEA</color>
+
     <color name="red_delete_color">#C82333</color>
     <color name="black">#000000</color>
 </resources>

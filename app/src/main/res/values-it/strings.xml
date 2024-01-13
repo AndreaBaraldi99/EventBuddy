@@ -40,7 +40,8 @@
     <string name="event_detail_join">Partecipa</string>
     <string name="event_detail_do_not_join">Non partecipare</string>
     <string name="event_detail_manager">Manager</string>
-    <string name="noone_partecipating">Non partecipa ancora nessuno, sarai tu il primo?</string>
+    <string name="noone_partecipating">Nessuno partecipa,\nsarai il primo?</string>
+    <string name="people_partecipating">altri \nstanno partecipando</string>
 
     <!-- Strings used for AddDescriptionFragment -->
     <string name="confirm_text">Conferma</string>
@@ -143,10 +144,12 @@
     </string-array>
 
     <!-- Strings used for ActiveFragment -->
-    <string name="no_active_event_found">Partecipa ad un Evento prima!</string>
+    <string name="no_active_event_found">Nessun evento entro 30 Minuti!</string>
     <string name="notification_description">Tracciamento della posizione in background attivo</string>
     <string name="active_fragment_track_me">Tracciami</string>
 
     <!-- Strings used for UpdateEventsWorker -->
     <string name="notification_content">Hai nuovi eventi!</string>
+    <string name="you">Tu</string>
+    <string name="partecipating">Partecipanti</string>
 </resources>

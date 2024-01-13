@@ -247,6 +247,9 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             TextView trackMeText = view.findViewById(R.id.trackMeText);
             MaterialSwitch trackMeSwitch = view.findViewById(R.id.trackMeSwitch);
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
+            if(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME,"track") == null){
+                sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, "track", String.valueOf(trackMeSwitch.isChecked()));
+            }
 
             SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.active_map);
             if (selected != null) {
@@ -259,16 +262,15 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 time.setText(formattedTime);
                 locIntent = new Intent(getContext(), LocationService.class);
 
-                if(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME,"track") != null) {
-                    trackMeSwitch.setChecked(Boolean.parseBoolean(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME, "track")));
-                    if(trackMeSwitch.isChecked()){
-                        locIntent.setAction(LocationService.START_STICKY);
+                trackMeSwitch.setChecked(Boolean.parseBoolean(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME, "track")));
+                if(trackMeSwitch.isChecked()){
+                    locIntent.setAction(LocationService.START_STICKY);
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            getContext().startForegroundService(locIntent);
-                        }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        getContext().startForegroundService(locIntent);
                     }
                 }
+
                 trackMeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -5,229 +5,237 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:map="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true">
-   <androidx.constraintlayout.widget.ConstraintLayout
+    android:fillViewport="true"
+    android:id="@+id/event_detail_scrollview">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
-       <ImageView
-           android:id="@+id/sfondo"
-           android:layout_width="match_parent"
-           android:layout_height="730dp"
-           android:background="@drawable/sfondo"
-           android:contentDescription="@string/null_text"
-           app:layout_constraintTop_toTopOf="parent"
-           tools:layout_editor_absoluteX="-45dp">
-       </ImageView>
+        <ImageView
+            android:id="@+id/sfondo"
+            android:layout_width="match_parent"
+            android:layout_height="730dp"
+            android:background="@drawable/sfondo"
+            android:contentDescription="@string/null_text"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-45dp" />
 
-       <com.google.android.material.appbar.MaterialToolbar
-           android:id="@+id/detail_event_top_appbar"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:minHeight="?attr/actionBarSize"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:navigationIcon="@drawable/twotone_arrow_back_24" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/detail_event_top_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/twotone_arrow_back_24" />
 
-       <TextView
-           android:id="@+id/event_date"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="16dp"
-           android:layout_marginTop="75dp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:textSize="28sp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="75dp"
+            android:fontFamily="@font/robotoserif_regular"
+            android:textSize="28sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Date" />
 
-       <TextView
-           android:id="@+id/event_time"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="16dp"
-           android:layout_marginTop="125dp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:textSize="22sp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="125dp"
+            android:fontFamily="@font/robotocondensed_regular"
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Hour" />
 
-       <TextView
-           android:id="@+id/event_name"
-           android:layout_width="269dp"
-           android:layout_height="98dp"
-           android:layout_marginStart="16dp"
-           android:layout_marginTop="165dp"
-           android:layout_marginEnd="10dp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:maxLines="2"
-           android:textSize="40sp"
-           app:layout_constraintEnd_toStartOf="@+id/event_manager_text"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/robotoserif_regular"
+            android:maxLines="2"
+            android:textSize="40sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_time"
+            tools:text="Title" />
 
-       <TextView
-           android:id="@+id/event_address"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="42dp"
-           android:layout_marginTop="315dp"
-           android:textSize="14sp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:text=""
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/event_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@font/robotoslab_regular"
+            android:text=""
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/event_map_icon"
+            app:layout_constraintTop_toBottomOf="@+id/event_name"
+            tools:text="City\nStreet" />
 
-       <ImageView
-           android:id="@+id/event_map_icon"
-           android:contentDescription="@string/null_text"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="12dp"
-           android:layout_marginTop="328dp"
-           android:layout_marginEnd="5dp"
-           app:layout_constraintEnd_toStartOf="@+id/event_address"
-           app:layout_constraintHorizontal_bias="0.666"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:srcCompat="@drawable/outline_location_on_24" />
+        <ImageView
+            android:id="@+id/event_map_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="105dp"
+            android:contentDescription="@string/null_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_name"
+            app:srcCompat="@drawable/outline_location_on_24" />
 
-       <com.google.android.material.imageview.ShapeableImageView
-           android:id="@+id/event_manager_avatar"
-           android:layout_width="50dp"
-           android:layout_height="50dp"
-           android:layout_marginTop="205dp"
-           android:layout_marginEnd="51dp"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:shapeAppearanceOverlay="@style/circular"
-           tools:srcCompat="@tools:sample/avatars" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/event_manager_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="45dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_manager_text"
+            app:shapeAppearanceOverlay="@style/circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
-       <TextView
-           android:id="@+id/event_manager_text"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="180dp"
-           android:layout_marginEnd="35dp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:text="@string/event_detail_manager"
-           android:textSize="16sp"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <com.google.android.material.imageview.ShapeableImageView
-           android:id="@+id/event_avatar1"
-           android:layout_width="43dp"
-           android:layout_height="43dp"
-           android:layout_marginStart="77dp"
-           android:layout_marginTop="403dp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:shapeAppearanceOverlay="@style/circular"
-           tools:srcCompat="@tools:sample/avatars" />
-
-       <com.google.android.material.imageview.ShapeableImageView
-           android:id="@+id/event_avatar2"
-           android:layout_width="43dp"
-           android:layout_height="43dp"
-           android:layout_marginStart="109dp"
-           android:layout_marginTop="403dp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           app:shapeAppearanceOverlay="@style/circular"
-           tools:srcCompat="@tools:sample/avatars" />
-
-       <androidx.constraintlayout.widget.ConstraintLayout
-           android:id="@+id/event_number_participants_layout"
-           android:layout_width="32dp"
-           android:layout_height="32dp"
-           android:layout_marginStart="148dp"
-           android:layout_marginTop="407dp"
-           android:background="@drawable/circle"
-           android:backgroundTint="#000000"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent">
-
-           <TextView
-               android:id="@+id/event_number_partecipants"
-               android:layout_width="28dp"
-               android:layout_height="32dp"
-               android:gravity="center"
-               android:text=""
-               android:textColor="#FFFFFF"
-               app:layout_constraintBottom_toBottomOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintTop_toTopOf="parent" />
-       </androidx.constraintlayout.widget.ConstraintLayout>
-
-       <TextView
-           android:id="@+id/event_participants_info"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="188dp"
-           android:layout_marginTop="416dp"
-           android:textSize="12sp"
-           android:fontFamily="@font/robotoslab_semibold"
-           android:text=""
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <TextView
-           android:id="@+id/event_description"
-           android:layout_width="376dp"
-           android:layout_height="96dp"
-           android:layout_marginStart="18dp"
-           android:layout_marginTop="485dp"
-           android:fontFamily="@font/robotoslab_regular"
-           android:text=""
-           android:textSize="14sp"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toTopOf="parent" />
-
-       <androidx.fragment.app.FragmentContainerView
-           android:id="@+id/active_map"
-           android:name="com.google.android.gms.maps.SupportMapFragment"
-           android:layout_width="372dp"
-           android:layout_height="220dp"
-           android:layout_marginTop="10dp"
-           app:layout_constraintEnd_toEndOf="parent"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintTop_toBottomOf="@+id/event_description"
-           map:cameraZoom="15"/>
+        <TextView
+            android:id="@+id/event_manager_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:layout_marginEnd="35dp"
+            android:fontFamily="@font/robotoslab_regular"
+            android:text="@string/event_detail_manager"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-       <Button
-           android:id="@+id/button_join"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="18dp"
-           android:layout_marginBottom="10dp"
-           android:drawableStart="@drawable/baseline_check_24"
-           android:drawableTint="#FFFFFF"
-           android:text="@string/event_detail_join"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/event_avatar1"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="77dp"
+            android:layout_marginTop="403dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
-       <Button
-           android:id="@+id/button_do_not_join"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_marginStart="164dp"
-           android:layout_marginBottom="10dp"
-           android:backgroundTint="@color/md_theme_dark_error"
-           android:drawableStart="@drawable/baseline_close_24"
-           android:drawableTint="#FFFFFF"
-           android:text="@string/event_detail_do_not_join"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/event_avatar2"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="109dp"
+            android:layout_marginTop="403dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circular"
+            tools:srcCompat="@tools:sample/avatars" />
 
-       <androidx.constraintlayout.widget.Guideline
-           android:id="@+id/guideline3"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:orientation="horizontal"
-           app:layout_constraintGuide_begin="385dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/event_number_participants_layout"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="148dp"
+            android:layout_marginTop="407dp"
+            android:background="@drawable/circle"
+            android:backgroundTint="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-   </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/event_number_partecipants"
+                android:layout_width="28dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/event_participants_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="188dp"
+            android:layout_marginTop="406dp"
+            android:fontFamily="@font/robotoslab_semibold"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="partecipating" />
+
+        <TextView
+            android:id="@+id/event_description"
+            android:layout_width="376dp"
+            android:layout_height="96dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="485dp"
+            android:fontFamily="@font/robotoslab_regular"
+            android:text=""
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/active_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="340dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_description"
+            map:cameraZoom="13" />
+
+
+        <Button
+            android:id="@+id/button_join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:drawableStart="@drawable/baseline_check_24"
+            android:drawableTint="#FFFFFF"
+            android:text="@string/event_detail_join"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/active_map" />
+
+        <Button
+            android:id="@+id/button_do_not_join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/md_theme_dark_error"
+            android:drawableStart="@drawable/baseline_close_24"
+            android:drawableTint="#FFFFFF"
+            android:text="@string/event_detail_do_not_join"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_join"
+            app:layout_constraintTop_toBottomOf="@+id/active_map" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="385dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

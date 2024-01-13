@@ -63,9 +63,9 @@
             android:id="@+id/card_account"
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
-            android:layout_height="59dp"
+            android:layout_height="72dp"
             android:layout_margin="20dp"
-            android:backgroundTint="@color/md_theme_light_surfaceVariant"
+            android:backgroundTint="@color/surface_settings_remake"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="61dp">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/accountIcon"
@@ -91,11 +91,12 @@
                     android:id="@+id/textViewAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/settings_account"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/accountIcon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.128" />
 
@@ -103,13 +104,10 @@
                     android:id="@+id/textViewManage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
                     android:text="@string/settings_advice_account"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.642" />
+                    app:layout_constraintStart_toStartOf="@+id/textViewAccount"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewAccount" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -125,9 +123,9 @@
             android:id="@+id/card_preferences"
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
-            android:layout_height="59dp"
+            android:layout_height="72dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surfaceVariant"
+            android:backgroundTint="@color/surface_settings_remake"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +134,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="61dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/md_theme_light_surfaceVariant">
 
                 <ImageView
@@ -154,11 +152,12 @@
                     android:id="@+id/textViewPreferences"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/settings_preferences"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/preferencesIcon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.128" />
 
@@ -166,13 +165,10 @@
                     android:id="@+id/textViewTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
                     android:text="@string/settings_advice_preferences"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.642" />
+                    app:layout_constraintStart_toStartOf="@+id/textViewPreferences"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPreferences" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -180,9 +176,9 @@
             android:id="@+id/card_notifications"
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
-            android:layout_height="59dp"
+            android:layout_height="72dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surfaceVariant"
+            android:backgroundTint="@color/surface_settings_remake"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +187,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="61dp">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/notificationsIcon"
@@ -208,11 +204,12 @@
                     android:id="@+id/textViewNotifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/settings_notification"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/notificationsIcon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.128" />
 
@@ -220,13 +217,10 @@
                     android:id="@+id/textViewConfig"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
                     android:text="@string/settings_advice_notifications"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.642" />
+                    app:layout_constraintStart_toStartOf="@+id/textViewNotifications"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewNotifications" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -234,9 +228,9 @@
             android:id="@+id/card_privacy"
             style="@style/Widget.Material3.CardView.Filled"
             android:layout_width="340dp"
-            android:layout_height="59dp"
+            android:layout_height="72dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/md_theme_light_surfaceVariant"
+            android:backgroundTint="@color/surface_settings_remake"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -245,7 +239,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="61dp">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/privacyIcon"
@@ -262,11 +256,12 @@
                     android:id="@+id/textViewPrivacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/settings_privacy"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/privacyIcon"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.102" />
 
@@ -274,13 +269,10 @@
                     android:id="@+id/textViewPermissions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
                     android:text="@string/settings_advice_privacy"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.619" />
+                    app:layout_constraintStart_toStartOf="@+id/textViewPrivacy"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewPrivacy" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
