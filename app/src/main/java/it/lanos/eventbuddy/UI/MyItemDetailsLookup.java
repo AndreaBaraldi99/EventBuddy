@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.widget.RecyclerView;
 
+import it.lanos.eventbuddy.adapter.AddGuestsRecyclerViewAdapter;
+
 public class MyItemDetailsLookup extends ItemDetailsLookup<Long> {
 
     private final RecyclerView recyclerView;

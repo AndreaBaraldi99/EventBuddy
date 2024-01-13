@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.UI;
+package it.lanos.eventbuddy.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,11 +16,11 @@ import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.mapbox.Suggestion;
 
 
-public class suggestionAdapter extends ArrayAdapter<Suggestion> {
+public class SuggestionAdapter extends ArrayAdapter<Suggestion> {
     private final List<Suggestion> suggestions;
     private final int layout;
 
-    public suggestionAdapter(@NonNull Context context, int layout, List<Suggestion> suggestions) {
+    public SuggestionAdapter(@NonNull Context context, int layout, List<Suggestion> suggestions) {
         super(context, layout, suggestions);
         this.suggestions = suggestions;
         this.layout = layout;

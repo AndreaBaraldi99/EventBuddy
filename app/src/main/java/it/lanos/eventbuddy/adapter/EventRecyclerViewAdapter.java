@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.UI;
+package it.lanos.eventbuddy.adapter;
 
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 
@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.UI.EventViewModel;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;

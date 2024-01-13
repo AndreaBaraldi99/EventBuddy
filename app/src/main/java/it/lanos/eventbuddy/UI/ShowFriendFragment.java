@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.adapter.ShowFriendsAdapter;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 

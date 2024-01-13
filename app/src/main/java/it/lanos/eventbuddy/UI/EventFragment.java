@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.adapter.EventRecyclerViewAdapter;
 import it.lanos.eventbuddy.data.source.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;

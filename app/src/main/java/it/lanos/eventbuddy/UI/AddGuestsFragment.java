@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.adapter.AddGuestsRecyclerViewAdapter;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;

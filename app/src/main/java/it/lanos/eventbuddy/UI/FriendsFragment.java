@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.adapter.FriendsRecyclerViewAdapter;
+import it.lanos.eventbuddy.adapter.SearchFriendsAdapter;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;

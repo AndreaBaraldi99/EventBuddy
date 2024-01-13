@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Objects;
 
 import it.lanos.eventbuddy.R;
+import it.lanos.eventbuddy.adapter.SuggestionAdapter;
 import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.source.models.Event;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
@@ -227,7 +228,7 @@ public class CreateEventActivity extends AppCompatActivity{
 
         suggestionList = new ArrayList<>();
         ListView suggestionListView = findViewById(R.id.suggestionListView);
-        addressAdapter = new suggestionAdapter(this, R.layout.address_item, suggestionList);
+        addressAdapter = new SuggestionAdapter(this, R.layout.address_item, suggestionList);
         suggestionListView.setAdapter(addressAdapter);
         suggestionListView.setOnItemClickListener((parent, view, position, id) -> {
             flagHandle = false;

@@ -1,4 +1,4 @@
-package it.lanos.eventbuddy.UI;
+package it.lanos.eventbuddy.adapter;
 
 import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
 
