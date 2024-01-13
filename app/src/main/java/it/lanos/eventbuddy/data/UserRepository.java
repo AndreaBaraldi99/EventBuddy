@@ -104,12 +104,12 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public MutableLiveData<Result> attachSearchUsers() {
-        return usersSearchedMutableLiveData;
-    }
-    @Override
     public MutableLiveData<Result> searchUsers(@NonNull String query) {
-        userCloudDBDataSource.searchUsers(query);
+        if(!query.equals("")){
+            userCloudDBDataSource.searchUsers(query);
+        }
+        usersSearchedMutableLiveData.postValue(null);
+
         return usersSearchedMutableLiveData;
     }
 

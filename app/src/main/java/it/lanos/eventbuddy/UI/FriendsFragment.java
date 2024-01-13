@@ -152,7 +152,7 @@ public class FriendsFragment extends Fragment {
                 friendsAdapter.notifyDataSetChanged();
             }});
 
-        friendsViewModel.attachSearchUsers().observe(getViewLifecycleOwner(), result -> {
+        friendsViewModel.searchUsers("").observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Result.UserSuccess) {
 
                 searchingUsers.clear();
@@ -247,13 +247,11 @@ public class FriendsFragment extends Fragment {
     }
 
     private void handleSearch(String text) {
-        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
-        if(text.equals("")){
+        friendsViewModel.searchUsers(text);
+        if(text.equals("")) {
             searchingUsers.clear();
             searchAdapter.notifyDataSetChanged();
         }
-        else{
-            friendsViewModel.searchUsers(text);
-        }
+
     }
 }

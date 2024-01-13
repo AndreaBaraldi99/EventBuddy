@@ -19,7 +19,6 @@ public interface IUserRepository {
     MutableLiveData<Result> deleteUser();
     void changeUsername(@NonNull String newUsername);
     MutableLiveData<Result> changePassword(@NonNull String oldPassword, @NonNull String newPassword);
-    MutableLiveData<Result> attachSearchUsers();
     MutableLiveData<Result> searchUsers(@NonNull String query);
     void addFriend(@NonNull User friend);
     void removeFriend(@NonNull User friend);

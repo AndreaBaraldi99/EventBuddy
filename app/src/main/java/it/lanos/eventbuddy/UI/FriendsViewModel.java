@@ -25,12 +25,10 @@ public class FriendsViewModel extends ViewModel {
         return friendsListLiveData;
     }
 
-    public MutableLiveData<Result> attachSearchUsers(){
-        return this.friendsSearchedListLiveData = iUserRepository.attachSearchUsers();
-    }
 
-    public void searchUsers(String query){
-        iUserRepository.searchUsers(query);
+    public MutableLiveData<Result> searchUsers(String query){
+        this.friendsSearchedListLiveData = iUserRepository.searchUsers(query);
+        return friendsSearchedListLiveData;
     }
 
     public void addFriend(User friend){
