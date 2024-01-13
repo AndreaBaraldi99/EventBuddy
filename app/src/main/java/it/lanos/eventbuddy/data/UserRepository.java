@@ -135,7 +135,7 @@ public class UserRepository implements IUserRepository, UserCallback {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         imageRemoteDataSource.uploadImage(this.user, baos.toByteArray());
-        return uploadProfileImageMutableLiveData;
+        return userMutableLiveData;
     }
 
     @Override

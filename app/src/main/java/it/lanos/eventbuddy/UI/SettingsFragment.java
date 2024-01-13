@@ -9,8 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,15 +42,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.UI.authentication.UserViewModel;
 import it.lanos.eventbuddy.UI.authentication.UserViewModelFactory;
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.User;
+import it.lanos.eventbuddy.util.Constants;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
@@ -226,21 +224,14 @@ public class SettingsFragment extends Fragment {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                 .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
 
-        Drawable placeholderImage;
-        /*
-        try {
-            InputStream is = (InputStream) new URL(user.getProfilePictureUrl()).getContent();
-            placeholderImage = Drawable.createFromStream(is, "src name");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
-
-
         Glide.with(requireContext())
                 .load(storageReference)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error( Glide.with(requireContext())
+                        .load(Constants.PLACEHOLDER_IMAGE_URL))
                 .placeholder(R.drawable.logo)
                 .into(userImage);
+
     }
 
     // The user selects a profile pic in the gallery
@@ -249,6 +240,8 @@ public class SettingsFragment extends Fragment {
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
+
+
 
     private void initializeImagePickerLauncher() {
         imagePickerLauncher = registerForActivityResult(
@@ -270,13 +263,13 @@ public class SettingsFragment extends Fragment {
         try {
             InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
             userViewModel.uploadProfileImage(bitmap).observe(getViewLifecycleOwner(), result -> {
                 if(result.isSuccess()) {
-
                     new Thread(() -> Glide.get(requireContext()).clearDiskCache()).start();
                     Glide.get(requireContext()).clearMemory();
 
-                    Glide.with(requireContext())
+                  Glide.with(requireContext())
                             .load(imageUri)
                             .into(userImage);
 
@@ -288,6 +281,7 @@ public class SettingsFragment extends Fragment {
                     snackbar.show();
                 }
             });
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
