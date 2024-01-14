@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.util;
 
 import android.app.Application;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.lanos.eventbuddy.data.EventRepository;
@@ -11,7 +10,6 @@ import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.LocationRepository;
 import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.UserRepository;
-import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.services.MapboxService;
 import it.lanos.eventbuddy.data.ILocationRepository;
@@ -65,8 +63,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Application application) {
-        AuthService authService = new AuthService(FirebaseAuth.getInstance());
-        UserDataSource userDataSource = new UserDataSource(authService);
+        UserDataSource userDataSource = new UserDataSource();
 
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseUserRemoteDataSource cloudDBDataSource = new UserRemoteDataSource(cloudDBService);
