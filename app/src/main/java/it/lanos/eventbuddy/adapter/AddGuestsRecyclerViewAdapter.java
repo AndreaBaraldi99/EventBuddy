@@ -17,6 +17,7 @@ import androidx.recyclerview.selection.SelectionTracker;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -126,6 +127,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
             Glide.with(context)
                     .load(storageReference)
                     .error(Constants.PLACEHOLDER_IMAGE_URL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(userImage);
 
         }

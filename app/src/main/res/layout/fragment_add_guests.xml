@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:contextClickable="true"
             android:hint="@string/add_guest_searchbar_hint"
-            app:backgroundTint="@color/md_theme_light_inverseOnSurface"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"

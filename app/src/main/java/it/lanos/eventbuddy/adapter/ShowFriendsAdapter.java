@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
+import it.lanos.eventbuddy.util.Constants;
 
 public class ShowFriendsAdapter extends ArrayAdapter<User> {
     private final List<User> partecipatingUsers;
@@ -68,7 +70,8 @@ public class ShowFriendsAdapter extends ArrayAdapter<User> {
 
         Glide.with(context)
                 .load(storageReference)
-                .placeholder(R.drawable.logo)
+                .error(Constants.PLACEHOLDER_IMAGE_URL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(picUserPartecipating);
 
 

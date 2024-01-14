@@ -72,7 +72,6 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="176dp"
         android:layout_marginEnd="21dp"
-        app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="filled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +93,6 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="21dp"
-        app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="filled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +114,6 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="21dp"
-        app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="filled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,8 +136,6 @@
         android:layout_marginTop="27dp"
         android:layout_marginEnd="60dp"
         android:text="@string/settings_button_change_password"
-        android:textColor="@color/md_theme_light_onSecondaryContainer"
-        android:backgroundTint="@color/md_theme_light_secondaryContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_password_text" />
@@ -153,11 +148,10 @@
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="22dp"
         android:text="@string/settings_button_delete_account"
-        android:textColor="@color/md_theme_light_onError"
-        android:backgroundTint="@color/md_theme_light_onErrorContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/delete_account_button"/>
 
     <Button
         android:id="@+id/logout_button"
@@ -166,9 +160,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="24dp"
-        android:backgroundTint="@color/md_theme_light_errorContainer"
         android:text="@string/settings_button_change_logout"
-        android:textColor="@color/md_theme_dark_errorContainer"
         app:layout_constraintBottom_toTopOf="@+id/delete_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

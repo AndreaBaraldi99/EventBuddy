@@ -23,6 +23,4 @@
         <item name="android:backgroundTint"> @color/md_theme_light_background</item>
         <item name="android:windowFullscreen">true</item>
     </style>
-
-
 </resources>
