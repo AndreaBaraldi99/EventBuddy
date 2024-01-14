@@ -1,4 +1,3 @@
-#PROGETTO APP EVENTBUDDY
 **Nome del gruppo:** Lanos
 **Partecipanti:**
 Andrea Baraldi - 839452
