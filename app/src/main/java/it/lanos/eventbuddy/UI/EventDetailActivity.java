@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,6 +39,7 @@ import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
+import it.lanos.eventbuddy.util.Constants;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.Parser;
 
@@ -134,7 +136,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
                 Glide.with(getApplicationContext())
                         .load(storageReferenceFirst)
-                        .placeholder(R.drawable.logo)
+                        .error(Constants.PLACEHOLDER_IMAGE_URL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(firstJoined);
             }
             if (joinedUsers.size() >= 2){
@@ -143,7 +146,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
                 Glide.with(getApplicationContext())
                         .load(storageReferenceSecond)
-                        .placeholder(R.drawable.logo)
+                        .error(Constants.PLACEHOLDER_IMAGE_URL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(secondJoined);
             }
         }
