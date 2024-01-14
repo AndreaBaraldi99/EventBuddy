@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -166,6 +167,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
             TextView trackMeText = view.findViewById(R.id.trackMeText);
             MaterialSwitch trackMeSwitch = view.findViewById(R.id.trackMeSwitch);
+            CardView cardView = view.findViewById(R.id.active_card);
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
             if(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME,"track") == null){
                 sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, "track", String.valueOf(trackMeSwitch.isChecked()));
@@ -228,6 +230,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 mapFragment.requireView().setVisibility(View.GONE);
                 trackMeText.setVisibility(View.GONE);
                 trackMeSwitch.setVisibility(View.GONE);
+                cardView.setVisibility(View.GONE);
             }
 
 
