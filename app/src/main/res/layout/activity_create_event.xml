@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        app:boxBackgroundColor="?attr/backgroundColor"
+        app:boxBackgroundColor="@android:color/transparent"
         android:layout_marginEnd="26dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="26dp"
-        app:boxBackgroundColor="?attr/backgroundColor"
+        app:boxBackgroundColor="@android:color/transparent"
         app:endIconDrawable="@drawable/outline_calendar_today_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
@@ -78,7 +78,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="26dp"
         app:endIconDrawable="@drawable/outline_access_time_24"
-        app:boxBackgroundColor="?attr/backgroundColor"
+        app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/DateTextInputLayout">
@@ -102,6 +102,7 @@
         android:layout_marginEnd="26dp"
         app:endIconDrawable="@drawable/outline_location_on_24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:boxBackgroundColor="@android:color/transparent"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/TimeTextInputLayout">
 
