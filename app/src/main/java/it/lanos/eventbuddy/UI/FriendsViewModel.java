@@ -3,6 +3,8 @@ package it.lanos.eventbuddy.UI;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
@@ -34,6 +36,10 @@ public class FriendsViewModel extends ViewModel {
 
     public void removeFriend(User friend){
         iUserRepository.removeFriend(friend);
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return iUserRepository.getCurrentUser();
     }
 
 }

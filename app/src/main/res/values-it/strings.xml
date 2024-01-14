@@ -49,7 +49,7 @@
     <string name="add_description_hint">Inserisci la descrizione</string>
 
     <!-- Strings used for AddGuestFragment -->
-    <string name="add_guest_searchbar_hint">Inserisci il tuo username</string>
+    <string name="add_guest_searchbar_hint">Inserisci un username qui</string>
     <string name="search_bar_menu_title">Invita partecipanti</string>
     <string name="add_guest">Invita</string>
 

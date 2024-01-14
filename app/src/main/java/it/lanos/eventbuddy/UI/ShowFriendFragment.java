@@ -3,14 +3,13 @@ package it.lanos.eventbuddy.UI;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +21,6 @@ import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
 
 public class ShowFriendFragment extends DialogFragment {
-    private User friendToRemove;
     private View view;
     private List<User> invitedUsers;
     private List<UserEventCrossRef> joinedUsers;
