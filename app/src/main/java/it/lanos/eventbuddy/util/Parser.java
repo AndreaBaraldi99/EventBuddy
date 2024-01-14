@@ -75,7 +75,7 @@ public class Parser {
     public static String formatLocation(String location) {
         String firstSplit = location.split("/")[0];
         String[] secondSplit = firstSplit.split(",");
-        String showLocation = secondSplit[0]+",\n"+secondSplit[1];
+        String showLocation = secondSplit[0]+",\n"+secondSplit[1].substring(1);
         return showLocation;
     }
 

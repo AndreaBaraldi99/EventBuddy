@@ -6,6 +6,12 @@ import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +23,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ListView;
-
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
@@ -80,7 +78,7 @@ public class FriendsFragment extends Fragment {
 
         user = new ArrayList<>();
 
-        currentUser = iUserRepository.getCurrentUser();
+        currentUser = friendsViewModel.getCurrentUser();
         searchingUsers = new ArrayList<>();
         sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
     }

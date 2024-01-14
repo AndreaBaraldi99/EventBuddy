@@ -99,7 +99,10 @@ public class CreateEventActivity extends AppCompatActivity{
     public void openAddGuestDialog(
 
     ) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("iUsers", (ArrayList) userList);
         DialogFragment newFragment = new AddGuestsFragment();
+        newFragment.setArguments(args);
         newFragment.show(getSupportFragmentManager(), "add guests");
     }
 
@@ -191,6 +194,8 @@ public class CreateEventActivity extends AppCompatActivity{
                 this,
                 new CreateEventViewModelFactory(iSuggestionsRepository)).get(CreateEventViewModel.class);
 
+        userList = new ArrayList<>();
+
 
         //GESTIONE INDIRIZZO
         //iSuggestionsRepository
@@ -247,7 +252,7 @@ public class CreateEventActivity extends AppCompatActivity{
         suggestionListView.bringToFront();
 
 
-        userList = new ArrayList<>();
+
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
         Button addDescrButton = findViewById(R.id.DescriptionIconButton);

@@ -1,16 +1,18 @@
 package it.lanos.eventbuddy.UI;
 
-import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
-import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -18,11 +20,7 @@ import androidx.recyclerview.selection.StorageStrategy;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +31,15 @@ import it.lanos.eventbuddy.data.IUserRepository;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.util.ServiceLocator;
-import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class AddGuestsFragment extends DialogFragment {
 
     private List<User> userList;
+    private List<User> alreadyInvitedList;
     private AddGuestsRecyclerViewAdapter addGuestsRecyclerViewAdapter;
+    private FirebaseUser currentUser;
+    private FriendsViewModel friendsViewModel;
     private View view;
-    private SharedPreferencesUtil sharedPreferencesUtil;
-    private String lastUpdate;
 
     public AddGuestsFragment() {
         // Required empty public constructor
@@ -50,8 +48,13 @@ public class AddGuestsFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferencesUtil = new SharedPreferencesUtil(requireActivity().getApplication());
         userList = new ArrayList<>();
+        alreadyInvitedList = new ArrayList<>();
+        Bundle args = getArguments();
+        if(args != null){
+            alreadyInvitedList = args.getParcelableArrayList("iUsers");
+        }
+
     }
 
     @NonNull
@@ -79,21 +82,33 @@ public class AddGuestsFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        friendsViewModel = new ViewModelProvider(
+                this,
+                new FriendsViewModelFactory(iUserRepository)).get(FriendsViewModel.class);
+
+        currentUser = friendsViewModel.getCurrentUser();
+
+        friendsViewModel.searchUsers("").observe(getViewLifecycleOwner(), result -> {
+            if (result instanceof Result.UserSuccess) {
+
+                userList.clear();
+                userList.addAll(((Result.UserSuccess) result).getData());
+                if (userList != null) {
+                    String currentUserId = currentUser.getUid();
+                    userList.removeIf(user -> user.getUserId().equals(currentUserId));
+                }
+                addGuestsRecyclerViewAdapter.notifyDataSetChanged();
+
+            }});
 
         RecyclerView recyclerView = view.findViewById(R.id.add_guests_recycler_view);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.VERTICAL, false);
 
-        lastUpdate = "0";
-        if (sharedPreferencesUtil.readStringData(
-                SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE) != null) {
-            lastUpdate = sharedPreferencesUtil.readStringData(
-                    SHARED_PREFERENCES_FILE_NAME, LAST_UPDATE);
-        }
 
 
-        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, requireActivity().getApplication(), requireContext());
+        addGuestsRecyclerViewAdapter = new AddGuestsRecyclerViewAdapter(userList, alreadyInvitedList, requireActivity().getApplication(), requireContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(addGuestsRecyclerViewAdapter);
 
@@ -147,30 +162,10 @@ public class AddGuestsFragment extends DialogFragment {
     }
 
     private void handleSearch(String text) {
-        IUserRepository iUserRepository = ServiceLocator.getInstance().getUserRepository(requireActivity().getApplication());
+        friendsViewModel.searchUsers(text);
         if(text.equals("")){
             userList.clear();
             addGuestsRecyclerViewAdapter.notifyDataSetChanged();
-        }
-        else{
-            try {
-                iUserRepository.getFriends(Long.parseLong(lastUpdate)).observe(getViewLifecycleOwner(), result -> {
-                    if (result instanceof Result.UserSuccess) {
-                        userList.clear();
-                        List<User> allFriends = ((Result.UserSuccess) result).getData();
-                        Log.d("AddGuestsFragment", "handleSearch: " + allFriends.size());
-                        for (User friend : allFriends) {
-                            if (friend.getUsername().toLowerCase().startsWith(text.toLowerCase())) {
-                                userList.add(friend);
-                                addGuestsRecyclerViewAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
