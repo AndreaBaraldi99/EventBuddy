@@ -180,7 +180,19 @@ public class CreateEventActivity extends AppCompatActivity{
             }
         });
         pickerTime.addOnPositiveButtonClickListener(selection -> {
-            time = pickerTime.getHour() + ":" + pickerTime.getMinute();
+            String hour = "";
+            String minute = "";
+            if(pickerTime.getHour() < 10){
+                hour = "0"+pickerTime.getHour();
+            }else {
+                hour = String.valueOf(pickerTime.getHour());
+            }
+            if(pickerTime.getMinute() < 10){
+                minute = "0"+pickerTime.getMinute();
+            }else {
+                minute = String.valueOf(pickerTime.getMinute());
+            }
+            time = hour + ":" + minute;
             timeTextInputLayout.getEditText().setText(time);
         });
 
