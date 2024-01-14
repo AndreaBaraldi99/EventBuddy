@@ -1,0 +1,155 @@
+<resources>
+    <string name="app_name">EventBuddy</string>
+
+    <string name="null_text">null</string>
+
+    <!-- Strings used for WelcomeActivity -->
+    <string name="welcome_text">Benvenuti su</string>
+    <string name="login_text">Accedi</string>
+    <string name="signup_text">Registrati</string>
+
+    <!--Strings used for BottomNavigationBar -->
+    <string name="bottom_bar_event_title">Eventi</string>
+    <string name="bottom_bar_active_title">Active</string>
+    <string name="bottom_bar_friends_title">Amici</string>
+    <string name="settings_text">Impostazioni</string>
+
+    <!-- Strings used for EventFragment -->
+    <string name="event_fragment_title">Eventi in programma</string>
+    <string name="title_activity_create_event">CreateEventActivity</string>
+    <string name="item_date">Data </string>
+
+    <!-- Strings used for CreateEventActivity -->
+    <string name="create_event_title">Crea evento</string>
+    <string name="event_name_text">Nome dell\'evento</string>
+    <string name="event_date_text">Data</string>
+    <string name="event_time_text">Ora</string>
+    <string name="event_location_text">Posizione</string>
+    <string name="add_description_text">Aggiungi descrizione</string>
+    <string name="add_description_button">Bottone aggiungi descrizione</string>
+    <string name="add_guests_button">Bottone aggiungi invitati</string>
+    <string name="add_guests_text">Aggiungi invitati</string>
+    <string name="add_text">Aggiungi</string>
+    <string name="remove_text">Rimuovi</string>
+    <string name="date_picker_title">Seleziona la data</string>
+    <string name="date_picker_error">Non puoi scegliere una data precedente a quella odierna</string>
+    <string name="time_picker_title">Seleziona l\'orario</string>
+    <string name="fill_fields_error">Compila tutti i campi richiesti</string>
+
+    <!-- Strings used for EventDetailActivity -->
+    <string name="event_detail_join">Partecipa</string>
+    <string name="event_detail_do_not_join">Non partecipare</string>
+    <string name="event_detail_manager">Manager</string>
+    <string name="noone_partecipating">Nessuno partecipa,\nsarai il primo?</string>
+    <string name="people_partecipating">altri \nstanno partecipando</string>
+
+    <!-- Strings used for AddDescriptionFragment -->
+    <string name="confirm_text">Conferma</string>
+    <string name="cancel_text">Cancella</string>
+    <string name="add_description_hint">Inserisci la descrizione</string>
+
+    <!-- Strings used for AddGuestFragment -->
+    <string name="add_guest_searchbar_hint">Inserisci il tuo username</string>
+    <string name="search_bar_menu_title">Invita partecipanti</string>
+    <string name="add_guest">Invita</string>
+
+    <!-- String used for RegistrationActivity -->
+    <string name="already_have_account">Hai già un account?</string>
+    <string name="name_text">Nome</string>
+    <string name="nickname_text">Nickname</string>
+    <string name="email_text">E-mail</string>
+    <string name="password_text">Password</string>
+    <string name="not_valid_email">Indirizzo email invalido</string>
+    <string name="weak_registration_password">Password debole</string>
+    <string name="required_field">Campo richiesto</string>
+
+    <!-- String used for LoginActivity -->
+    <string name="no_account">Non hai un account?</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="rememberMe_checkbox">Ricordami</string>
+    <string name="enter_email">Inserisci la tua email:</string>
+    <string name="send_email">Invia email</string>
+
+    <!-- Strings used for FriendsFragment -->
+    <string name="friends_fragment_title">Gestisci amici</string>
+    <string name="friends_search_bar_hint">Cerca nuovi amici</string>
+    <string name="friends_your_list">La tua lista</string>
+
+    <!-- Strings used for SettingsFragment -->
+    <string name="settings_account">Account</string>
+    <string name="settings_advice_account">Gestione generale</string>
+    <string name="settings_preferences">Preferenze</string>
+    <string name="settings_advice_preferences"><![CDATA[Temi & lingua]]></string>
+    <string name="settings_notification">Notifiche</string>
+    <string name="settings_advice_notifications">Cambia configurazione notifiche</string>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_advice_privacy">Permessi</string>
+    <string name="settings_hint_current_user_password">Password attuale</string>
+    <string name="settings_new_password">Nuova password</string>
+    <string name="settings_confirm_password">Conferma la nuova password</string>
+    <string name="settings_button_change_password">Cambia password</string>
+    <string name="settings_preferences_language">Lingua</string>
+    <string name="settings_preferences_theme">Tema scuro</string>
+    <string name="change_nickname">Cambia Nickname</string>
+    <string name="insert_new_nickname">Inserisci il nuovo Nickname:</string>
+    <string name="nickname_not_empty">Il Nickname non può essere vuoto</string>
+    <string name="image_upload_failed">Caricamento non riuscito</string>
+    <string name="nickname">Nickname:</string>
+
+    <!-- Strings used for AccountSettingsActivity -->
+    <string name="settings_button_change_logout">Logout</string>
+    <string name="settings_button_delete_account">Cancella account</string>
+    <string name="password_doesnt_match">La password non corrisponde</string>
+    <string name="confirm_elimination">Conferma eliminazione</string>
+    <string name="insert_password">Insersci la tua password:</string>
+    <string name="wrong_delete_password">Password errata</string>
+
+    <!-- Strings used for Parser -->
+    <string name="jan_abr">Gen</string>
+    <string name="feb_abr">Feb</string>
+    <string name="march_abr">Mar</string>
+    <string name="apr_abr">Apr</string>
+    <string name="may_abr">Mag</string>
+    <string name="june_abr">Giu</string>
+    <string name="july_abr">Lug</string>
+    <string name="aug_abr">Ago</string>
+    <string name="sept_abr">Set</string>
+    <string name="oct_abr">Ott</string>
+    <string name="nov_abr">Nov</string>
+    <string name="dec_abr">Dic</string>
+
+    <string name="december">Dicembre</string>
+    <string name="january">Gennaio</string>
+    <string name="february">Febbraio</string>
+    <string name="march">Marzo</string>
+    <string name="april">Aprile</string>
+    <string name="may">Maggio</string>
+    <string name="june">Giugno</string>
+    <string name="july">Luglio</string>
+    <string name="august">Agosto</string>
+    <string name="september">Settembre</string>
+    <string name="october">Ottobre</string>
+    <string name="november">Novembre</string>
+
+    <!-- Strings used for Remove Friends Fragment -->
+    <string name="remove_friends_title">Rimuovi un amico</string>
+    <string name="remove_friends_text">Sei sicuro di voler eliminare questo amico dalla tua lista amici?</string>
+
+    <string name="language_it">Italiano</string>
+    <string name="language_en">English</string>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Italiano</item>
+    </string-array>
+
+    <!-- Strings used for ActiveFragment -->
+    <string name="no_active_event_found">Nessun evento entro 30 Minuti!</string>
+    <string name="notification_description">Tracciamento della posizione in background attivo</string>
+    <string name="active_fragment_track_me">Tracciami</string>
+
+    <!-- Strings used for UpdateEventsWorker -->
+    <string name="notification_content">Hai nuovi eventi!</string>
+    <string name="you">Tu</string>
+    <string name="partecipating">Partecipanti</string>
+</resources>

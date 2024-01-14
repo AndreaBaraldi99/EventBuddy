@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/eventFragment">
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="it.lanos.eventbuddy.UI.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_createEventActivity2"
+            app:destination="@id/createEventActivity2" />
+        <action
+            android:id="@+id/goToEventDetail"
+            app:destination="@id/eventDetailActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/createEventActivity2"
+        android:name="it.lanos.eventbuddy.UI.CreateEventActivity"
+        android:label="CreateEventActivity" />
+    <activity
+        android:id="@+id/eventDetailActivity"
+        android:name="it.lanos.eventbuddy.UI.EventDetailActivity"
+        android:label="EventDetailActivity" >
+    </activity>
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="it.lanos.eventbuddy.UI.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="it.lanos.eventbuddy.UI.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_accountSettingsActivity"
+            app:destination="@id/accountSettingsActivity" />
+        <action
+            android:id="@+id/action_settingsFragment_to_preferencesSettingsActivity"
+            app:destination="@id/preferencesSettingsActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/activeFragment"
+        android:name="it.lanos.eventbuddy.UI.ActiveFragment"
+        android:label="fragment_active"
+        tools:layout="@layout/fragment_active" />
+    <activity
+        android:id="@+id/accountSettingsActivity"
+        android:name="it.lanos.eventbuddy.UI.AccountSettingsActivity"
+        android:label="activity_account_settings"
+        tools:layout="@layout/activity_account_settings" />
+    <activity
+        android:id="@+id/preferencesSettingsActivity"
+        android:name="it.lanos.eventbuddy.UI.PreferencesSettingsActivity"
+        android:label="activity_preferences_settings"
+        tools:layout="@layout/activity_preferences_settings" />
+</navigation>

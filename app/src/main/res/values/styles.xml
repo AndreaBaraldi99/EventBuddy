@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="circular">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="eventDetail" parent="AppTheme">
+        <!-- Transparent system bars for edge-to-edge. -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="MyDatePicker" parent="ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_primary</item>
+        <item name="android:backgroundTint"> @color/md_theme_light_surface</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="MyTimePicker" parent="ThemeOverlay.Material3.MaterialTimePicker">
+        <item name="android:backgroundTint"> @color/md_theme_light_background</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+</resources>
