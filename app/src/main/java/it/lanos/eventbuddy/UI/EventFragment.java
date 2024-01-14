@@ -6,6 +6,9 @@ import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,12 +25,8 @@ import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +34,8 @@ import java.util.UUID;
 
 import it.lanos.eventbuddy.R;
 import it.lanos.eventbuddy.adapter.EventRecyclerViewAdapter;
-import it.lanos.eventbuddy.data.source.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.IEventsRepository;
+import it.lanos.eventbuddy.data.source.Worker.UpdateEventsWorker;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.DateTimeComparator;
@@ -172,7 +171,14 @@ public class EventFragment extends Fragment {
                 eventList.sort(new DateTimeComparator());
                 eventRecyclerViewAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
-        }});
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        requireView(),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void startCreateEventActivity() {

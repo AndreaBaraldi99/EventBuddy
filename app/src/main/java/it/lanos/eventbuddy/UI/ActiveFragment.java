@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -154,6 +155,12 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     eventList.sort(new DateTimeComparator());
                     this.selected = pickRightEvent(eventList);
                     //TODO: gestire eccezione
+                }
+                else if(result instanceof Result.Error){
+                    Snackbar.make(
+                            requireView(),
+                            ((Result.Error) result).getMessage(),
+                            Snackbar.LENGTH_SHORT).show();
                 }
             });
 
@@ -362,6 +369,12 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 for(MarkerOptions m : markers.values()){
                     googleMap.addMarker(m);
                 }
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        requireView(),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
