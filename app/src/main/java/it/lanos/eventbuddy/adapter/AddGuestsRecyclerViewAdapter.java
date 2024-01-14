@@ -29,6 +29,7 @@ import it.lanos.eventbuddy.util.Constants;
 public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuestsRecyclerViewAdapter.GuestViewHolder>{
     private final Application application;
     private final List<User> usersList;
+    private List<User> alreadyInvitedList;
     private SelectionTracker<Long> selectionTracker;
     private final Context context;
 
@@ -55,7 +56,6 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
             }
         });
         holder.bind(usersList.get(position));
-        holder.updateButtonState(isSelected);
     }
 
     @Override
@@ -66,8 +66,9 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         return 0;
     }
 
-    public AddGuestsRecyclerViewAdapter(List <User> usersList, Application application, Context context) {
+    public AddGuestsRecyclerViewAdapter(List <User> usersList, List<User> alreadyInvitedList, Application application, Context context) {
         this.usersList = usersList;
+        this.alreadyInvitedList = alreadyInvitedList;
         this.application = application;
         this.context = context;
     }
@@ -98,6 +99,27 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
         public void bind(User user) {
             userNameTextView.setText(user.getUsername());
 
+            addButton.setText(R.string.add_text);
+            for (User iter : alreadyInvitedList) {
+                if (iter.getUsername().equals(user.getUsername())) {
+                    addButton.setText(R.string.remove_text);
+                }
+            }
+
+            addButton.setOnClickListener(v -> {
+                String buttonText = addButton.getText().toString();
+
+                if (buttonText.equals(context.getString(R.string.add_text))) {
+                    addButton.setText(R.string.remove_text);
+                    alreadyInvitedList.add(usersList.get(getAdapterPosition()));
+                } else if (buttonText.equals(context.getString(R.string.remove_text))) {
+                    addButton.setText(R.string.add_text);
+                    alreadyInvitedList.remove(usersList.get(getAdapterPosition()));
+                }
+
+
+            });
+
             StorageReference storageReference = FirebaseStorage.getInstance().getReference()
                     .child(PROFILE_PICTURES_BUCKET_REFERENCE).child(user.getUserId());
 
@@ -105,6 +127,7 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
                     .load(storageReference)
                     .error(Constants.PLACEHOLDER_IMAGE_URL)
                     .into(userImage);
+
         }
 
         public boolean isItemSelected(int position) {
@@ -116,8 +139,12 @@ public class AddGuestsRecyclerViewAdapter extends RecyclerView.Adapter<AddGuests
 
             if (isSelected) {
                 addButton.setText(R.string.remove_text);
+                alreadyInvitedList.add(usersList.get(getAdapterPosition()));
+
+
             } else {
                 addButton.setText(R.string.add_text);
+                alreadyInvitedList.remove(usersList.get(getAdapterPosition()));
             }
         }
 
