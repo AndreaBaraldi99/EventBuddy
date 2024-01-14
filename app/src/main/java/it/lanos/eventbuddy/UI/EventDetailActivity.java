@@ -172,13 +172,13 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         handleButtonsConfiguration(usersInfo);
         join.setOnClickListener(v -> {
             join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_surfaceTint));
-            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_errorContainer));
             somethingChange = 1;
         });
 
         doNotJoin.setOnClickListener(v -> {
-            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_dark_error));
-            join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+            doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_error));
+            join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_secondaryContainer));
             somethingChange = 2;
         });
 
@@ -222,11 +222,11 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         for (UserEventCrossRef current : usersInfo) {
             if (current.getUserId().equals(this.user.getUserId()) && current.getJoined()) {
                 join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_surfaceTint));
-                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_errorContainer));
                 break;
             } else if (current.getUserId().equals(this.user.getUserId()) && !current.getJoined()) {
-                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_dark_error));
-                join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.divisor));
+                doNotJoin.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_error));
+                join.setBackgroundColor(ContextCompat.getColor(EventDetailActivity.this, R.color.md_theme_light_secondaryContainer));
                 break;
             }
         }

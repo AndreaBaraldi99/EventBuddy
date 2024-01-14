@@ -153,8 +153,8 @@
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="22dp"
         android:text="@string/settings_button_delete_account"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/red_delete_color"
+        android:textColor="@color/md_theme_light_onError"
+        android:backgroundTint="@color/md_theme_light_onErrorContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
