@@ -24,6 +24,5 @@ public interface IUserRepository {
     void removeFriend(@NonNull User friend);
     MutableLiveData<Result> getFriends(long lastUpdate);
     MutableLiveData<Result> uploadProfileImage(Bitmap bitmap);
-    MutableLiveData<Result> downloadProfileImage(String userId);
 
 }

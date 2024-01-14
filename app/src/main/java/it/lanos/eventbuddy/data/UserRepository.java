@@ -37,8 +37,6 @@ public class UserRepository implements IUserRepository, UserCallback {
     private final MutableLiveData<Result> usersSearchedMutableLiveData;
     private final DataEncryptionUtil dataEncryptionUtil;
     private final MutableLiveData<Result> friendsSearchedMutableLiveData;
-    private final MutableLiveData<Result> uploadProfileImageMutableLiveData;
-    private final MutableLiveData<Result> downloadProfileImageMutableLiveData;
     private User user;
 
     public UserRepository(BaseUserDataSource userDataSource, BaseUserRemoteDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
@@ -55,8 +53,6 @@ public class UserRepository implements IUserRepository, UserCallback {
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
         friendsSearchedMutableLiveData = new MutableLiveData<>();
-        uploadProfileImageMutableLiveData = new MutableLiveData<>();
-        downloadProfileImageMutableLiveData = new MutableLiveData<>();
     }
     @Override
     public MutableLiveData<Result> signIn(@NonNull String email, @NonNull String password) {
@@ -145,11 +141,9 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public MutableLiveData<Result> downloadProfileImage(String userId) {
-        imageRemoteDataSource.downloadImage(userId);
-        return downloadProfileImageMutableLiveData;
+    public void onImageUploaded(User user) {
+        userCloudDBDataSource.uploadImage(user);
     }
-
 
     @Override
     public void onSuccessFromFirebase(User user) {
@@ -247,27 +241,9 @@ public class UserRepository implements IUserRepository, UserCallback {
     }
 
     @Override
-    public void onImageUploaded(String result) {
-        Result.AuthSuccess resultSuccess = new Result.AuthSuccess(result);
-        uploadProfileImageMutableLiveData.postValue(resultSuccess);
-    }
-
-    @Override
     public void onImageUploadFailed(Exception e) {
         Result.Error resultError = new Result.Error(e.getLocalizedMessage());
-        uploadProfileImageMutableLiveData.postValue(resultError);
-    }
-
-    @Override
-    public void onImageDownloaded(byte[] image) {
-        Result.ImageSuccess resultSuccess = new Result.ImageSuccess(image);
-        downloadProfileImageMutableLiveData.postValue(resultSuccess);
-    }
-
-    @Override
-    public void onImageDownloadFailed(Exception e) {
-        Result.Error resultError = new Result.Error(e.getLocalizedMessage());
-        downloadProfileImageMutableLiveData.postValue(resultError);
+        userMutableLiveData.postValue(resultError);
     }
 
     @Override

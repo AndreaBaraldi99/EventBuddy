@@ -55,4 +55,7 @@ public class CloudDBService {
     public Task<Void> removeFriend(String uid, String friendId){
         return usersRef.document(uid).update(FRIENDS_FIREBASE, FieldValue.arrayRemove(friendId));
     }
+    public Task<Void> uploadImage(User user){
+        return usersRef.document(user.getUserId()).update("profilePictureUrl", user.getProfilePictureUrl());
+    }
 }

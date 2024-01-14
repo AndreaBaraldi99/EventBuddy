@@ -42,25 +42,10 @@ public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
                 user.setProfilePictureUrl(downloadUri.toString());
-                userCallback.onSuccessFromFirebase(user);
+                userCallback.onImageUploaded(user);
             }
         });
     }
 
-    @Override
-    public void downloadImage(String userID) {
-        StorageReference imageRef = storageReference.child(userID);
-        imageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(bytes -> {
-            if(bytes.length != 0) {
-                userCallback.onImageDownloaded(bytes);
-            }else{
-                Bitmap bitmap = ((BitmapDrawable) Objects.requireNonNull(AppCompatResources.getDrawable(application, R.drawable.logo))).getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                byte[] bitmapdata = stream.toByteArray();
-                userCallback.onImageDownloaded(bitmapdata);
-            }
-        }).addOnFailureListener(e -> userCallback.onImageDownloadFailed(e));
-    }
 
 }
