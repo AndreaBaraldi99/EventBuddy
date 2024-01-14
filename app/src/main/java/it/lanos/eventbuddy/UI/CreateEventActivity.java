@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -223,6 +224,12 @@ public class CreateEventActivity extends AppCompatActivity{
                 addressAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
             }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
         });
 
         createEventViewModel.getFeature("").observe(this, result -> {
@@ -236,6 +243,12 @@ public class CreateEventActivity extends AppCompatActivity{
                         +"_"
                         +selectedFeature.properties.coordinates.longitude;
 
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
         SearchView mySearchView = findViewById(R.id.locationSearch);

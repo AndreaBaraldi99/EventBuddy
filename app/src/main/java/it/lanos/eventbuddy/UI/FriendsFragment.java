@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -142,7 +143,14 @@ public class FriendsFragment extends Fragment {
                 this.user.clear();
                 this.user.addAll(((Result.UserSuccess) result).getData());
                 friendsAdapter.notifyDataSetChanged();
-            }});
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        requireView(),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
 
         friendsViewModel.searchUsers("").observe(getViewLifecycleOwner(), result -> {
             if (result instanceof Result.UserSuccess) {
@@ -154,8 +162,14 @@ public class FriendsFragment extends Fragment {
                     searchingUsers.removeIf(user -> user.getUserId().equals(currentUserId));
                 }
                 searchAdapter.notifyDataSetChanged();
-
-            }});
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        requireView(),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        });
 
         SearchView searchView = view.findViewById(R.id.searchBar);
         ListView listViewFriendsSearch = view.findViewById(R.id.listViewSearch);
