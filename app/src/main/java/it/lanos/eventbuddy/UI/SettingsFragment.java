@@ -260,6 +260,8 @@ public class SettingsFragment extends Fragment {
 
     // Upload user image to database
     private void uploadUserImage(Uri imageUri) {
+        Glide.with(requireContext()).clear(userImage);
+
         try {
             InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -274,8 +276,6 @@ public class SettingsFragment extends Fragment {
                           .diskCacheStrategy(DiskCacheStrategy.NONE)
                           .error(Constants.PLACEHOLDER_IMAGE_URL)
                           .into(userImage);
-
-                    //downloadUserImage();
 
                 } else {
                     Snackbar snackbar = Snackbar.make(
