@@ -4,6 +4,7 @@ import static it.lanos.eventbuddy.util.Constants.FIREBASE_EVENTS_COLLECTION;
 import static it.lanos.eventbuddy.util.Constants.FIREBASE_USERS_COLLECTION;
 import static it.lanos.eventbuddy.util.Constants.FRIENDS_FIREBASE;
 import static it.lanos.eventbuddy.util.Constants.INVITED_FIREBASE;
+import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURE_FIELD;
 import static it.lanos.eventbuddy.util.Constants.USERNAME_FIREBASE;
 import static it.lanos.eventbuddy.util.Constants.USER_ID_FIREBASE;
 
@@ -56,6 +57,6 @@ public class CloudDBService {
         return usersRef.document(uid).update(FRIENDS_FIREBASE, FieldValue.arrayRemove(friendId));
     }
     public Task<Void> uploadImage(User user){
-        return usersRef.document(user.getUserId()).update("profilePictureUrl", user.getProfilePictureUrl());
+        return usersRef.document(user.getUserId()).update(PROFILE_PICTURE_FIELD, user.getProfilePictureUrl());
     }
 }

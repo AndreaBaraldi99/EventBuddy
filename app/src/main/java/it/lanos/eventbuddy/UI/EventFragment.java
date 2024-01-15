@@ -1,7 +1,9 @@
 package it.lanos.eventbuddy.UI;
 
+import static it.lanos.eventbuddy.util.Constants.EVENT_NUM_KEY;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
+import static it.lanos.eventbuddy.util.Constants.WORK_NAME;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -195,13 +197,13 @@ public class EventFragment extends Fragment {
     private void startWork(){
         OneTimeWorkRequest newWorkRequest =
                 new OneTimeWorkRequest.Builder(UpdateEventsWorker.class)
-                        .setInputData(new Data.Builder().putString("eventNum", String.valueOf(eventList.size())).build())
+                        .setInputData(new Data.Builder().putString(EVENT_NUM_KEY, String.valueOf(eventList.size())).build())
                         .build();
-        WorkManager.getInstance(requireContext()).enqueueUniqueWork("eventNotify", ExistingWorkPolicy.REPLACE, newWorkRequest);
+        WorkManager.getInstance(requireContext()).enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.REPLACE, newWorkRequest);
     }
 
     private void stopWork(){
-        WorkManager.getInstance(requireContext()).cancelUniqueWork("eventNotify");
+        WorkManager.getInstance(requireContext()).cancelUniqueWork(WORK_NAME);
     }
 
     @Override

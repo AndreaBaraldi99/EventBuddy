@@ -41,15 +41,21 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     public UserRepository(BaseUserDataSource userDataSource, BaseUserRemoteDataSource userCloudDBDataSource, BaseUserLocalDataSource baseUserLocalDataSource, BaseImageRemoteDataSource baseImageRemoteDataSource, DataEncryptionUtil dataEncryptionUtil){
         this.dataEncryptionUtil = dataEncryptionUtil;
+
         this.userDataSource = userDataSource;
         this.userDataSource.setAuthCallback(this);
+
         this.userCloudDBDataSource = userCloudDBDataSource;
-        this.userLocalDataSource = baseUserLocalDataSource;
         this.userCloudDBDataSource.setUserCallback(this);
+
+        this.userLocalDataSource = baseUserLocalDataSource;
         this.userLocalDataSource.setUserCallback(this);
+
         this.imageRemoteDataSource = baseImageRemoteDataSource;
         this.imageRemoteDataSource.setUserCallback(this);
+
         readUser(dataEncryptionUtil);
+
         userMutableLiveData = new MutableLiveData<>();
         usersSearchedMutableLiveData = new MutableLiveData<>();
         friendsSearchedMutableLiveData = new MutableLiveData<>();
@@ -149,11 +155,9 @@ public class UserRepository implements IUserRepository, UserCallback {
     public void onSuccessFromFirebase(User user) {
         if(user == null) {
             //login
-            Log.d("Debug", "Login success");
             userCloudDBDataSource.getUser(userDataSource.getCurrentUser().getUid());
         } else {
             //register
-            Log.d("Debug", "Register success");
             UserFromRemote userFromRemote = new UserFromRemote(user.getUserId(), user.getUsername(), user.getFullName(), new ArrayList<>(), user.getProfilePictureUrl());
             userCloudDBDataSource.addUser(userFromRemote);
         }
@@ -161,7 +165,6 @@ public class UserRepository implements IUserRepository, UserCallback {
 
     @Override
     public void onSuccessFromOnlineDB(User user) {
-        Log.d("Debug", "Success from online db");
         try {
             dataEncryptionUtil.writeSecreteDataOnFile(ENCRYPTED_DATA_FILE_NAME, new Gson().toJson(user));
         } catch (Exception e) {

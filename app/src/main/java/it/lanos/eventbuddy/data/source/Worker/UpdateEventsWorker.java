@@ -1,6 +1,8 @@
 package it.lanos.eventbuddy.data.source.Worker;
 
 import static androidx.core.content.ContextCompat.getSystemService;
+import static it.lanos.eventbuddy.util.Constants.CHANNEL_ID;
+import static it.lanos.eventbuddy.util.Constants.EVENT_NUM_KEY;
 import static it.lanos.eventbuddy.util.Constants.FRESH_TIMEOUT;
 import static it.lanos.eventbuddy.util.Constants.LAST_UPDATE;
 import static it.lanos.eventbuddy.util.Constants.SHARED_PREFERENCES_FILE_NAME;
@@ -39,7 +41,7 @@ public class UpdateEventsWorker extends Worker {
         super(context, workerParams);
         sharedPreferencesUtil = new SharedPreferencesUtil(context);
         eventsRepository = ServiceLocator.getInstance().getEventsRepository((Application) context);
-        String input = workerParams.getInputData().getString("eventNum");
+        String input = workerParams.getInputData().getString(EVENT_NUM_KEY);
         if (input != null) {
             eventNum = Integer.parseInt(input);
         }
@@ -53,7 +55,7 @@ public class UpdateEventsWorker extends Worker {
             CharSequence name = getApplicationContext().getString(R.string.app_name);
             String description = getApplicationContext().getString(R.string.notification_content);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("newEvent_channel", name, importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this.
@@ -82,7 +84,7 @@ public class UpdateEventsWorker extends Worker {
                 if (newEventNum > eventNum) {
                     String title = getApplicationContext().getString(R.string.app_name);
                     String content = getApplicationContext().getString(R.string.notification_content);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "newEvent_channel")
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                             .setSmallIcon(R.drawable.logo)
                             .setContentTitle(title)
                             .setContentText(content)

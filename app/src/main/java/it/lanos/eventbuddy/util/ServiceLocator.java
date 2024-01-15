@@ -27,8 +27,8 @@ import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
-import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteMapboxDataSource;
-import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteMapboxDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteRemoteDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -72,7 +72,7 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application), sharedPreferencesUtil);
 
-        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource(application);
+        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource();
 
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
@@ -84,7 +84,7 @@ public class ServiceLocator {
 
         MapboxService mapboxService = getMapboxApiService();
 
-        BaseAutocompleteMapboxDataSource mapboxDataSource = new AutoCompleteMapboxDataSource(mapboxService);
+        BaseAutocompleteRemoteDataSource mapboxDataSource = new AutoCompleteRemoteDataSource(mapboxService);
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 

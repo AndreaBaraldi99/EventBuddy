@@ -21,11 +21,9 @@ import it.lanos.eventbuddy.data.source.models.User;
 
 public class ImageRemoteDataSource extends BaseImageRemoteDataSource{
     private final StorageReference storageReference;
-    private final Application application;
 
-    public ImageRemoteDataSource(Application application) {
+    public ImageRemoteDataSource() {
         storageReference = FirebaseStorage.getInstance().getReference().child(PROFILE_PICTURES_BUCKET_REFERENCE);
-        this.application = application;
     }
 
     @Override
