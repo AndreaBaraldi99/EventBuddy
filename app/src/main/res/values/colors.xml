@@ -14,6 +14,7 @@
     <color name="md_theme_light_tertiaryContainer">#C0E9FA</color>
     <color name="md_theme_light_onTertiaryContainer">#001F28</color>
     <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="delete_account_button">#d11a2a</color>
     <color name="md_theme_light_errorContainer">#FFDAD6</color>
     <color name="md_theme_light_onError">#FFFFFF</color>
     <color name="md_theme_light_onErrorContainer">#410002</color>

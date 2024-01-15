@@ -16,4 +16,5 @@ public abstract class BaseUserRemoteDataSource {
     public abstract void getFriends(String uid);
     public abstract void addFriend(String uid, User friend);
     public abstract void removeFriend(String uid, User friend);
+    public abstract void uploadImage(User user);
 }

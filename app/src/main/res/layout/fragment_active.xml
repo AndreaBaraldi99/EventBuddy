@@ -19,9 +19,8 @@
             app:layout_constraintTop_toTopOf="parent">
         </ImageView>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/active_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/active_card"
             android:layout_width="350dp"
             android:layout_height="220dp"
             android:layout_marginStart="16dp"
@@ -29,7 +28,15 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag" />
+            app:layout_constraintTop_toBottomOf="@+id/appbar_active_frag"
+            app:cardCornerRadius="20dp">
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/active_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/appbar_active_frag"
@@ -99,7 +106,6 @@
             android:id="@+id/googleMapsButton"
             style="?attr/materialIconButtonFilledStyle"
             android:contentDescription="@string/null_text"
-            android:backgroundTint="@color/md_theme_light_inverseSurface"
             app:icon="@drawable/baseline_directions_car_24"
             android:layout_width="48dp"
             android:layout_height="48dp"

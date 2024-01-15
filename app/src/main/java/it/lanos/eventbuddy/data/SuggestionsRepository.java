@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 
 import it.lanos.eventbuddy.data.source.SuggestionsCallback;
-import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteMapboxDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteRemoteDataSource;
 import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.mapbox.FeatureApiResponse;
@@ -17,9 +17,9 @@ import it.lanos.eventbuddy.util.DataEncryptionUtil;
 public class SuggestionsRepository implements SuggestionsCallback, ISuggestionsRepository {
     private final MutableLiveData<Result> suggestionsLiveData;
     private final MutableLiveData<Result> featureLiveData;
-    private final BaseAutocompleteMapboxDataSource mapboxDataSource;
+    private final BaseAutocompleteRemoteDataSource mapboxDataSource;
     private User user;
-    public SuggestionsRepository(BaseAutocompleteMapboxDataSource mapboxDataSource, DataEncryptionUtil dataEncryptionUtil) {
+    public SuggestionsRepository(BaseAutocompleteRemoteDataSource mapboxDataSource, DataEncryptionUtil dataEncryptionUtil) {
         this.mapboxDataSource = mapboxDataSource;
         this.mapboxDataSource.setSuggestionsCallback(this);
         suggestionsLiveData = new MutableLiveData<>();

@@ -3,20 +3,17 @@ public class Constants {
     public static final String NEWS_DATABASE_NAME = "eventbuddyDB";
     public static final int DATABASE_VERSION = 1;
     public static final int FRESH_TIMEOUT = 10000;
-    public static final String DATASTORE_NAME = "eventbuddyDatastore";
     public static final String LAST_UPDATE = "last_update";
     public static final String ENCRYPTED_DATA_FILE_NAME = "it.lanos.eventbuddy.encrypted_file.txt";
     public static final String QUERY_PARAMETER = "q";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String SESSION_TOKEN = "session_token";
-    public static final String ACCESS_KEY = "pk.eyJ1IjoiYW5kcmVhOTlyIiwiYSI6ImNsYXRkMzNzbDBubHIzcG1zZG04aTMyaWcifQ.Eyuo1vPibhoYHHJpEtcU4w";
     public static final String API_KEY_ERROR = "api_key_error";
     public static final String TOKEN_PARAMETER = "id";
     public static final String BASE_URL = "https://api.mapbox.com/";
     public static final String SHARED_PREFERENCES_FILE_NAME = "it.lanos.eventbuddy.preferences";
     public static final String DATABASE_URL = "https://eventbuddy-e5fe9-default-rtdb.europe-west1.firebasedatabase.app/";
     public static final String FIREBASE_LOCATION_COLLECTION = "locations";
-    public static final String ON_UPLOAD_SUCCESS = "Upload Success";
     public static final String PROFILE_PICTURES_BUCKET_REFERENCE = "images";
     public static final String FIREBASE_USERS_COLLECTION = "users";
     public static final String FIREBASE_EVENTS_COLLECTION = "events";
@@ -26,9 +23,11 @@ public class Constants {
     public static final String FRIENDS_FIREBASE = "friends";
     public static final String SUGGESTIONS_URL = "search/searchbox/v1/suggest";
     public static final String FEATURE_URL = "search/searchbox/v1/retrieve/{id}";
-    public static final String USER_NOT_FOUND = "User not found";
     public static final String MAPBOX_ERROR = "error";
     public static final String LAST_UPDATE_FRIENDS = "last_update_friends";
     public static final String PLACEHOLDER_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/eventbuddy-e5fe9.appspot.com/o/images%2FPlaceholder.png?alt=media&token=ff3b43ce-0eec-4215-ac0d-efe485aec329";
-    public static final String EVENT_WORKER_ID = "event_worker_id";
+    public static final String CHANNEL_ID = "newEvent_channel";
+    public static final String WORK_NAME = "eventNotify";
+    public static final String EVENT_NUM_KEY = "eventNum";
+    public static final String PROFILE_PICTURE_FIELD = "profilePictureUrl";
 }

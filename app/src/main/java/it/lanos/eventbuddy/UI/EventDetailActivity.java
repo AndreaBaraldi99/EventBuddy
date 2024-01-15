@@ -3,6 +3,7 @@ package it.lanos.eventbuddy.UI;
 import static it.lanos.eventbuddy.util.Constants.ENCRYPTED_DATA_FILE_NAME;
 import static it.lanos.eventbuddy.util.Constants.PROFILE_PICTURES_BUCKET_REFERENCE;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,13 +12,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,22 +36,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.lanos.eventbuddy.R;
-import it.lanos.eventbuddy.data.EventRepository;
 import it.lanos.eventbuddy.data.source.models.EventWithUsers;
 import it.lanos.eventbuddy.data.source.models.User;
 import it.lanos.eventbuddy.data.source.models.UserEventCrossRef;
+import it.lanos.eventbuddy.util.Constants;
 import it.lanos.eventbuddy.util.DataEncryptionUtil;
 import it.lanos.eventbuddy.util.Parser;
-import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private EventWithUsers event;
+    private List<UserEventCrossRef> joinedUsers;
     private User user;
     private int somethingChange = 0;
     Button join;
     Button doNotJoin;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +64,6 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             returnResultToCallingActivity(somethingChange, event.getEvent().getEventId());
             finish();
         });
-
-        EventRepository iEventsRepository = (EventRepository)
-                ServiceLocator.getInstance().getEventsRepository(this.getApplication());
 
         readUser(new DataEncryptionUtil(this.getApplication()));
 
@@ -88,7 +88,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         assert event != null;
         List<UserEventCrossRef> usersInfo = event.getUserEventCrossRefs();
-        List<UserEventCrossRef> joinedUsers =  getJoinedUsers(usersInfo);
+
+        joinedUsers = new ArrayList<>();
+        joinedUsers =  getJoinedUsers(usersInfo);
 
 
 
@@ -106,6 +108,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
+        detailPartecipants.setOnClickListener(v -> openPartecipantsDialog());
+        buttonInfoJoined.setOnClickListener(v -> openPartecipantsDialog());
+
         numberPartecipants.setText("+"+joinedUsers.size());
         if(joinedUsers.size() == 0)
             detailPartecipants.setText(getString(R.string.noone_partecipating));
@@ -122,28 +127,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
             }
             detailPartecipants.setText(luckyNickname + " & " + (joinedUsers.size() - 1) + " " + getString(R.string.people_partecipating));
 
-            buttonInfoJoined.setOnClickListener(v -> {
-                Bundle args = new Bundle();
-                args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
-                args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
 
-                ShowFriendFragment dialogFragment = new ShowFriendFragment();
-                dialogFragment.setArguments(args);
-                dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
-            });
 
-            detailPartecipants.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle args = new Bundle();
-                    args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
-                    args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
-
-                    ShowFriendFragment dialogFragment = new ShowFriendFragment();
-                    dialogFragment.setArguments(args);
-                    dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
-                }
-            });
 
             if (joinedUsers.size() >= 1) {
                 StorageReference storageReferenceFirst = FirebaseStorage.getInstance().getReference()
@@ -151,7 +136,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
                 Glide.with(getApplicationContext())
                         .load(storageReferenceFirst)
-                        .placeholder(R.drawable.logo)
+                        .error(Constants.PLACEHOLDER_IMAGE_URL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(firstJoined);
             }
             if (joinedUsers.size() >= 2){
@@ -160,7 +146,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
                 Glide.with(getApplicationContext())
                         .load(storageReferenceSecond)
-                        .placeholder(R.drawable.logo)
+                        .error(Constants.PLACEHOLDER_IMAGE_URL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(secondJoined);
             }
         }
@@ -199,7 +186,6 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         String formatted_time = Parser.formatTime(date_time);
         String location = event.getEvent().getLocation();
         String showLocation = Parser.formatLocation(location);
-        double[] cord = Parser.getCord(location);
 
         eventDate.setText(formatted_date);
         eventHour.setText(formatted_time); //TODO: Dividere la data dall'ora
@@ -207,6 +193,16 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         eventAddress.setText(showLocation);
         eventDescription.setText(event.getEvent().getDescription());
 
+    }
+
+    private void openPartecipantsDialog(){
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("iUsers", (ArrayList) event.getUsers());
+        args.putParcelableArrayList("pUsers", (ArrayList) joinedUsers);
+
+        ShowFriendFragment dialogFragment = new ShowFriendFragment();
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getSupportFragmentManager(), "show_friends_dialog");
     }
 
     private List<UserEventCrossRef> getJoinedUsers(List<UserEventCrossRef> usersInfo) {
@@ -248,10 +244,10 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
 
 
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         String location = event.getEvent().getLocation();
-        String showLocation = Parser.formatLocation(location);
         double[] cord = Parser.getCord(location);
         LatLng place = new LatLng(cord[0], cord[1]);
         googleMap.addMarker(new MarkerOptions()

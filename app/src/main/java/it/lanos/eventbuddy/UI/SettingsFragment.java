@@ -227,7 +227,9 @@ public class SettingsFragment extends Fragment {
                 .load(storageReference)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error( Glide.with(requireContext())
-                        .load(Constants.PLACEHOLDER_IMAGE_URL))
+                        .load(Constants.PLACEHOLDER_IMAGE_URL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                )
                 .into(userImage);
 
     }
@@ -268,8 +270,12 @@ public class SettingsFragment extends Fragment {
                     Glide.get(requireContext()).clearMemory();
 
                   Glide.with(requireContext())
-                            .load(imageUri)
-                            .into(userImage);
+                          .load(imageUri)
+                          .diskCacheStrategy(DiskCacheStrategy.NONE)
+                          .error(Constants.PLACEHOLDER_IMAGE_URL)
+                          .into(userImage);
+
+                    //downloadUserImage();
 
                 } else {
                     Snackbar snackbar = Snackbar.make(

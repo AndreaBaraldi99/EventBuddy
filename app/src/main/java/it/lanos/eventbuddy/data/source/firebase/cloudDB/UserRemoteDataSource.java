@@ -71,5 +71,10 @@ public class UserRemoteDataSource extends BaseUserRemoteDataSource {
         }).addOnFailureListener(e -> userCallback.onFailureFriendSearched(e));
     }
 
+    @Override
+    public void uploadImage(User user) {
+        service.uploadImage(user).addOnSuccessListener(aVoid -> userCallback.onSuccessFromOnlineDB(user)).addOnFailureListener(e -> userCallback.onImageUploadFailed(e));
+    }
+
 
 }

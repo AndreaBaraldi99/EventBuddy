@@ -2,7 +2,7 @@ package it.lanos.eventbuddy.data.source.mapbox;
 
 import it.lanos.eventbuddy.data.source.SuggestionsCallback;
 
-public abstract class BaseAutocompleteMapboxDataSource {
+public abstract class BaseAutocompleteRemoteDataSource {
     protected SuggestionsCallback suggestionsCallback;
     public void setSuggestionsCallback(SuggestionsCallback suggestionsCallback) {
         this.suggestionsCallback = suggestionsCallback;

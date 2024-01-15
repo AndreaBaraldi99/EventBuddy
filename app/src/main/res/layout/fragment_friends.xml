@@ -16,7 +16,7 @@
             android:id="@+id/appbar_active_frag"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-           app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:title="@string/friends_fragment_title"
             app:titleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge" />
@@ -28,7 +28,6 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="50dp"
-            app:dividerColor="@color/md_theme_light_surfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar" />

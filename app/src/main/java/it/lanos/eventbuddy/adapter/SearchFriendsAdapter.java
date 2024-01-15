@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -59,6 +60,7 @@ public class SearchFriendsAdapter extends ArrayAdapter<User> {
         Glide.with(context)
                 .load(storageReference)
                 .error(Constants.PLACEHOLDER_IMAGE_URL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(userImage);
 
         //SETUP LIST ITEM FOR CONSISTENCY

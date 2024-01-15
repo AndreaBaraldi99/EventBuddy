@@ -1,11 +1,13 @@
 package it.lanos.eventbuddy.data.source.mapbox;
 
-import static it.lanos.eventbuddy.util.Constants.ACCESS_KEY;
 import static it.lanos.eventbuddy.util.Constants.API_KEY_ERROR;
 import static it.lanos.eventbuddy.util.Constants.MAPBOX_ERROR;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 
+import it.lanos.eventbuddy.BuildConfig;
 import it.lanos.eventbuddy.data.services.MapboxService;
 import it.lanos.eventbuddy.data.source.models.mapbox.FeatureApiResponse;
 import it.lanos.eventbuddy.data.source.models.mapbox.SuggestionsApiResponse;
@@ -13,14 +15,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AutoCompleteMapboxDataSource extends BaseAutocompleteMapboxDataSource{
+public class AutoCompleteRemoteDataSource extends BaseAutocompleteRemoteDataSource {
     private final MapboxService mapboxService;
-    public AutoCompleteMapboxDataSource(MapboxService mapboxService) {
+    public AutoCompleteRemoteDataSource(MapboxService mapboxService) {
         this.mapboxService = mapboxService;
     }
     @Override
     public void getSuggestions(String query, String sessionKey) {
-        Call<SuggestionsApiResponse> suggestionsResponseCall = mapboxService.getSuggestions(query, ACCESS_KEY, sessionKey);
+        Call<SuggestionsApiResponse> suggestionsResponseCall = mapboxService.getSuggestions(query, BuildConfig.MAPBOX_API_KEY, sessionKey);
         suggestionsResponseCall.enqueue(new Callback<SuggestionsApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<SuggestionsApiResponse> call, @NonNull Response<SuggestionsApiResponse> response) {
@@ -38,7 +40,7 @@ public class AutoCompleteMapboxDataSource extends BaseAutocompleteMapboxDataSour
     }
     @Override
     public void getFeature(String id, String sessionKey) {
-        Call<FeatureApiResponse> suggestionsResponseCall = mapboxService.getFeature(id, ACCESS_KEY, sessionKey);
+        Call<FeatureApiResponse> suggestionsResponseCall = mapboxService.getFeature(id, BuildConfig.MAPBOX_API_KEY, sessionKey);
         suggestionsResponseCall.enqueue(new Callback<FeatureApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<FeatureApiResponse> call, @NonNull Response<FeatureApiResponse> response) {

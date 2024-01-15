@@ -6,18 +6,17 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import it.lanos.eventbuddy.data.UserRepository;
-import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.source.models.User;
 
 public class UserDataSource extends BaseUserDataSource {
     private static final String TAG = UserDataSource.class.getSimpleName();
-    private final AuthService authService;
+    private final FirebaseAuth mAuth;
 
-    public UserDataSource(AuthService authService) {
-        this.authService = authService;
+    public UserDataSource() {
+        this.mAuth = FirebaseAuth.getInstance();
     }
 
     /***
@@ -27,10 +26,10 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void register(@NonNull String fullName, @NonNull String userName, @NonNull String email, @NonNull String password) {
-        authService.register(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
-                        String currentUserId = authService.getCurrentUser().getUid();
+                        String currentUserId = mAuth.getCurrentUser().getUid();
                         authCallback.onSuccessFromFirebase(new User(currentUserId, userName, fullName, 0, PLACEHOLDER_IMAGE_URL));
                     } else {
                         authCallback.onFailureFromRemote(task.getException());
@@ -46,7 +45,7 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void signIn(@NonNull String email, @NonNull String password) {
-        authService.signIn(email, password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         authCallback.onSuccessFromFirebase(null);
@@ -61,7 +60,7 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void signOut() {
-        authService.signOut();
+        mAuth.signOut();
         authCallback.onSignOutSuccess();
     }
 
@@ -69,7 +68,10 @@ public class UserDataSource extends BaseUserDataSource {
      * Delete the user account
      */
     public void deleteUser() {
-        authService.deleteUser()
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        signOut();
+        assert currentUser != null;
+        currentUser.delete()
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()) {
                         authCallback.onDeleteSuccess();
@@ -85,14 +87,14 @@ public class UserDataSource extends BaseUserDataSource {
     @Override
     public void changePassword(@NonNull String oldPassword, @NonNull String newPassword){
 
-        FirebaseUser currentUser = authService.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         AuthCredential credential = EmailAuthProvider
                 .getCredential(currentUser.getEmail(), oldPassword);
 
         currentUser.reauthenticate(credential).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                authService.changePassword(newPassword);
+                currentUser.updatePassword(newPassword);
                 authCallback.onChangePasswordSuccess();
             } else {
                 authCallback.onFailureFromRemote(task.getException());
@@ -106,7 +108,7 @@ public class UserDataSource extends BaseUserDataSource {
      */
     @Override
     public void resetPassword(@NonNull String email) {
-        authService.resetPassword(email)
+        mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         authCallback.onResetPasswordSuccess();
@@ -117,7 +119,7 @@ public class UserDataSource extends BaseUserDataSource {
     }
     @Override
     public FirebaseUser getCurrentUser() {
-        return authService.getCurrentUser();
+        return mAuth.getCurrentUser();
     }
 
 

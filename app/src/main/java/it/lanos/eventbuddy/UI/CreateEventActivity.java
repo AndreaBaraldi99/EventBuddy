@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -99,7 +100,10 @@ public class CreateEventActivity extends AppCompatActivity{
     public void openAddGuestDialog(
 
     ) {
+        Bundle args = new Bundle();
+        args.putParcelableArrayList("iUsers", (ArrayList) userList);
         DialogFragment newFragment = new AddGuestsFragment();
+        newFragment.setArguments(args);
         newFragment.show(getSupportFragmentManager(), "add guests");
     }
 
@@ -180,7 +184,19 @@ public class CreateEventActivity extends AppCompatActivity{
             }
         });
         pickerTime.addOnPositiveButtonClickListener(selection -> {
-            time = pickerTime.getHour() + ":" + pickerTime.getMinute();
+            String hour = "";
+            String minute = "";
+            if(pickerTime.getHour() < 10){
+                hour = "0"+pickerTime.getHour();
+            }else {
+                hour = String.valueOf(pickerTime.getHour());
+            }
+            if(pickerTime.getMinute() < 10){
+                minute = "0"+pickerTime.getMinute();
+            }else {
+                minute = String.valueOf(pickerTime.getMinute());
+            }
+            time = hour + ":" + minute;
             timeTextInputLayout.getEditText().setText(time);
         });
 
@@ -190,6 +206,8 @@ public class CreateEventActivity extends AppCompatActivity{
         createEventViewModel = new ViewModelProvider(
                 this,
                 new CreateEventViewModelFactory(iSuggestionsRepository)).get(CreateEventViewModel.class);
+
+        userList = new ArrayList<>();
 
 
         //GESTIONE INDIRIZZO
@@ -206,6 +224,12 @@ public class CreateEventActivity extends AppCompatActivity{
                 addressAdapter.notifyDataSetChanged();
                 //TODO: gestire eccezione
             }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
+            }
         });
 
         createEventViewModel.getFeature("").observe(this, result -> {
@@ -219,6 +243,12 @@ public class CreateEventActivity extends AppCompatActivity{
                         +"_"
                         +selectedFeature.properties.coordinates.longitude;
 
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
         SearchView mySearchView = findViewById(R.id.locationSearch);
@@ -247,7 +277,7 @@ public class CreateEventActivity extends AppCompatActivity{
         suggestionListView.bringToFront();
 
 
-        userList = new ArrayList<>();
+
 
         ExtendedFloatingActionButton addButton = findViewById(R.id.extended_fab);
         Button addDescrButton = findViewById(R.id.DescriptionIconButton);

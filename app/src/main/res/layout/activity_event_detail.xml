@@ -16,11 +16,11 @@
         <ImageView
             android:id="@+id/sfondo"
             android:layout_width="match_parent"
-            android:layout_height="730dp"
+            android:layout_height="680dp"
             android:background="@drawable/sfondo"
             android:contentDescription="@string/null_text"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="-45dp" />
+            tools:layout_editor_absoluteX="-35dp" />
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/detail_event_top_appbar"
@@ -37,7 +37,7 @@
             android:id="@+id/event_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="75dp"
             android:fontFamily="@font/robotoserif_regular"
             android:textSize="28sp"
@@ -49,7 +49,7 @@
             android:id="@+id/event_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="125dp"
             android:fontFamily="@font/robotocondensed_regular"
             android:textSize="22sp"
@@ -59,13 +59,15 @@
 
         <TextView
             android:id="@+id/event_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:autoSizeTextType="uniform"
             android:fontFamily="@font/robotoserif_regular"
             android:maxLines="2"
-            android:textSize="40sp"
+            app:layout_constraintEnd_toStartOf="@+id/event_manager_avatar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_time"
             tools:text="Title" />
@@ -74,8 +76,7 @@
             android:id="@+id/event_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/robotoslab_regular"
             android:text=""
             android:textSize="14sp"
@@ -88,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="85dp"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/null_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_name"
@@ -123,9 +124,8 @@
             android:layout_width="43dp"
             android:layout_height="43dp"
             android:layout_marginStart="77dp"
-            android:layout_marginTop="403dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:shapeAppearanceOverlay="@style/circular"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -134,9 +134,8 @@
             android:layout_width="43dp"
             android:layout_height="43dp"
             android:layout_marginStart="109dp"
-            android:layout_marginTop="403dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:shapeAppearanceOverlay="@style/circular"
             tools:srcCompat="@tools:sample/avatars" />
 
@@ -145,11 +144,11 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="148dp"
-            android:layout_marginTop="407dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/circle"
             android:backgroundTint="#000000"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/guideline3">
 
             <TextView
                 android:id="@+id/event_number_partecipants"
@@ -168,29 +167,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="188dp"
-            android:layout_marginTop="406dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/robotoslab_semibold"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
             tools:text="partecipating" />
 
         <TextView
             android:id="@+id/event_description"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/robotoslab_regular"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             tools:text="Description" />
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/active_map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="340dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/map_card"
+            android:layout_width="0dp"
             android:layout_height="220dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
@@ -198,8 +198,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_description"
-            map:cameraZoom="13" />
-
+            app:cardCornerRadius="20dp">
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/active_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                map:cameraZoom="13"
+                />
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/button_join"
@@ -209,9 +216,10 @@
             android:layout_marginTop="16dp"
             android:drawableStart="@drawable/baseline_check_24"
             android:drawableTint="#FFFFFF"
+            android:insetBottom="30dp"
             android:text="@string/event_detail_join"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/active_map" />
+            app:layout_constraintTop_toBottomOf="@+id/map_card" />
 
         <Button
             android:id="@+id/button_do_not_join"
@@ -222,16 +230,17 @@
             android:backgroundTint="@color/md_theme_dark_error"
             android:drawableStart="@drawable/baseline_close_24"
             android:drawableTint="#FFFFFF"
+            android:insetBottom="30dp"
             android:text="@string/event_detail_do_not_join"
             app:layout_constraintStart_toEndOf="@+id/button_join"
-            app:layout_constraintTop_toBottomOf="@+id/active_map" />
+            app:layout_constraintTop_toBottomOf="@+id/map_card" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="385dp" />
+            app:layout_constraintGuide_begin="369dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

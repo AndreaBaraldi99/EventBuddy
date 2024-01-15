@@ -1,7 +1,6 @@
 package it.lanos.eventbuddy.util;
 
 import android.app.Application;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.lanos.eventbuddy.data.EventRepository;
@@ -11,7 +10,6 @@ import it.lanos.eventbuddy.data.IEventsRepository;
 import it.lanos.eventbuddy.data.LocationRepository;
 import it.lanos.eventbuddy.data.SuggestionsRepository;
 import it.lanos.eventbuddy.data.UserRepository;
-import it.lanos.eventbuddy.data.services.AuthService;
 import it.lanos.eventbuddy.data.services.CloudDBService;
 import it.lanos.eventbuddy.data.services.MapboxService;
 import it.lanos.eventbuddy.data.ILocationRepository;
@@ -29,8 +27,8 @@ import it.lanos.eventbuddy.data.source.local.datasource.BaseUserLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.datasource.EventsLocalDataSource;
 import it.lanos.eventbuddy.data.source.local.EventsRoomDatabase;
 import it.lanos.eventbuddy.data.source.local.datasource.UserLocalDataSource;
-import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteMapboxDataSource;
-import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteMapboxDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.AutoCompleteRemoteDataSource;
+import it.lanos.eventbuddy.data.source.mapbox.BaseAutocompleteRemoteDataSource;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -65,8 +63,7 @@ public class ServiceLocator {
     }
 
     public IUserRepository getUserRepository(Application application) {
-        AuthService authService = new AuthService(FirebaseAuth.getInstance());
-        UserDataSource userDataSource = new UserDataSource(authService);
+        UserDataSource userDataSource = new UserDataSource();
 
         CloudDBService cloudDBService = new CloudDBService(FirebaseFirestore.getInstance());
         BaseUserRemoteDataSource cloudDBDataSource = new UserRemoteDataSource(cloudDBService);
@@ -75,7 +72,7 @@ public class ServiceLocator {
 
         BaseUserLocalDataSource userLocalDataSource = new UserLocalDataSource(getDatabase(application), sharedPreferencesUtil);
 
-        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource(application);
+        BaseImageRemoteDataSource imageRemoteDataSource = new ImageRemoteDataSource();
 
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
@@ -87,7 +84,7 @@ public class ServiceLocator {
 
         MapboxService mapboxService = getMapboxApiService();
 
-        BaseAutocompleteMapboxDataSource mapboxDataSource = new AutoCompleteMapboxDataSource(mapboxService);
+        BaseAutocompleteRemoteDataSource mapboxDataSource = new AutoCompleteRemoteDataSource(mapboxService);
 
         DataEncryptionUtil dataEncryptionUtil = new DataEncryptionUtil(application);
 

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -154,6 +156,12 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                     this.selected = pickRightEvent(eventList);
                     //TODO: gestire eccezione
                 }
+                else if(result instanceof Result.Error){
+                    Snackbar.make(
+                            requireView(),
+                            ((Result.Error) result).getMessage(),
+                            Snackbar.LENGTH_SHORT).show();
+                }
             });
 
 
@@ -166,6 +174,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
             TextView noEvent = view.findViewById(R.id.noActiveEventFound);
             TextView trackMeText = view.findViewById(R.id.trackMeText);
             MaterialSwitch trackMeSwitch = view.findViewById(R.id.trackMeSwitch);
+            CardView cardView = view.findViewById(R.id.active_card);
             SharedPreferencesUtil sharedPreferencesUtil = new SharedPreferencesUtil(getContext());
             if(sharedPreferencesUtil.readStringData(SHARED_PREFERENCES_FILE_NAME,"track") == null){
                 sharedPreferencesUtil.writeStringData(SHARED_PREFERENCES_FILE_NAME, "track", String.valueOf(trackMeSwitch.isChecked()));
@@ -228,6 +237,7 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 mapFragment.requireView().setVisibility(View.GONE);
                 trackMeText.setVisibility(View.GONE);
                 trackMeSwitch.setVisibility(View.GONE);
+                cardView.setVisibility(View.GONE);
             }
 
 
@@ -359,6 +369,12 @@ public class ActiveFragment extends Fragment implements OnMapReadyCallback {
                 for(MarkerOptions m : markers.values()){
                     googleMap.addMarker(m);
                 }
+            }
+            else if(result instanceof Result.Error){
+                Snackbar.make(
+                        requireView(),
+                        ((Result.Error) result).getMessage(),
+                        Snackbar.LENGTH_SHORT).show();
             }
         });
     }
