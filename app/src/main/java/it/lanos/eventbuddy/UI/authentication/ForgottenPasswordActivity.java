@@ -18,7 +18,6 @@ import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class ForgottenPasswordActivity extends AppCompatActivity {
-
     TextInputLayout emailTextInputLayout;
     Button resetButton;
     UserViewModel userViewModel;

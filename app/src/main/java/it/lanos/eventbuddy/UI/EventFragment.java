@@ -45,7 +45,6 @@ import it.lanos.eventbuddy.util.ServiceLocator;
 import it.lanos.eventbuddy.util.SharedPreferencesUtil;
 
 public class EventFragment extends Fragment {
-
     private List<EventWithUsers> eventList;
     private EventRecyclerViewAdapter eventRecyclerViewAdapter;
     private EventViewModel eventViewModel;

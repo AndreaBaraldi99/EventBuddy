@@ -22,7 +22,6 @@ import it.lanos.eventbuddy.data.source.models.Result;
 import it.lanos.eventbuddy.util.ServiceLocator;
 
 public class LoginActivity extends AppCompatActivity {
-
     private Button login_button, forgot_password_button, signup_textButton;
     private TextInputLayout emailTextInputLayout, passwordTextInputLayout;
     private CheckBox rememberMe_checkbox;
